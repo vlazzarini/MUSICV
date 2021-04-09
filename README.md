@@ -37,7 +37,7 @@ $ ./music5.sh myscore output.raw
 
 
 Known Issues
-=============
+------
 
 The FLT unit generator is missing. 
 
