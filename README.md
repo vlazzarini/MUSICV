@@ -17,7 +17,7 @@ $ cd src
 $ make
 ```
 
-and your version MUSIC V will be built. 
+and your version of MUSIC V will be built. 
 
 Running
 --------
