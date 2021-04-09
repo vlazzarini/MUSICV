@@ -1,4 +1,4 @@
-MUSIC V INSTRUCTIONS
+MUSIC V
 =================
 
 This is Max Mathew's MUSIC V synthesis program, prepared by
