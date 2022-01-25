@@ -114,10 +114,11 @@ C     [page 3-2]
  8       I7=D(I5)
          I8=I5+4
          I9=I5+I7
-         I10=IFIX(D(15+3))-I8
+         I10=IFIX(D(I5+3))-I8
          DO 124 I11=I8,I9
             I12=I10+I11
             G(I12)=D(I11)
+            
 C     VL:25/01/22 updated for gfortran 2018           
  124     CONTINUE   
 c         IF(I6-I2)1,2,1
@@ -282,13 +283,13 @@ C      END
 
 C     GENERAL CONVT from Risset's Catalogue
 C     Added by V Lazzarini, 2009
-C     but it is not being called as it should
-C     pass1.f should be investigated.
-C     I suspect G() is not being set properly
+C     Bug in G() assignment fixed 25/01/22
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000)
+      
       IF (G(3).NE.0.0) RETURN
       IF (P(1).NE.1.0) RETURN
+C     freq conversion factor tabsize/sr
       FREQ=511.0/G(4)
       I=P(3)
       NPAR=G(10*I)
