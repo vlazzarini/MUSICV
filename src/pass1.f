@@ -9,6 +9,10 @@ C
 C     This is the new version that runs (5-May-08) in gfortran and linux.
 C     Most of my changes are in lower case.
 
+C     V Lazzarini, 04-Sept-09
+C     Added IOS opcode (interpolating oscillator)
+C     which I am supposing it is what Risset means in his 
+C     catalogue
 
 C     pass1 required much more serious surgery than the other 2 passes.  I had to
 C       embed the READ1 subroutine in the main program.  Apparently new Fortrans 
@@ -33,14 +37,14 @@ C     PASS1   *** MUSIC V ***   THIS VERSION RUNS ON THE PDP10, JULY 14,1971
 
       CHARACTER*1 IBCD(300)
       CHARACTER*1 CARD(129)
-      DATA NOPS,NBC,NC/26,3,72/
+      DATA NOPS,NBC,NC/27,3,72/
       CHARACTER IDEC, ISTAR, IGAD
       DATA IDEC,ISTAR/'.','*'/
       CHARACTER JSEMI, JBLANK
       CHARACTER*1 IBC(4)
       DATA IBC/';',' ',',','-'/
       CHARACTER*1 IVT (4)
-      CHARACTER*1 LOP (78)
+      CHARACTER*1 LOP (81)
       integer IDEF, I100
 
       DATA IVT/'P','F','B','V'/
@@ -49,7 +53,7 @@ C     PASS1   *** MUSIC V ***   THIS VERSION RUNS ON THE PDP10, JULY 14,1971
      * 'P','L','S','S','I','3','S','I','A','C','O','M','E','N','D',
      * 'O','U','T','O','S','C','A','D','2','R','A','N','E','N','V',
      * 'S','T','R','A','D','3','A','D','4','M','L','T','F','L','T',
-     * 'R','A','H','S','E','T'/
+     * 'R','A','H','S','E','T','I','O','S'/
 
       EQUIVALENCE (JSEMI,IBC(1)), (JBLANK,IBC(2))
 
@@ -140,7 +144,6 @@ C     SET VARIABLES IN PASS 1
       I3=I2+IP(1)-4
       DO 104 I4=I2,I3
          D(14)=P(14-I2+4)
-C     VL 25/01/22 updated for Gfortran 2018         
  104  CONTINUE   
       GO TO 100
  9    I6=P(3)
@@ -295,9 +298,9 @@ C     TO SCAN FOR OP CODE
  27   L=L+1
       IF (IBCD(L).NE.JBLANK) GO TO 27
 
-
+      
  29   GO TO (9100,9200,300,400,500,600,700,800,900,1000,1100,1200,1300,
-     * 217,9201,202,203,204,205,206,207,208,209,210,211,212),M
+     * 217,9201,202,203,204,205,206,207,208,209,210,211,212,213),M
 
 C     OP CODE 1 TO PLAY NOTE
  9100  P(1)=1.
@@ -368,6 +371,10 @@ C     FILTER
       GO TO 220
 C     RANDOM AND HOLD
  211  P(3)=111.
+      NPW=5
+      GO TO 220
+C     IOS V Lazzarini, 2009
+ 213  P(3)=113.
       NPW=5
       GO TO 220
 C     SET NEW FUNCTION

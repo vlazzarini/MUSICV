@@ -24,9 +24,14 @@ C     INITIALIZING PROGRAM
 C     NOMINAL SAMPLING RATE, NOTE PARAMETER LENGTH, NUMBER OF CARDS
 C     NO OF OP CODES, PASS 11 REPORT PRINT PARAMETER
 
+C     NB V Lazzarini sept. 2009 G(4) seems to hold SR
+C     which is set at pass1 to 44100.
+C     This is required to be correct if we want to make
+C     CONVT work 
+
       G(1)=0.
       G(2)=0.
-      G(4)=10000.0
+      G(4)=44100.0
       NPAR=10000
       NCAR=1000
       NOPC=12
@@ -270,10 +275,56 @@ C***  RETURN
 C***  END
 
 c added back in
+C      SUBROUTINE CONVT
+C      COMMON IP(10),P(100),G(1000)
+C      RETURN
+C      END
+
+C     GENERAL CONVT from Risset's Catalogue
+C     Added by V Lazzarini, 2009
+C     but it is not being called as it should
+C     pass1.f should be investigated.
+C     I suspect G() is not being set properly
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000)
+      IF (G(3).NE.0.0) RETURN
+      IF (P(1).NE.1.0) RETURN
+      FREQ=511.0/G(4)
+      I=P(3)
+      NPAR=G(10*I)
+      IF(NPAR.EQ.0) GOTO 1
+      DO 2 J=1, NPAR
+         M=10*I+J
+         M=G(M)
+         IF(M.GT.200) GOTO 30
+         IF(M.GT.100) GOTO 30
+         IF(M.LT.0) GOTO 20
+         P(M)=FREQ*P(M)
+         GOTO 2
+ 20      M=-M
+         P(M)=FREQ/P(M)
+         GOTO 2
+ 30      M=M-100
+         P(M+1)=P(4)-P(M)-P(M+2)
+C        IF (P(M+1)) 32,33,34
+         IF (P(M+1) == 0) GOTO 33
+         IF (P(M+1) > 0) GOTO 34
+ 32      P(M)=(P(M)*P(4))/(P(M)+P(M+2))
+         P(M+2)=(P(M+2)*P(4))/(P(M)+P(M+2))
+ 33      P(M+1)=128
+         GOTO 35
+ 34      P(M+1)=FREQ/(4.0*P(M+1))
+ 35      P(M+2)=FREQ/(4.0*P(M))
+         GOTO 2
+ 40      M=M-200
+         D=-(6.2832*P(M+1))/G(4)
+         F=(6.2832*P(M))/G(4)
+         P(M)=2.*EXP(D)*COS(F)
+         P(M+1)=EXP(2.*D)
+ 2    CONTINUE
+ 1    CONTINUE
       RETURN
-      END
+      END      
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
