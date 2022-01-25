@@ -8,12 +8,7 @@ C     Bill Schottstaedt, 26-Apr-08
 C     
 C     This is the new version that runs (5-May-08) in gfortran and linux.
 C     Most of my changes are in lower case.
-
-C     V Lazzarini, 04-Sept-09
-C     Added IOS opcode (interpolating oscillator)
-C     which I am supposing it is what Risset means in his 
-C     catalogue
-
+      
 C     pass1 required much more serious surgery than the other 2 passes.  I had to
 C       embed the READ1 subroutine in the main program.  Apparently new Fortrans 
 C       do not guarantee that subroutine locals will be saved across calls.  The 
@@ -25,6 +20,10 @@ C       EQUIVALENCE stuff (not needed here because I'm using characters directly
 
 C     pass1 takes a file named 'score' and produces pass1.data
 
+C     V Lazzarini, 04-Sept-09
+C     Added IOS opcode (interpolating oscillator)
+C     which I am supposing it is what Risset means in his 
+C     catalogue      
       
 C     [page 1-1] -- these are the original XGP pages to help me find my place
 C
