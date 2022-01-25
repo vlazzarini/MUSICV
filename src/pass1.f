@@ -139,7 +139,9 @@ C     SET VARIABLES IN PASS 1
  7    I2=P(3)
       I3=I2+IP(1)-4
       DO 104 I4=I2,I3
- 104     D(14)=P(14-I2+4)
+         D(14)=P(14-I2+4)
+C     VL 25/01/22 updated for Gfortran 2018         
+ 104  CONTINUE   
       GO TO 100
  9    I6=P(3)
       IF (I6.GE.1.AND.I6.LE.5) GO TO 107

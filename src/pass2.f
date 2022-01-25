@@ -112,7 +112,9 @@ C     [page 3-2]
          I10=IFIX(D(15+3))-I8
          DO 124 I11=I8,I9
             I12=I10+I11
- 124     G(I12)=D(I11)
+            G(I12)=D(I11)
+C     VL:25/01/22 updated for gfortran 2018           
+ 124     CONTINUE   
 c         IF(I6-I2)1,2,1
          IF((I6-I2).eq.0) go to 2
          go to 1
@@ -141,7 +143,9 @@ C     WRITE OUT SECTION
          I18=IP(1)
          DO 133 I19=1,I18
             I20=I19+I5
- 133        P(I19)=D(I20)
+            P(I19)=D(I20)
+C     VL:25/01/22 updated for gfortran 2018
+ 133      CONTINUE  
 c         CALL WRITE2 (NWRITE)
          CALL WRITE2 (outputfile)
  1       CONTINUE

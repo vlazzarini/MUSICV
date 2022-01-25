@@ -123,7 +123,9 @@ c 203  GO TO (1,2,3,4,5,6,201,201,201,201,11,11),IOP
       IVARE=IVAR+I(1)-4
       DO 297 N1=IVAR,IVARE
          IVARP=N1-IVAR+4
- 297     I(N1)=P(IVARP)
+         I(N1)=P(IVARP)
+C     VL:25/01/22 updated for gfortran 2018           
+ 297     CONTINUE
       GO TO 204
  3    IGEN=P(3)
       GO TO (281,282,283,284,285),IGEN
@@ -141,7 +143,9 @@ c 203  GO TO (1,2,3,4,5,6,201,201,201,201,11,11),IOP
       IVARE=IVAR+I(1)-4
       DO 296 N1=IVAR,IVARE
          IVARP=N1-IVAR+4
- 296     I(N1+100)=P(IVARP)*SCLFT
+         I(N1+100)=P(IVARP)*SCLFT
+C     VL:25/01/22 updated for gfortran 2018  
+ 296  CONTINUE   
       GO TO 204
 
 c 6    CALL FROUT3(IDSK)
@@ -190,10 +194,14 @@ c         IF(I(N1)+1)230,231,230
       M4=N1+IP(8)-1
       DO 232 N1=M1,M2
          M5=N1-M1+1
- 232     I(N1)=P(M5)*SCLFT
+         I(N1)=P(M5)*SCLFT
+C     VL:25/01/22 updated for gfortran 2018           
+ 232  CONTINUE   
       I(M1)=P(3)
       DO 233 N1=M3,M4
- 233     I(N1)=0
+         I(N1)=0
+C     VL:25/01/22 updated for gfortran 2018  
+ 233  CONTINUE   
       DO 235 N1=1,IP9
 c         IF(TI(N1)-1000000.)235,234,235
          IF(TI(N1).ne.1000000.) go to 235
@@ -300,7 +308,9 @@ c 290  M3=MOUT+I(5)-1
 C     [page 4-4]
       
  292  DO 267 N1=MOUT,M3
- 267     I(N1)=0
+         I(N1)=0
+C     VL:25/01/22 updated for gfortran 2018           
+ 267  CONTINUE     
          GO TO (268,265),IREST
  268     DO 270 NS1=MS1,MS3,MS2
 c            IF(I(NS1)+1)271,270,271
@@ -762,7 +772,9 @@ c 100  V1=P(M1-2)*SCLFT
       MB=N1+IFIX(P(M1+1))-1
       DO 101 J=MA,MB
          XJ=J-MA
- 101     I(J)=V1+V2*XJ
+         I(J)=V1+V2*XJ
+C     VL:25/01/22 updated for gfortran 2018           
+ 101  CONTINUE   
       IF(IFIX(P(M1+1)).EQ.(IP(6)-1))GO TO 103
       M1=M1+2
       GO TO 102
@@ -779,7 +791,9 @@ c     *** MUSIC V ***
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
       DO 101 K1=N1,N2
- 101     A(K1)=0.0
+         A(K1)=0.0
+C     VL:25/01/22 updated for gfortran 2018           
+ 101  CONTINUE   
       FAC=6.283185/(FLOAT(IP(6))-1.0)
       NMAX=I(1)
       N3=5+INT(ABS(P(NMAX)))-1
@@ -789,7 +803,9 @@ c 100  DO 103 J=5,N3
       DO 103 J=5,N3
          FACK=FAC*FLOAT(J-4)
          DO 102 K=N1,N2
- 102        A(K)=A(K)+SIN(FACK*FLOAT(K-N1))*P(J)
+            A(K)=A(K)+SIN(FACK*FLOAT(K-N1))*P(J)
+C     VL:25/01/22 updated for gfortran 2018  
+ 102     CONTINUE   
  103     CONTINUE
  104  N4=N3+1
       N5=I(1)-1
@@ -799,7 +815,9 @@ c 105  DO 107 J1=N4,N5
       DO 107 J1=N4,N5
          FACK=FAC*FLOAT(J1-N4)
          DO 106 K1=N1,N2
- 106        A(K1)=A(K1)+COS(FACK*FLOAT(K1-N1))*P(J1)
+            A(K1)=A(K1)+COS(FACK*FLOAT(K1-N1))*P(J1)
+C     VL:25/01/22 updated for gfortran 2018              
+ 106     CONTINUE   
  107     CONTINUE
  114  CONTINUE
 c      IF(P(NMAX))112,112,108
@@ -813,7 +831,9 @@ c 109     FMAX=ABS(A(K2))
          FMAX=ABS(A(K2))
  110  CONTINUE
  113  DO 111 K3=N1,N2
- 111     I(K3)=(A(K3)*SCLFT*.99999)/FMAX
+         I(K3)=(A(K3)*SCLFT*.99999)/FMAX
+C     VL:25/01/22 updated for gfortran 2018           
+ 111  CONTINUE   
       RETURN
                   
 C     [page 6-2]
@@ -841,7 +861,9 @@ C
       NR=NL+N
       DO 10 J=NL,NR
          IF(P(J).GT.RMAX) RMAX=P(J)
- 10      IF(P(J).LT.RMIN) RMIN=P(J)
+         IF(P(J).LT.RMIN) RMIN=P(J)
+C     VL:25/01/22 updated for gfortran 2018            
+ 10   CONTINUE   
       DIV=AMAX1(ABS(RMIN),ABS(RMAX))
       N1 = IP(2) + (IFIX(P(4))-1)*IP(6)
       I(N1)=(P(NL)/DIV)*SCLFT
@@ -857,8 +879,12 @@ C
          HNCR=DELTA/SEG
          DO 50 K=1,NR
             IX2 = LAST+K
- 50         I(IX2)=FLOAT(I(IX2-1))+HNCR
- 100     LAST=IX
+            I(IX2)=FLOAT(I(IX2-1))+HNCR
+C     VL:25/01/22 updated for gfortran 2018              
+ 50      CONTINUE
+         LAST=IX
+C     VL:25/01/22 updated for gfortran 2018          
+ 100  CONTINUE   
       RETURN
       END
 
@@ -970,7 +996,9 @@ C***  IDBUF WILL STORE PACKED SAMPLES. ****
       GO TO 104
  106  DO 101 L=1,10
          J=N2+L
- 101     T(L)=FLOAT(I(J))/FLOAT(IP(12))
+         T(L)=FLOAT(I(J))/FLOAT(IP(12))
+C     VL:25/01/22 updated for gfortran 2018           
+ 101  CONTINUE   
       PRINT 102, (T(K),K=1,N3)
  102  FORMAT(1H 10F11.4)
       N2=N2+10
@@ -995,7 +1023,9 @@ C     COUNTS SAMPLES TO DATE
          N1=I(M1+M2)/ISC
          IF(N1.GT.PEAK)PEAK=N1
          IDBUF(K)=N1
- 1       M2=M2+1
+         M2=M2+1
+C     VL:25/01/22 updated for gfortran 2018           
+ 1       CONTINUE
       IF(IDSK.LT.768)RETURN
          
       CALL FASTOUT(IDBUF(1), 768, nwrite)
@@ -1020,7 +1050,9 @@ c
       J=IDSK-768
       IF(J.LT.1) GO TO 4
       DO 5 K=1,J
- 5       IDBUF(K)=IDBUF(768+K)
+         IDBUF(K)=IDBUF(768+K)
+C     VL:25/01/22 updated for gfortran 2018           
+ 5    CONTINUE
                   
 C     [page 6-5]
                   
@@ -1042,7 +1074,9 @@ c      print *, 'output ', N, ICTR
          SAMPLE=IARR(k)*0.000488
 c 1/2048
          ICTR = ICTR+1
- 55      WRITE(nwrite, rec=ICTR) SAMPLE
+         WRITE(nwrite, rec=ICTR) SAMPLE
+C     VL:25/01/22 updated for gfortran 2018  
+ 55   CONTINUE   
 
          IP(21)=ICTR
 
