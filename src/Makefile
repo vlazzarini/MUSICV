@@ -1,5 +1,6 @@
 # Makefile for MUSIC V
 # Victor Lazzarini, Jun 08
+# For doc purposes only, the software is now built with CMake.
 
 PROGS = pass1 pass2 pass3 towav music5
 

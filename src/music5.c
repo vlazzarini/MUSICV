@@ -1,5 +1,5 @@
 // MUSIC V driver program
-// calls pass1, pass2, pass3 and towav to produce an output
+// calls pass1, pass2, pass3 and raw2wav to produce an output
 // (c) V Lazzarini, 2022
 //
 // Redistribution and use in source and binary forms, with or without
@@ -33,13 +33,13 @@ int main(int argc, char *argv[]) {
     char command[1024];
     sprintf(command, "cp -f %s score", argv[1]);
     system(command);
-    ret = system("./pass1");
+    ret = system("pass1");
     if(ret == 0) {
-      ret = system("./pass2");
+      ret = system("pass2");
       if(ret == 0) {
-	ret = system("./pass3");
+	ret = system("pass3");
 	if(ret == 0) {
-	  sprintf(command, "./towav %s", argv[2]);
+	  sprintf(command, "raw2wav %s", argv[2]);
 	  system(command);
 	  return 0;
 	}
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
       } else printf("pass 2 failed\n");
     } else printf("pass 1 failed\n");
     return 1;
-  } else printf("usage: %s score output.wav \n", argv[1]);
+  } else printf("usage: %s score output.wav \n", argv[0]);
   return -1;
 }
 
