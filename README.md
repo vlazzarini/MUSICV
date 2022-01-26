@@ -18,7 +18,7 @@ With these installed,
 
 ```
 $ mkdir build
-$ CMake ..
+$ cmake ..
 $ make
 ```
 
