@@ -1,7 +1,7 @@
 # Makefile for MUSIC V
 # Victor Lazzarini, Jun 08
 
-PROGS = pass1 pass2 pass3
+PROGS = pass1 pass2 pass3 towav music5
 
 all: $(PROGS)
 
@@ -13,6 +13,12 @@ pass2: pass2.f
 
 pass3: pass3.f
 	gfortran -o pass3 pass3.f
+
+towav: towav.c
+	cc -o towav towav.c
+
+music5: music5.c
+	cc -o music5 music5.c
 
 clean: $(PROGS)
 	rm -f $(PROGS)
