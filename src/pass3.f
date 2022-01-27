@@ -622,6 +622,7 @@ c 506     J4=L2+ICT
          IN2=I(J4)
  507     J5=L3+J3
          I(J5)=IN2+I(J5)
+         ICT=ICT+1
  510  CONTINUE
       RETURN
 C     ADD 3 BOX
