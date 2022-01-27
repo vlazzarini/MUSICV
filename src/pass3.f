@@ -12,9 +12,11 @@ C     pass3
 
 C     This reads pass2.data and writes the raw (headerless) binary sound
 C     file snd.raw.
+
+C     This reads pass2.data and writes the raw (headerless) binary sound
+C     file snd.raw.  This is a file of 4-byte floats at 44100Hz, mono.      
       
-C     Victor Lazzarini, Sept 09  SR is actually fixed to 44.1KHz
-C     Output is 32-bit float with the default system byte order      
+C     NB (VL,09): despite the above comment, SR is actually set to 44.1KHz .      
 
 C     Victor Lazzarini, Sept 09
 C     added GEN4,GEN5,GEN6 and GEN7 from Risset's Catalogue
@@ -26,7 +28,11 @@ C     Victor Lazzarini, Jan 22
 C     A bug in STR has been fixed where the frame counter ICT was not updated
 C     The possibility of stereo output has been restored by increasing the buffering size from 768 to 1536
 C     and the allocated size of the IOBUF in SAMOUT has also been doubled
-C     Stereo currently needs to be hardcoded by setting I(8) =  1 at the start of the program
+C
+C     Output can now be mono or stereo with any sampling rate. 
+C     Sampling rate and stereo/mono parameters can now be set in score.
+C     A text file called "snd_params.txt" is written in pass3 containing
+C     the number of channels and sampling rate used
 
       
 C     PASS3   PASS 3 MAIN PROGRAM
@@ -321,12 +327,15 @@ c 262  I(5)=ISAM
       GO TO 264
  263  I(5)=IP(14)
       ISAM=ISAM-IP(14)
-c     264  IF(I(8))290,290,291
+
+C     VL 27/01/22 printing a file with the number of channels
+C     used so that a driver program can convert the output correctly      
       if(PCH > 0) goto 264
-      open (10, file='chn', status='unknown')
-      write(10, *) I(8)+1
+      open (10, file='snd_params.txt', status='replace')
+      write(10, *) I(8)+1, I(4)
       close(10)
-      PCH = 1      
+      PCH = 1
+c     264  IF(I(8))290,290,291      
  264  IF(I(8).gt.0) go to 291
 c 290  M3=MOUT+I(5)-1
       M3=MOUT+I(5)-1

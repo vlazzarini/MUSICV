@@ -58,12 +58,14 @@ int main(int argc, char *argv[]) {
 	ret = system("pass3");
 	if(ret == 0) {
 	  int chn = 1;
-	  fin = fopen("chn","r");
+	  int sr = 44100;
+	  fin = fopen("snd_params.txt","r");
 	  fscanf(fin, "%d", &chn);
+	  fscanf(fin, "%d", &sr);
 	  fclose(fin);
-	  snprintf(buffer,BUFSIZE,"raw2wav %s %d", argv[2], chn);
+	  snprintf(buffer,BUFSIZE,"raw2wav %s %d %d", argv[2], chn, sr);
 	  printf(" PASS III completed successfully\n"
-		 "Created snd.raw (32-bit floas, sr = 44100 KHz, %s)\n",
+		 "Created snd.raw (32-bit floas, sr = %d KHz, %s)\n", sr,
 		  chn > 1 ? "stereo" : "mono");
 	  ret = system(buffer);
 	  if(ret) {

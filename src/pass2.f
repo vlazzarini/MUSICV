@@ -119,7 +119,7 @@ C     [page 3-2]
          DO 124 I11=I8,I9
             I12=I10+I11
             G(I12)=D(I11)
-         
+
             
 C     VL:25/01/22 updated for gfortran 2018           
  124     CONTINUE   
@@ -128,6 +128,8 @@ C          print *, I6, I2
 C         IF((I6-I2).eq.0) go to 2
 C     go to 1
 C     VL: 27/01/22 the above lines were stopping variable setting in pass3
+C     Now instead we check whether the opcode is 8 to jump out.         
+         IF((I6).eq.8) go to 1
          goto 2
  10      I13=D(I5+3)
          IP(2)=I5

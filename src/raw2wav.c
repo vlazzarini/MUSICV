@@ -79,6 +79,7 @@ int main(int argc, const char *argv[]) {
   float buf[bufsize];
   const char* fname = argc > 1 ? argv[1] : "snd.wav";
   int chns = argc > 2 ? atoi(argv[2]) : 1;
+  int sr = argc > 3 ? atoi(argv[3]) : 44100;
   header.magic = (long)  (*(long*)RIFF_ID);			// 'RIFF' 
   header.len0 = 0;
   header.magic1 = (long)  (*(long*)WAVE_ID);			// 'WAVE' 
@@ -89,11 +90,11 @@ int main(int argc, const char *argv[]) {
   byteswap(&header.format,2);
   header.nchns = chns;			// Number of channels
   byteswap(&header.nchns,2);
-  header.rate = 44100;
+  header.rate = sr;
   byteswap(&header.rate,4);			// sampling frequency 
-  header.aver = 176400;
+  header.aver = sr*chns*4;
   byteswap(&header.aver,4);
-  header.nBlockAlign = 4;
+  header.nBlockAlign = 4*chns;
   byteswap(&header.nBlockAlign,2);		// (rate*nch +7)/8 
   header.size = 32;
   byteswap(&header.size,2);			// size of each sample (8,16,32) 

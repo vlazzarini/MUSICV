@@ -77,8 +77,6 @@ Known Issues
 
 - The FLT unit generator is missing. 
 - Variable setting in pass1 and pass3 is doubtful.
-- Sampling rate is fixed.
-- Although stereo output is possible now in pass3, it needs to be
-  hardcoded (by setting I(8) = 1).
+
 
 
