@@ -26,6 +26,7 @@ C     Victor Lazzarini, Jan 22
 C     A bug in STR has been fixed where the frame counter ICT was not updated
 C     The possibility of stereo output has been restored by increasing the buffering size from 768 to 1536
 C     and the allocated size of the IOBUF in SAMOUT has also been doubled
+C     Stereo currently needs to be hardcoded by setting I(8) =  1 at the start of the program
 
       
 C     PASS3   PASS 3 MAIN PROGRAM
