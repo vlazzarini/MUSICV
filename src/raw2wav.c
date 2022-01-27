@@ -25,6 +25,7 @@
 // POSSIBILITY OF SUCH DAMAGE
 
 #include <stdio.h>
+#include <stdlib.h>
 
 static inline char le_test(){
     union _le {
@@ -77,6 +78,7 @@ int main(int argc, const char *argv[]) {
   WAVEHEAD header;
   float buf[bufsize];
   const char* fname = argc > 1 ? argv[1] : "snd.wav";
+  int chns = argc > 2 ? atoi(argv[2]) : 1;
   header.magic = (long)  (*(long*)RIFF_ID);			// 'RIFF' 
   header.len0 = 0;
   header.magic1 = (long)  (*(long*)WAVE_ID);			// 'WAVE' 
@@ -85,7 +87,7 @@ int main(int argc, const char *argv[]) {
   byteswap(&header.len,4);			// length of header (16)
   header.format = 3;
   byteswap(&header.format,2);
-  header.nchns = 2;			// Number of channels
+  header.nchns = chns;			// Number of channels
   byteswap(&header.nchns,2);
   header.rate = 44100;
   byteswap(&header.rate,4);			// sampling frequency 
@@ -118,7 +120,7 @@ int main(int argc, const char *argv[]) {
     byteswap(&header.len0,4);
     fwrite(&header,sizeof(WAVEHEAD),1,fp);
     fclose(fp);
-    printf("Wrote %zu bytes of 32-bit float samples to %s \n", bytes, fname);
+    printf("Wrote %zu bytes of 32-bit float sample frames to %s (%s) \n", bytes, fname, chns > 1 ? "stereo" : "mono");
   } else printf("Could not open %s for output\n", fname);
   fclose(fpi);
   return 0;

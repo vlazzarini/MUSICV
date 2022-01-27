@@ -120,8 +120,9 @@ C     INITIALIZATION OF SECTION
  221     CONTINUE
 
 C     MAIN CARD READING LOOP
-c 204  CALL DATA (NREAD)
- 204  CALL DATA (inputfile)
+c     204  CALL DATA (NREAD)
+       PCH = 0
+ 204   CALL DATA (inputfile)
 c      IF(P(2)-T(1))200,200,244
       IF((P(2)-T(1)).gt.0.0) go to 244
  200  IOP=P(1)
@@ -142,7 +143,8 @@ c 203  GO TO (1,2,3,4,5,6,201,201,201,201,11,11),IOP
          IVARP=N1-IVAR+4
          I(N1)=P(IVARP)
 C     VL:25/01/22 updated for gfortran 2018           
- 297     CONTINUE
+ 297  CONTINUE
+      
       GO TO 204
  3    IGEN=P(3)
       GO TO (281,282,283,284,285,286,287,288),IGEN
@@ -168,7 +170,7 @@ C     VL:25/01/22 updated for gfortran 2018
          IVARP=N1-IVAR+4
          I(N1+100)=P(IVARP)*SCLFT
 C     VL:25/01/22 updated for gfortran 2018  
- 296  CONTINUE   
+ 296  CONTINUE
       GO TO 204
 
 c 6    CALL FROUT3(IDSK)
@@ -319,7 +321,12 @@ c 262  I(5)=ISAM
       GO TO 264
  263  I(5)=IP(14)
       ISAM=ISAM-IP(14)
-c 264  IF(I(8))290,290,291
+c     264  IF(I(8))290,290,291
+      if(PCH > 0) goto 264
+      open (10, file='chn', status='unknown')
+      write(10, *) I(8)+1
+      close(10)
+      PCH = 1      
  264  IF(I(8).gt.0) go to 291
 c 290  M3=MOUT+I(5)-1
       M3=MOUT+I(5)-1
@@ -327,6 +334,7 @@ c 290  M3=MOUT+I(5)-1
       GO TO 292
  291  M3=MOUT+(2*I(5))-1
       MSAMP=2*I(5)
+
       
 C     [page 4-4]
       

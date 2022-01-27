@@ -67,7 +67,7 @@ c 106  CALL READ2 (NREAD)
 c 100     D(13)=P(I2)
          D(I3)=P(I2)
  100     continue
-
+      
       ID=ID+I1+1
 c      IF(ID-NPAR)102,102,101
       IF((ID-NPAR).le.0) go to 102
@@ -103,8 +103,9 @@ c         IF(I6)121,121,122
  121     CALL ERROR(21)
          GO TO 1
 c 122     IF (I6-NOPC)123,123,121
- 122  IF ((I6-NOPC).gt.0) go to 121
-c 123     GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
+ 122     IF ((I6-NOPC).gt.0) go to 121
+        
+c     123     GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
           GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
  7       CALL ERROR(22)
          GO TO 1
@@ -118,12 +119,16 @@ C     [page 3-2]
          DO 124 I11=I8,I9
             I12=I10+I11
             G(I12)=D(I11)
+         
             
 C     VL:25/01/22 updated for gfortran 2018           
  124     CONTINUE   
-c         IF(I6-I2)1,2,1
-         IF((I6-I2).eq.0) go to 2
-         go to 1
+c     IF(I6-I2)1,2,1
+C          print *, I6, I2
+C         IF((I6-I2).eq.0) go to 2
+C     go to 1
+C     VL: 27/01/22 the above lines were stopping variable setting in pass3
+         goto 2
  10      I13=D(I5+3)
          IP(2)=I5
 c         IF(I13)125,125,126
@@ -151,7 +156,7 @@ C     WRITE OUT SECTION
             I20=I19+I5
             P(I19)=D(I20)
 C     VL:25/01/22 updated for gfortran 2018
- 133      CONTINUE  
+ 133     CONTINUE
 c         CALL WRITE2 (NWRITE)
          CALL WRITE2 (outputfile)
  1       CONTINUE

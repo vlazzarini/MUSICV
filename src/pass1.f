@@ -101,7 +101,7 @@ c 100  CALL READ1
  
  100   GO TO 4321
  4322  I1=P(1)
-
+C      PRINT  *,I1
       IF (I1.GE.1.AND.I1.LE.12) GO TO 103
       IP(2)=1
 CC    WRITE (6,200)
@@ -122,7 +122,7 @@ c 1    call write1(outputfile)
  5    PRINT 110
 CC 5 WRITE (6, 110)
 C********PDP ********
- 110  FORMAT(' END OF SECTION IN PASS 1')
+ 110  FORMAT(' END OF SECTION IN PASS I')
 c      GO TO 1
       go to 1010
 c 6    CALL WRITE1 (NWRITE)
@@ -131,7 +131,7 @@ c 6    CALL WRITE1 (NWRITE)
 C     C	  WRITE (6, 111)
       PRINT 111
 C********PDP ********	  
- 111  FORMAT (' END OF PASS 1')
+ 111  FORMAT (' END OF PASS I')
       IF(IP(2).EQ.1) CALL HARVEY
 
       close(inputfile)

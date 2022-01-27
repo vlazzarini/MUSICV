@@ -26,21 +26,50 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#define BUFSIZE 1024
 
 int main(int argc, char *argv[]) {
   if (argc > 2) {
+    FILE *fin,*fout;
     int ret;
-    char command[1024];
-    sprintf(command, "cp -f %s score", argv[1]);
-    system(command);
+    char buffer[BUFSIZE];
+    fin = fopen(argv[1],"r");
+    if(fin) {
+      fout = fopen("score","w");
+      if(fout) do {
+          ret = fread(buffer,1,BUFSIZE,fin);
+          fwrite(buffer,1,ret,fout);
+	} while(ret);
+      else {
+	fclose(fin);
+	printf("could not open score file for writing\n");
+        return -1;
+      }
+      fclose(fin);
+      fclose(fout);
+    } else {
+      printf("could not open %s for reading\n", argv[1]);
+        return -1;
+    } 
     ret = system("pass1");
     if(ret == 0) {
       ret = system("pass2");
       if(ret == 0) {
 	ret = system("pass3");
 	if(ret == 0) {
-	  sprintf(command, "raw2wav %s", argv[2]);
-	  system(command);
+	  int chn = 1;
+	  fin = fopen("chn","r");
+	  fscanf(fin, "%d", &chn);
+	  fclose(fin);
+	  snprintf(buffer,BUFSIZE,"raw2wav %s %d", argv[2], chn);
+	  printf(" PASS III completed successfully\n"
+		 "Created snd.raw (32-bit floas, sr = 44100 KHz, %s)\n",
+		  chn > 1 ? "stereo" : "mono");
+	  ret = system(buffer);
+	  if(ret) {
+	    printf("Failed to convert snd.raw to %s\n", argv[2]);
+	    return -1;
+	  }
 	  return 0;
 	}
 	else printf("pass 3 failed\n");
