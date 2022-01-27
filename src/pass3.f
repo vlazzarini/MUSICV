@@ -11,15 +11,21 @@ C     Most of my changes are in lower case.
 C     pass3
 
 C     This reads pass2.data and writes the raw (headerless) binary sound
-C     file snd.raw.  This is a file of 4-byte floats at 20000Hz, mono.
-
-C     NB (VL,09): despite the above comment, SR is actually set to 44.1KHz 
+C     file snd.raw.
+      
+C     Victor Lazzarini, Sept 09  SR is actually fixed to 44.1KHz
+C     Output is 32-bit float with the default system byte order      
 
 C     Victor Lazzarini, Sept 09
 C     added GEN4,GEN5,GEN6 and GEN7 from Risset's Catalogue
 C     added IOS as a linear-interpolating oscillator
 C     which I am supposing it is what Risset means in his 
 C     catalogue
+
+C     Victor Lazzarini, Jan 22
+C     A bug in STR has been fixed where the frame counter ICT was not updated
+C     The possibility of stereo output has been restored by increasing the buffering size from 768 to 1536
+C     and the allocated size of the IOBUF in SAMOUT has also been doubled
 
       
 C     PASS3   PASS 3 MAIN PROGRAM
@@ -46,6 +52,7 @@ C*****************
 C     INITIALIZATION OF PIECE
 C     ARBITRARY STARTING NUMBER FOR SUBROUTINE RANDU
 
+
       inputfile=1
       outputfile=2
       open(inputfile, FILE='pass2.data', STATUS='OLD')
@@ -56,8 +63,8 @@ c      open(outputfile, FILE='pass3.data')
      * form='unformatted', 
      * access='direct',
      * status='replace',
-     * recl=4)
-
+     *     recl=4)
+      
       I(7)=IIIRD
       IP9=IP(9)
       PEAK=0
@@ -457,6 +464,7 @@ C**********ABOVE FOR FM (NEG. FREQ. TO OSCIL)
  292     J6=L1+J3-1
          I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
  293  CONTINUE
+C     PRINT *, L3
       I(L5)=IFIX(SUM*SFID)
       RETURN
 C     ADD TWO BOX
@@ -600,7 +608,7 @@ c 501  IF(M2)502,502,503
 c 502  IN2=I(L2)
        IN2=I(L2)
  503  NSSAM=2*NSAM
-      
+C      PRINT *, L3
 C     [page 5-4]
       
 C     6/29/70 L.C.SMITH
@@ -624,6 +632,7 @@ c 506     J4=L2+ICT
          I(J5)=IN2+I(J5)
          ICT=ICT+1
  510  CONTINUE
+C     PRINT *, J5, J3   
       RETURN
 C     ADD 3 BOX
 c 107  IF(M1)750,750,751
@@ -1228,12 +1237,15 @@ C     [page 6-4]
 C     DEBUG SAMOUT
       SUBROUTINE SAMOUT(IDSK,N, nwrite)
 c      DIMENSION IDBUF(2000),MS(3)
-      DIMENSION IDBUF(2000)
+      DIMENSION IDBUF(4000)
 C***  IDSK IS FLAG TO WRITE SAMPLES ON DSK -- PDP ****
 C***  IDBUF WILL STORE PACKED SAMPLES. ****
       DIMENSION I(15000),T(10),P(100),IP(21)
       COMMON I,P/PARM/IP/FINOUT/PEAK,NRSOR
       INTEGER PEAK
+C     VL 27/01/22: IOBUFSIZE constant (UG bufsize*3 to accommodate stereo)
+      IOBUFSIZE = 1536
+C      PRINT *, IDSK
       IF(IDSK.GE.0) GO TO 99
       N1=N
       PRINT 100,N1
@@ -1265,20 +1277,22 @@ c 105  N3=N1
       M2=0
       ISC=IP(12)
       IDSK=IDSK+N
+c      PRINT *, M1, J
 C     COUNTS SAMPLES TO DATE
       DO 1 K=J,IDSK
          N1=I(M1+M2)/ISC
          IF(N1.GT.PEAK)PEAK=N1
          IDBUF(K)=N1
-         M2=M2+1
+         M2=M2+1   
 C     VL:25/01/22 updated for gfortran 2018           
- 1       CONTINUE
-      IF(IDSK.LT.768)RETURN
+ 1    CONTINUE
+C     PRINT *, M2, M1+M2
+      IF(IDSK.LT.IOBUFSIZE)RETURN
          
-      CALL FASTOUT(IDBUF(1), 768, nwrite)
+      CALL FASTOUT(IDBUF(1), IOBUFSIZE, nwrite)
 
 c      KL=0
-c      DO 2 K=1,768,3
+c      DO 2 K=1,IOBUFSIZE,3
 c         KL=KL+1
 c         KJ=K-1
 c         MS(1)=IDBUF(K)
@@ -1294,10 +1308,10 @@ cC     NEGATIVE NUMBERS RUN FROM 4096(I.E. -1) TO 2049(I.E. -2048).
 c
 c      CALL FASTOUT(IDBUF(1),256, nwrite)
 c
-      J=IDSK-768
+      J=IDSK-IOBUFSIZE
       IF(J.LT.1) GO TO 4
       DO 5 K=1,J
-         IDBUF(K)=IDBUF(768+K)
+         IDBUF(K)=IDBUF(IOBUFSIZE+K)
 C     VL:25/01/22 updated for gfortran 2018           
  5    CONTINUE
                   
