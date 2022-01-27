@@ -75,5 +75,9 @@ PATH=.:$PATH music5 <scorefile> <soundfile>
 Known Issues
 ------
 
-The FLT unit generator is missing. 
+- The FLT unit generator is missing. 
+- Variable setting in pass1 and pass3 is doubtful.
+- Sampling rate is fixed.
+- Stereo output is broken.
+
 
