@@ -101,7 +101,7 @@ c 100  CALL READ1
  
  100   GO TO 4321
  4322  I1=P(1)
-C      PRINT  *,I1
+      
       IF (I1.GE.1.AND.I1.LE.12) GO TO 103
       IP(2)=1
 CC    WRITE (6,200)
@@ -114,7 +114,7 @@ C********PDP ********
 c 103  GO TO (1,1,1,1,5,6,7,1,9,1,1,12),I1
 c 1    CALL WRITE1 (NWRITE)
 c 1    call write1(outputfile)
-
+       
  103  go to (1010,1010,1010,1010,5,6,7,1010,9,1010,1010,12),I1
  1010 call write1(outputfile)
 
@@ -160,22 +160,69 @@ c 12   CALL WRITE1 (NWRITE)
  12   call write1(outputfile)
       GO TO 7
 
- 107  GO TO 100
-c added^
+     
+C 107  GO TO 100
+c     added^
+C     107   GO TO (21,22,23,24,25),I6
+C     21      CALL PLF1
+C         GO TO 100
+C     22      CALL PLF2
+C         GO TO 100
+C     23      CALL PLF3
+C         GO TO 100      
+C     24      CALL PLF4      
+C         GO TO 100
+C     25      CALL PLF5
+C         GO TO 100
+c     END
+      
+C VL: 28/01/22 attempting to restore PLFs        
+ 107   GO TO (9921,9922,9923,9924,9925),I6
+C     VL: 28/01/2022 PLF routines from Risset's catalogue
+C     BECAUSE READ1 is no more, this is embeded in the main program
+C     it is not working yet 
 
-C 107     GO TO (21,22,23,24,25),I6
-C 21      CALL PLF1
-C         GO TO 100
-C 22      CALL PLF2
-C         GO TO 100
-C 23      CALL PLF3
-C         GO TO 100
-C 24      CALL PLF4
-C         GO TO 100
-C 25      CALL PLF5
-C         GO TO 100
+ 9921  CONTINUE 
+       GO TO 100
+ 9922  CONTINUE
+       GO TO 100
+C     SUBROUTINE PLF3
+C     COMMON P(100),IP(10),D(2000)       
+ 9923  NNC=P(4)
+      NN=P(5)
+      TTS=P(6)
+      TFACT=P(7)
+      TDD=P(8)
+      DO 1071 NI=1, NNC
+CC         CALL READ1
+         READ (inputfile,1, ERR=95,END=95) II, (CARD(II),II=1,NC)
+CC   here we have to read the data from the card
+         PRINT 2121,(CARD(I),I=1,NC)
+CC   and convert from CHAR to real
+         
+         CALL WRITE1(outputfile)
+         TF=P(6)
+         DO 1072 J=1,NN
+            P(6)=FLOAT(J+1)*TF
+            P(2)=P(2)+TTS
+            AINST=P(3)-1
+            IF(AINST == 0) GOTO 1074  
+ 1073       P(3)=2.
+            GOTO 1075
+ 1074       P(2)=1.
+ 1075       CONTINUE
+            IF(FACT.GT.0) P(5)=P(5)*TFACT 
+            CALL WRITE1(outputfile)
+ 1072   CONTINUE
+ 1071 CONTINUE
+C 100  RETURN
+C      END      
+       GOTO 100
+ 9924 CONTINUE
+      GOTO 100      
+ 9925 CONTINUE
+      GOTO 100     
 
-c         END
 
 C     [page 2-1]
 
@@ -224,11 +271,11 @@ c      EQUIVALENCE (JSEMI,IBC(1)), (JBLANK,IBC(2))
 C     TO SCAN INPUT DATA TO #, ORGANIZE FIELDS AND PRINT
 
  4321 CONTINUE
-
       IF(IPDP.EQ.0) GO TO 9999
 
 C********PDP ********
       IF ((END+SNA8-1.).gt.0.0) go to 90
+     
  10   IBK=2
       END=0.
       ERR=0.
@@ -261,7 +308,6 @@ C*****PDP ***** FIRST 'I' IS FOR PDP LINE NUMBERS!
 c 1    FORMAT(I,128A1)
 
  1    FORMAT(128A1)
-
       PRINT 2121,(CARD(I),I=1,NC)
  2121 FORMAT(1H 128A1)
       I=0
@@ -487,6 +533,7 @@ c 30   IF(IDEF)32,32,43
  34   IP(1)=NP
 c      IF(NP-1)47,47,50
       if (NP-1.gt.0) go to 50
+      
       go to 47
 
 C     ERRORS
@@ -639,7 +686,13 @@ CC    ENTRY PLF2
 CC    ENTRY PLF3
 CC    ENTRY PLF4
 CC    ENTRY PLF5
-c      END
+c     END
+
+
+      
+
+
+      
 
 C     ERRO1    GENERAL ERROR ROUTINE
 C     ***MUSIC V ***
@@ -671,5 +724,6 @@ c      RETURN
 c      END
 
 
-
+      
+    
 

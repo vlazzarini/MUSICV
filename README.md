@@ -76,7 +76,7 @@ Known Issues
 ------
 
 - The FLT unit generator is missing. 
-- Variable setting in pass1 and pass3 is doubtful.
-
+- PLF routines cannot be easily added to pass1.f because the read1
+  routine has been disposed of.
 
 
