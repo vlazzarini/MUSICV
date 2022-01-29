@@ -10,7 +10,8 @@ C     This is the new version that runs (5-May-08) in gfortran and linux.
 C     Most of my changes are in lower case
 
 C     pass2 reads pass1.data and writes pass2.data.
-
+      
+C     V Lazzarini, Jan 22. Bug fixed and CONVT call is now working      
 
 C     PASS 2 MAIN PROGRAM
 C     *** MUSIC V ***

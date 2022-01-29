@@ -23,7 +23,16 @@ C     pass1 takes a file named 'score' and produces pass1.data
 C     V Lazzarini, 04-Sept-09
 C     Added IOS opcode (interpolating oscillator)
 C     which I am supposing it is what Risset means in his 
-C     catalogue      
+C     catalogue
+
+C     V Lazzarini, 29-01-22
+C     Added PLF3 from Risset's Catalog #500
+C     Since this included a call to READ1, it could not be dropped in
+C     as a subroutine. I have instead incorporated in the main program
+C     looping round to the reading code and back to the PLF section      
+C     A bit more spaghetti, but could not be done in any other way without
+C     restoring READ1
+C     NB: if a PFL does not call READ1 it can be added as a subroutine.      
       
 C     [page 1-1] -- these are the original XGP pages to help me find my place
 C     
@@ -180,13 +189,13 @@ C     25      CALL PLF5
 C     GO TO 100
 c     END
       
-C     VL: 28/01/22 attempting to restore PLFs
-C     V: 29/01/22 set the PFL flag to PFL number      
- 107  pflflag = I6      
-      GO TO (9921,9922,9923,9924,9925),I6
-C     VL: 28/01/2022 PLF routines from Risset's catalogue
-C     BECAUSE READ1 is no more, these are embeded in the main program
-
+C     VL: 29/01/22 set the PFL flag to PFL number to signal
+C     that we are entering PFL section of the main program      
+ 107  pflflag = I6
+C     VL: 28/01/22 restored PLF calls, labels prefixed with 99      
+      GO TO (21,9922,9923,9924,9925),I6
+C     VL: 28/01/2022 PLF routine from Risset's catalogue
+C     BECAUSE READ1 is no more, this is embeded in the main program
  9921 CONTINUE
  9919 pflflag = 0
       GO TO 100
@@ -230,6 +239,7 @@ C        Then loop back here from above
  9931 CONTINUE
 C     100  RETURN
 C     END
+C     reset PFL flag to signal end of PFL      
       pflflag = 0
       GOTO 100
  9924 CONTINUE

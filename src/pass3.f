@@ -25,9 +25,11 @@ C     which I am supposing it is what Risset means in his
 C     catalogue
 
 C     Victor Lazzarini, Jan 22
-C     A bug in STR has been fixed where the frame counter ICT was not updated
-C     The possibility of stereo output has been restored by increasing the buffering size from 768 to 1536
-C     and the allocated size of the IOBUF in SAMOUT has also been doubled
+C     A bug in STR has been fixed where the frame counter ICT was not
+C     updated
+C     The possibility of stereo output has been restored by increasing
+C     the buffering size from 768 to 1536 and the allocated size of the
+C      IOBUF in SAMOUT has also been doubled
 C
 C     Output can now be mono or stereo with any sampling rate. 
 C     Sampling rate and stereo/mono parameters can now be set in score.
@@ -328,7 +330,7 @@ c 262  I(5)=ISAM
  263  I(5)=IP(14)
       ISAM=ISAM-IP(14)
 
-C     VL 27/01/22 printing a file with the number of channels
+C     VL 27/01/22 printing a file with channels and sampling rate
 C     used so that a driver program can convert the output correctly      
       if(PCH > 0) goto 264
       open (10, file='snd_params.txt', status='replace')
