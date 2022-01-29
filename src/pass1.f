@@ -10,13 +10,13 @@ C     This is the new version that runs (5-May-08) in gfortran and linux.
 C     Most of my changes are in lower case.
       
 C     pass1 required much more serious surgery than the other 2 passes.  I had to
-C       embed the READ1 subroutine in the main program.  Apparently new Fortrans 
-C       do not guarantee that subroutine locals will be saved across calls.  The 
-C       other choice was an enormous COMMON block, but that became unwieldy and error-prone.
-C
+C     embed the READ1 subroutine in the main program.  Apparently new Fortrans 
+C     do not guarantee that subroutine locals will be saved across calls.  The 
+C     other choice was an enormous COMMON block, but that became unwieldy and error-prone.
+C     
 C     In all passes, I replaced the arithmetic IFs, changed file IO, used characters
-C       rather than ints, replaced MOVR with ichar(ch)-ichar('0'), and removed the
-C       EQUIVALENCE stuff (not needed here because I'm using characters directly).
+C     rather than ints, replaced MOVR with ichar(ch)-ichar('0'), and removed the
+C     EQUIVALENCE stuff (not needed here because I'm using characters directly).
 
 C     pass1 takes a file named 'score' and produces pass1.data
 
@@ -26,11 +26,12 @@ C     which I am supposing it is what Risset means in his
 C     catalogue      
       
 C     [page 1-1] -- these are the original XGP pages to help me find my place
-C
+C     
 C     PASS1 PASS 1 MAIN PROGRAM
 C     PASS1   *** MUSIC V ***   THIS VERSION RUNS ON THE PDP10, JULY 14,1971
       COMMON P(100),IP(10),D(2000)
       integer ipdp
+      integer pflflag
 
       CHARACTER*32 FLNM
 
@@ -48,11 +49,11 @@ C     PASS1   *** MUSIC V ***   THIS VERSION RUNS ON THE PDP10, JULY 14,1971
 
       DATA IVT/'P','F','B','V'/
       DATA LOP/'N','O','T','I','N','S','G','E','N','S','V','3',
-     * 'S','E','C','T','E','R','S','V','1','S','V','2','P','L','F',
-     * 'P','L','S','S','I','3','S','I','A','C','O','M','E','N','D',
-     * 'O','U','T','O','S','C','A','D','2','R','A','N','E','N','V',
-     * 'S','T','R','A','D','3','A','D','4','M','L','T','F','L','T',
-     * 'R','A','H','S','E','T','I','O','S'/
+     *     'S','E','C','T','E','R','S','V','1','S','V','2','P','L','F',
+     *     'P','L','S','S','I','3','S','I','A','C','O','M','E','N','D',
+     *     'O','U','T','O','S','C','A','D','2','R','A','N','E','N','V',
+     *     'S','T','R','A','D','3','A','D','4','M','L','T','F','L','T',
+     *     'R','A','H','S','E','T','I','O','S'/
 
       EQUIVALENCE (JSEMI,IBC(1)), (JBLANK,IBC(2))
 
@@ -64,16 +65,17 @@ C     PASS1   *** MUSIC V ***   THIS VERSION RUNS ON THE PDP10, JULY 14,1971
       ipdp=0
       idef=0
       i100=1
+      pflflag = 0
 
-C 99   FORMAT(' TYPE FILE NAME')
-C 999  FORMAT(A5)
-C      PRINT 99
-C      READ 999,FLNM
+C     99   FORMAT(' TYPE FILE NAME')
+C     999  FORMAT(A5)
+C     PRINT 99
+C     READ 999,FLNM
 
 C     open(inputfile, FILE=FLNM, STATUS='OLD')
       open(inputfile, FILE='score', STATUS='OLD')
       open(outputfile, FILE='pass1.data')
-C      CALL IFILE(1,FLNM)
+C     CALL IFILE(1,FLNM)
 
 
 C*****ABOVE 5 LINES FOR PDP10 ********
@@ -84,49 +86,51 @@ C     NOMINAL SAMPLING RATE.
 C     ERROR FLAG
       IP(2)=0
       P(2)=0.0
-CC   NWRITE = 2
-c      NWRITE=20
+C     C   NWRITE = 2
+c     NWRITE=20
 
 C**** PDP DSK0=DEVICE 20 ******
-CC    REWIND NWRITE
-CC    CALL READ0
+C     C    REWIND NWRITE
+C     C    CALL READ0
 
-c      CALL READ1
+c     CALL READ1
       GO TO 4321
 C********PDP ********
 C     MAIN LOOP
 
-c 100  CALL READ1
+c     100  CALL READ1
 
- 
- 100   GO TO 4321
- 4322  I1=P(1)
+      
+ 100  GO TO 4321
+ 4322 I1=P(1)
       
       IF (I1.GE.1.AND.I1.LE.12) GO TO 103
       IP(2)=1
-CC    WRITE (6,200)
+C     C    WRITE (6,200)
 
       PRINT 200
 C********PDP ********
  200  FORMAT(' NON-EXISTENT OPCODE ON DATA STATEMENT')
       GO TO 100
 
-c 103  GO TO (1,1,1,1,5,6,7,1,9,1,1,12),I1
-c 1    CALL WRITE1 (NWRITE)
-c 1    call write1(outputfile)
-       
- 103  go to (1010,1010,1010,1010,5,6,7,1010,9,1010,1010,12),I1
+c     103  GO TO (1,1,1,1,5,6,7,1,9,1,1,12),I1
+c     1    CALL WRITE1 (NWRITE)
+c     1    call write1(outputfile)
+C     VL 29/01/22 we need to go back to PFL if we came out
+C     of it to read data cards.      
+C     Thi is PFL goto after reading       
+ 103  go to (9919,9929,9939,9949,9959),pflflag
+      go to (1010,1010,1010,1010,5,6,7,1010,9,1010,1010,12),I1
  1010 call write1(outputfile)
-
       GO TO 100
  5    PRINT 110
-CC 5 WRITE (6, 110)
+C     C 5 WRITE (6, 110)
 C********PDP ********
  110  FORMAT(' END OF SECTION IN PASS I')
-c      GO TO 1
+c     GO TO 1
       go to 1010
-c 6    CALL WRITE1 (NWRITE)
- 6     call write1 (outputfile)
+c     6    CALL WRITE1 (NWRITE)
+ 6    call write1 (outputfile)
 
 C     C	  WRITE (6, 111)
       PRINT 111
@@ -148,79 +152,91 @@ C     SET VARIABLES IN PASS 1
  9    I6=P(3)
       IF (I6.GE.1.AND.I6.LE.5) GO TO 107
       IP(2)=1
-CC    WRITE (6,201)
-         
+C     C    WRITE (6,201)
+      
 C     [page 1-2]
 
       PRINT 201
 C********PDP ********
  201  FORMAT(' NON-EXISTENT PLF SUBROUTINE CALLED')
       GO TO 100
-c 12   CALL WRITE1 (NWRITE)
+c     12   CALL WRITE1 (NWRITE)
  12   call write1(outputfile)
       GO TO 7
 
-     
-C 107  GO TO 100
+      
+C     107  GO TO 100
 c     added^
 C     107   GO TO (21,22,23,24,25),I6
 C     21      CALL PLF1
-C         GO TO 100
+C     GO TO 100
 C     22      CALL PLF2
-C         GO TO 100
+C     GO TO 100
 C     23      CALL PLF3
-C         GO TO 100      
+C     GO TO 100      
 C     24      CALL PLF4      
-C         GO TO 100
+C     GO TO 100
 C     25      CALL PLF5
-C         GO TO 100
+C     GO TO 100
 c     END
       
-C VL: 28/01/22 attempting to restore PLFs        
- 107   GO TO (9921,9922,9923,9924,9925),I6
+C     VL: 28/01/22 attempting to restore PLFs
+C     V: 29/01/22 set the PFL flag to PFL number      
+ 107  pflflag = I6      
+      GO TO (9921,9922,9923,9924,9925),I6
 C     VL: 28/01/2022 PLF routines from Risset's catalogue
-C     BECAUSE READ1 is no more, this is embeded in the main program
-C     it is not working yet 
+C     BECAUSE READ1 is no more, these are embeded in the main program
 
- 9921  CONTINUE 
-       GO TO 100
- 9922  CONTINUE
-       GO TO 100
+ 9921 CONTINUE
+ 9919 pflflag = 0
+      GO TO 100
+ 9922 CONTINUE
+ 9929 pflflag = 0
+      GO TO 100
+C     PLF3 from JCR's Catalog #500      
 C     SUBROUTINE PLF3
-C     COMMON P(100),IP(10),D(2000)       
- 9923  NNC=P(4)
+C     COMMON P(100),IP(10),D(2000)
+C     VL: 29/01/22 variable names changed to avoid clashes
+C     labels were also prefixed with 993  (993n)    
+ 9923 NNC=P(4)
       NN=P(5)
       TTS=P(6)
       TFACT=P(7)
       TDD=P(8)
-      DO 1071 NI=1, NNC
-CC         CALL READ1
-         READ (inputfile,1, ERR=95,END=95) II, (CARD(II),II=1,NC)
-CC   here we have to read the data from the card
-         PRINT 2121,(CARD(I),I=1,NC)
-CC   and convert from CHAR to real
-         
-         CALL WRITE1(outputfile)
+      NI = 1
+C     OUTER DO loop needs to be eliminated because of 9930      
+C      DO 9931 NI=1, NNC
+C      CALL READ1
+C     There's no READ1 so we need to loop to the reading code         
+ 9930 GOTO 4321
+C        Then loop back here from above 
+ 9939 CALL WRITE1(outputfile)
          TF=P(6)
-         DO 1072 J=1,NN
-            P(6)=FLOAT(J+1)*TF
+         DO 9932 NJ=1,NN
+            P(6)=FLOAT(NJ+1)*TF
             P(2)=P(2)+TTS
             AINST=P(3)-1
-            IF(AINST == 0) GOTO 1074  
- 1073       P(3)=2.
-            GOTO 1075
- 1074       P(2)=1.
- 1075       CONTINUE
+            IF(AINST == 0) GOTO 9934  
+ 9933       P(3)=2.
+            GOTO 9935
+ 9934       P(2)=1.
+ 9935       CONTINUE
             IF(FACT.GT.0) P(5)=P(5)*TFACT 
             CALL WRITE1(outputfile)
- 1072   CONTINUE
- 1071 CONTINUE
-C 100  RETURN
-C      END      
-       GOTO 100
+ 9932      CONTINUE
+           NI = NI + 1
+           IF(N1 > NNC) GOTO 9931
+           GOTO 9930
+ 9931 CONTINUE
+C     100  RETURN
+C     END
+      pflflag = 0
+      GOTO 100
  9924 CONTINUE
+ 9949 pflflag = 0
       GOTO 100      
  9925 CONTINUE
+ 9959 pflflag = 0
       GOTO 100     
 
 
@@ -228,45 +244,45 @@ C     [page 2-1]
 
 C     READ1 INTERPRETATIVE READING ROUTINE
 C**** MUSIC V ****
-c      SUBROUTINE READ1
-c      COMMON P(100),IP(10),D(2000),IPDP,inputfile,outputfile,END,SNA8
-c      COMMON I,IDEF
+c     SUBROUTINE READ1
+c     COMMON P(100),IP(10),D(2000),IPDP,inputfile,outputfile,END,SNA8
+c     COMMON I,IDEF
 C*****PDP ***** IPDP WAS ADDED TO COMMON LIST IN PLACE OF ENTRY FEATURE
-c      CHARACTER*1 IBCD(300)
-c      CHARACTER*1 CARD(129)
-c      DIMENSION CARD(129),IBCD(300),LOP(3,26)
-c      CHARACTER*1 ICAR
-c was 30
-c      DIMENSION BCD(300)
-c      DIMENSION IBC(4),IVT(4)
-c was 12
-c      EQUIVALENCE(CARD,ICAR)
-c      EQUIVALENCE(BCD,IBCD)
-c      DATA NOPS,NBC,NC/26,3,72/
-c      CHARACTER IDEC, ISTAR, IGAD
-c      DATA IDEC,ISTAR/'.','*'/
+c     CHARACTER*1 IBCD(300)
+c     CHARACTER*1 CARD(129)
+c     DIMENSION CARD(129),IBCD(300),LOP(3,26)
+c     CHARACTER*1 ICAR
+c     was 30
+c     DIMENSION BCD(300)
+c     DIMENSION IBC(4),IVT(4)
+c     was 12
+c     EQUIVALENCE(CARD,ICAR)
+c     EQUIVALENCE(BCD,IBCD)
+c     DATA NOPS,NBC,NC/26,3,72/
+c     CHARACTER IDEC, ISTAR, IGAD
+c     DATA IDEC,ISTAR/'.','*'/
 CCC   DATA IBC(1),IBC(2),IBC(3),IBC(4)/'=',' ',',','-'/
-c      DATA IBC(1),IBC(2),IBC(3),IBC(4)/';',' ',',','-'/
-c      CHARACTER JSEMI, JBLANK
-c      CHARACTER*1 IBC(4)
-c      DATA IBC/';',' ',',','-'/
+c     DATA IBC(1),IBC(2),IBC(3),IBC(4)/';',' ',',','-'/
+c     CHARACTER JSEMI, JBLANK
+c     CHARACTER*1 IBC(4)
+c     DATA IBC/';',' ',',','-'/
 C********NO!!!!! THE CHARACTER = HAS BEEN SUBSTITUTED FOR
 C     THE SEMICOLON AS THE END OF STATEMENT DELIMITER
-c      CHARACTER*1 IVT (4)
-c      CHARACTER*1 LOP (78)
-c
-c      integer IDEF
-c
-c      DATA IVT/'P','F','B','V'/
-c      DATA LOP/'N','O','T','I','N','S','G','E','N','S','V','3',
+c     CHARACTER*1 IVT (4)
+c     CHARACTER*1 LOP (78)
+c     
+c     integer IDEF
+c     
+c     DATA IVT/'P','F','B','V'/
+c     DATA LOP/'N','O','T','I','N','S','G','E','N','S','V','3',
 c     * 'S','E','C','T','E','R','S','V','1','S','V','2','P','L','F',
 c     * 'P','L','S','S','I','3','S','I','A','C','O','M','E','N','D',
 c     * 'O','U','T','O','S','C','A','D','2','R','A','N','E','N','V',
 c     * 'S','T','R','A','D','3','A','D','4','M','L','T','F','L','T',
 c     * 'R','A','H','S','E','T'/
-c       ,0,0,0,0,0,0,0,0,0,0,0,0/
+c     ,0,0,0,0,0,0,0,0,0,0,0,0/
 C********LAST 12 LOCATIONS NOT YET USED. **** PDP ********
-c      EQUIVALENCE (JSEMI,IBC(1)), (JBLANK,IBC(2))
+c     EQUIVALENCE (JSEMI,IBC(1)), (JBLANK,IBC(2))
 
 C     TO SCAN INPUT DATA TO #, ORGANIZE FIELDS AND PRINT
 
@@ -275,7 +291,7 @@ C     TO SCAN INPUT DATA TO #, ORGANIZE FIELDS AND PRINT
 
 C********PDP ********
       IF ((END+SNA8-1.).gt.0.0) go to 90
-     
+      
  10   IBK=2
       END=0.
       ERR=0.
@@ -300,12 +316,12 @@ C     ; BLA ,
  14   IBK=N
       GO TO 11
 
-CC   15 READ (5,1,ERR=95,END=95) (CARD(I),I=1,NC)
+C     C   15 READ (5,1,ERR=95,END=95) (CARD(I),I=1,NC)
 C********PDP ********
-c 15   READ (1,1,ERR=95,END=95) I, (CARD(I),I=1,NC)
+c     15   READ (1,1,ERR=95,END=95) I, (CARD(I),I=1,NC)
  15   READ (inputfile,1, ERR=95,END=95) I, (CARD(I),I=1,NC)
 C*****PDP ***** FIRST 'I' IS FOR PDP LINE NUMBERS!
-c 1    FORMAT(I,128A1)
+c     1    FORMAT(I,128A1)
 
  1    FORMAT(128A1)
       PRINT 2121,(CARD(I),I=1,NC)
@@ -345,14 +361,14 @@ C     TO SCAN FOR OP CODE
 
       
  29   GO TO (9100,9200,300,400,500,600,700,800,900,1000,1100,1200,1300,
-     * 217,9201,202,203,204,205,206,207,208,209,210,211,212,213),M
+     *     217,9201,202,203,204,205,206,207,208,209,210,211,212,213),M
 
 C     OP CODE 1 TO PLAY NOTE
- 9100  P(1)=1.
+ 9100 P(1)=1.
       GO TO 30
 
 C     OP CODE 2 TO DEFINE INSTRUMENT
- 9200  P(1)=2.
+ 9200 P(1)=2.
       IDEF=1
       N1=1
       GO TO 70
@@ -363,9 +379,9 @@ C     OP CODE 2 TO DEFINE INSTRUMENT
       IP(1)=3
       GO TO 50
 C     OUT BOX
- 9201  P(3)=101.
+ 9201 P(3)=101.
       NPW=2
-c      IF (STER) 220,220,2011
+c     IF (STER) 220,220,2011
       if (STER.LE.0) go to 220
       SNA8=1.
       STER=0
@@ -392,9 +408,9 @@ C     LINEAR ENVELOPE GENERATOR
 C     STEREO OUT BOX
  206  P(3)=106.
       NPW=3
-c      IF(STER)220,2061,220
+c     IF(STER)220,2061,220
       if (STER.NE.0) go to 220
-c 2061 SNA8=1.
+c     2061 SNA8=1.
       SNA8=1.
       STER=1.
       GO TO 220
@@ -442,7 +458,7 @@ C     UNNAMED UNIT - NUMERICAL NAME ASSUMED
 C     TO INTERPRET VARS IN UNIT DEFS
  220  NP=3
  221  IF(IBCD(L+1).EQ.JSEMI) GO TO 240
-c 222  NP=NP+1
+c     222  NP=NP+1
       NP=NP+1
       L=L+1
       DO 223 N=1,4
@@ -476,7 +492,7 @@ C     V TYPE
  2341 P(NP)=XN+100.
       GO TO 221
  240  IF(NUMU.EQ.1)GO TO 242
-c 241  IF(NPW+3-NP)42,242,42
+c     241  IF(NPW+3-NP)42,242,42
       if (NPW+3-NP.NE.0) go to 42
  242  IP(1)=NP
       GO TO 50
@@ -514,14 +530,14 @@ C     OP CODE 13 FOR COMMENTS
  1300 IF(IBCD(L).NE.JSEMI) GO TO 1301
       L=L+1
       go to 4321
-c ? COM causes an infinite loop in the original code
+c     ? COM causes an infinite loop in the original code
  1301 L=L+1
       GO TO 1300
 C     TO STORE PFIELDS
       
 C     [page 2-5]
 
-c 30   IF(IDEF)32,32,43
+c     30   IF(IDEF)32,32,43
  30   continue
       if (IDEF.gt.0) go to 43
  32   IF(IBCD(L+1).EQ.JSEMI) GO TO 34
@@ -531,13 +547,13 @@ c 30   IF(IDEF)32,32,43
  331  P(NP)=XN
       GO TO 32
  34   IP(1)=NP
-c      IF(NP-1)47,47,50
+c     IF(NP-1)47,47,50
       if (NP-1.gt.0) go to 50
       
       go to 47
 
 C     ERRORS
-c 40   IF(IDEF)41,41,218
+c     40   IF(IDEF)41,41,218
  40   if (IDEF.gt.0) go to 218
  41   L=L+1
       IF(IBCD(L).NE.JSEMI)GO TO 41
@@ -571,7 +587,7 @@ c 40   IF(IDEF)41,41,218
       GO TO 10
  50   IF(ERR.EQ.1.) GO TO 49
       goto 4322
-c      RETURN
+c     RETURN
 
 C     CONVERSION OF NUMERIC FIELD TO FLOATING POINT
  70   SGN=1.
@@ -584,7 +600,7 @@ C     CONVERSION OF NUMERIC FIELD TO FLOATING POINT
       XN=0.
  71   L=L+1
 C     *** I DON'T UNDERSTAND THIS PART OF THE SCANNER!
-CC          IF(IBCD(L).EQ.JBLANK) GO TO 77
+C     C          IF(IBCD(L).EQ.JBLANK) GO TO 77
       IF (IBCD(L).EQ.JBLANK) GO TO 77
 C     THIS LOOKS FOR #S, LETTERS, BLANKS, DECI.PTS, & *S. OTHERWISE=ERROR!?
 C     ******** PDP ********
@@ -610,21 +626,21 @@ C**   NEXT 2 LINES BY-PASSED*** 76 L=L+1
  82   IEX=0
       LA=L1
       LB=LD-1
-c      IF(LD-L1)86,86,83
+c     IF(LD-L1)86,86,83
       if((LD-L1).LE.0) go to 86
       IEX=LD-LA
 
  84   continue
-c 84   CALL MOVR (IBCD,LA,LB)
+c     84   CALL MOVR (IBCD,LA,LB)
       DO 85 LL=LA,LB
          IEX=IEX-1
          IGAD=IBCD(LL)
          IX1=ICHAR(IGAD)-ICHAR('0')
          XN=XN+IX1*10.**IEX
- 85      continue
-c 86   IF(L-LB-2)88,88,87
- 86      if(L-LB-2.le.0) go to 88
-         LA=LD+1
+ 85   continue
+c     86   IF(L-LB-2)88,88,87
+ 86   if(L-LB-2.le.0) go to 88
+      LA=LD+1
       LB=L-1
       GO TO 84
  88   XN=XN*SGN
@@ -646,12 +662,12 @@ C     FOR PREMATURE END OF FILE ON INPUT
       GO TO 600
 
 C     TO INITIALIZE
-CC ENTRY READ0
-CC READ (5,1,ERR=95,END=95) (CARD(I),I=1,NC)
+C     C ENTRY READ0
+C     C READ (5,1,ERR=95,END=95) (CARD(I),I=1,NC)
 C********PDP ********
  9999 READ (inputfile,1,ERR=95,END=95) I,(CARD(I),I=1,NC)
 C*****PDP ***** FIRST 'I' IS FOR PDP LINE NUMBERS!
-CC WRITE (6,2) (CARD(I),I=1,NC)
+C     C WRITE (6,2) (CARD(I),I=1,NC)
       PRINT 2111,(CARD(I),I=1,NC)
  2111 FORMAT(1H 128A1)
 C********PDP ********
@@ -665,7 +681,7 @@ C********PDP ********
       if (i100.eq.0) go to 4322
       i100=0
       go to 100
-c      RETURN
+c     RETURN
       END
 
 
@@ -673,19 +689,19 @@ C     WRITE1 PASS 1 DATA-WRITING ROUTINE
 C     *** MUSIC V ***
       SUBROUTINE WRITE1(N)
       COMMON P(100),IP(10),D(2000)
-c      COMMON P(100),IP(10)
+c     COMMON P(100),IP(10)
       K=IP(1)
       WRITE(N, *)K, (P(J),J=1,K)
       RETURN
       END
 
-c      SUBROUTINE PLF
-c      COMMON P(100),IP(10),D(2000)
-CC    ENTRY PLF1
-CC    ENTRY PLF2
-CC    ENTRY PLF3
-CC    ENTRY PLF4
-CC    ENTRY PLF5
+c     SUBROUTINE PLF
+c     COMMON P(100),IP(10),D(2000)
+C     C    ENTRY PLF1
+C     C    ENTRY PLF2
+C     C    ENTRY PLF3
+C     C    ENTRY PLF4
+C     C    ENTRY PLF5
 c     END
 
 
@@ -698,32 +714,32 @@ C     ERRO1    GENERAL ERROR ROUTINE
 C     ***MUSIC V ***
       SUBROUTINE ERROR(I)
       PRINT 8100,I
- 8100  FORMAT(13HERROR OF TYPEI5)
+ 8100 FORMAT(13HERROR OF TYPEI5)
       RETURN
       END
 
       SUBROUTINE HARVEY
-CC    WRITE (6,1)
+C     C    WRITE (6,1)
       PRINT 1011
 C********PDP *********
  1011 FORMAT(' WHERE IS HARVEY')
       CALL EXIT
       END
 
-c      SUBROUTINE MOVR(IBCD,LA,LB)
-c      DIMENSION IBCD(300)
-C      DO 1 J=LA,LB
-C 1       IBCD(J)=IBCD(J)-ICHAR('0')
-C
-CC  1 IBCD(J)=I5-(IBCD(J))/16777216
+c     SUBROUTINE MOVR(IBCD,LA,LB)
+c     DIMENSION IBCD(300)
+C     DO 1 J=LA,LB
+C     1       IBCD(J)=IBCD(J)-ICHAR('0')
+C     
+C     C  1 IBCD(J)=I5-(IBCD(J))/16777216
 C********PDP ********
-C 1       IBCD(J)=IBCD(J)/536870912-48
-C 2    DUMMY=0
+C     1       IBCD(J)=IBCD(J)/536870912-48
+C     2    DUMMY=0
 C     TO SET BREAKPOINT.
-c      RETURN
-c      END
+c     RETURN
+c     END
 
 
       
-    
+      
 

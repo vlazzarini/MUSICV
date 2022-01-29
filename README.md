@@ -76,7 +76,8 @@ Known Issues
 ------
 
 - The FLT unit generator is missing. 
-- PLF routines cannot be easily added to pass1.f because the read1
-  routine has been disposed of.
+- PLF routines cannot always be directly added to pass1.f because the read1
+  routine has been disposed of. They may need to be integrated in the main
+  program.
 
 
