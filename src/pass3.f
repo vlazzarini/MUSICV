@@ -739,7 +739,7 @@ c 109  IF(M1)900,900,901
 c 901  IF(M2)902,902,903
  901  IF(M2.gt.0) go to 903
       XIN2=FLOAT(I(L2))*SFI
- 903  DO 908 J=1,NSAM
+ 903  DO 908 J3=1,NSAM
 c         IF(M1)905,905,904
          IF(M1.le.0) go to 905
          J4=L1+J3-1

@@ -289,51 +289,62 @@ C      COMMON IP(10),P(100),G(1000)
 C      RETURN
 C      END
 
-C     GENERAL CONVT from Risset's Catalogue
-C     Added by V Lazzarini, 2009
-C     Bug in G() assignment fixed 25/01/22
+c$$$C     GENERAL CONVT from Risset's Catalogue
+c$$$C     Added by V Lazzarini, 2009
+c$$$C     Bug in G() assignment fixed 25/01/22
+c$$$      SUBROUTINE CONVT
+c$$$      COMMON IP(10),P(100),G(1000)
+c$$$      
+c$$$      IF (G(3).NE.0.0) RETURN
+c$$$      IF (P(1).NE.1.0) RETURN
+c$$$C     freq conversion factor tabsize/sr
+c$$$      FREQ=511.0/G(4)
+c$$$      I=P(3)
+c$$$      NPAR=G(10*I)
+c$$$      IF(NPAR.EQ.0) GOTO 1
+c$$$      DO 2 J=1, NPAR
+c$$$         M=10*I+J
+c$$$         M=G(M)
+c$$$         IF(M.GT.200) GOTO 30
+c$$$         IF(M.GT.100) GOTO 30
+c$$$         IF(M.LT.0) GOTO 20
+c$$$         P(M)=FREQ*P(M)
+c$$$         GOTO 2
+c$$$ 20      M=-M
+c$$$         P(M)=FREQ/P(M)
+c$$$         GOTO 2
+c$$$ 30      M=M-100
+c$$$         P(M+1)=P(4)-P(M)-P(M+2)
+c$$$C        IF (P(M+1)) 32,33,34
+c$$$         IF (P(M+1) == 0) GOTO 33
+c$$$         IF (P(M+1) > 0) GOTO 34
+c$$$ 32      P(M)=(P(M)*P(4))/(P(M)+P(M+2))
+c$$$         P(M+2)=(P(M+2)*P(4))/(P(M)+P(M+2))
+c$$$ 33      P(M+1)=128
+c$$$         GOTO 35
+c$$$ 34      P(M+1)=FREQ/(4.0*P(M+1))
+c$$$ 35      P(M+2)=FREQ/(4.0*P(M))
+c$$$         GOTO 2
+c$$$ 40      M=M-200
+c$$$         D=-(6.2832*P(M+1))/G(4)
+c$$$         F=(6.2832*P(M))/G(4)
+c$$$         P(M)=2.*EXP(D)*COS(F)
+c$$$         P(M+1)=EXP(2.*D)
+c$$$ 2    CONTINUE
+c$$$ 1    CONTINUE
+c$$$      RETURN
+c$$$  END
+
+c     CAT 500      
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000)
-      
-      IF (G(3).NE.0.0) RETURN
-      IF (P(1).NE.1.0) RETURN
-C     freq conversion factor tabsize/sr
-      FREQ=511.0/G(4)
-      I=P(3)
-      NPAR=G(10*I)
-      IF(NPAR.EQ.0) GOTO 1
-      DO 2 J=1, NPAR
-         M=10*I+J
-         M=G(M)
-         IF(M.GT.200) GOTO 30
-         IF(M.GT.100) GOTO 30
-         IF(M.LT.0) GOTO 20
-         P(M)=FREQ*P(M)
-         GOTO 2
- 20      M=-M
-         P(M)=FREQ/P(M)
-         GOTO 2
- 30      M=M-100
-         P(M+1)=P(4)-P(M)-P(M+2)
-C        IF (P(M+1)) 32,33,34
-         IF (P(M+1) == 0) GOTO 33
-         IF (P(M+1) > 0) GOTO 34
- 32      P(M)=(P(M)*P(4))/(P(M)+P(M+2))
-         P(M+2)=(P(M+2)*P(4))/(P(M)+P(M+2))
- 33      P(M+1)=128
-         GOTO 35
- 34      P(M+1)=FREQ/(4.0*P(M+1))
- 35      P(M+2)=FREQ/(4.0*P(M))
-         GOTO 2
- 40      M=M-200
-         D=-(6.2832*P(M+1))/G(4)
-         F=(6.2832*P(M))/G(4)
-         P(M)=2.*EXP(D)*COS(F)
-         P(M+1)=EXP(2.*D)
- 2    CONTINUE
- 1    CONTINUE
-      RETURN
-      END      
+      IF(P(1).NE.1.) GOTO 100
+      F=511./G(4)
+      P(5)=SQRT(P(5))
+      P(6)=F*P(6)
+      P(7)=F/P(7)
+ 100  RETURN
+      END
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***

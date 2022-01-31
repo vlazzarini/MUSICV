@@ -214,28 +214,29 @@ C     labels were also prefixed with 993  (993n)
       TDD=P(8)
       NI = 1
 C     OUTER DO loop needs to be eliminated because of 9930      
-C      DO 9931 NI=1, NNC
-C      CALL READ1
+C     DO 9931 NI=1, NNC
+C     CALL READ1
 C     There's no READ1 so we need to loop to the reading code         
  9930 GOTO 4321
-C        Then loop back here from above 
+C     Then loop back here from above 
  9939 CALL WRITE1(outputfile)
-         TF=P(6)
-         DO 9932 NJ=1,NN
-            P(6)=FLOAT(NJ+1)*TF
-            P(2)=P(2)+TTS
-            AINST=P(3)-1
-            IF(AINST == 0) GOTO 9934  
- 9933       P(3)=2.
-            GOTO 9935
- 9934       P(2)=1.
- 9935       CONTINUE
-            IF(FACT.GT.0) P(5)=P(5)*TFACT 
-            CALL WRITE1(outputfile)
- 9932      CONTINUE
-           NI = NI + 1
-           IF(N1 > NNC) GOTO 9931
-           GOTO 9930
+      TF=P(6)
+      DO 9932 NJ=1,NN
+         P(6)=FLOAT(NJ+1)*TF
+         P(2)=P(2)+TTS
+         AINST=P(3)-1
+         IF(AINST == 0) GOTO 9934  
+ 9933    P(3)=2.
+         GOTO 9935
+ 9934    P(3)=1.
+ 9935    CONTINUE
+         IF(TFACT.GT.0) P(5)=P(5)*TFACT
+         P(4) = P(4)-TDD
+         CALL WRITE1(outputfile)
+ 9932 CONTINUE
+      NI = NI + 1
+      IF(N1 > NNC) GOTO 9931
+      GOTO 9930
  9931 CONTINUE
 C     100  RETURN
 C     END
