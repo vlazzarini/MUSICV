@@ -11,7 +11,10 @@ C     Most of my changes are in lower case
 
 C     pass2 reads pass1.data and writes pass2.data.
       
-C     V Lazzarini, Jan 22. Bug fixed and CONVT call is now working      
+C     V Lazzarini, Jan 22.
+C     Bug fixed and CONVT call is now working
+C     CON routine was thoroughly busted but it is now restored
+C     needs more tests but score from Little Boy is running now 
 
 C     PASS 2 MAIN PROGRAM
 C     *** MUSIC V ***
@@ -233,10 +236,10 @@ C     *** MUSIC V ***
       Y=P(4)
       ILOC=G(2)
       IF(P(1).NE.1.)GO TO 50
-c      P(4)=P(4)*60./CON(G,ILOC,P(2))
-      P(4)=P(4)*60./CON(G,P(2))
-c 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,ILOC,P(2))
- 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,P(2))
+      P(4)=P(4)*60./CON(G,ILOC,P(2))
+c      P(4)=P(4)*60./CON(G,P(2))
+ 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,ILOC,P(2))
+c 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,P(2))
       TLAST=P(2)
       BLAST=X
  150  CALL CONVT
@@ -254,20 +257,27 @@ C     *** PASS II REPORT IS OPTIONAL ***
       RETURN
       END
 
+C     VL 31/01/22 this was fully busted, now restored
 C     CON2 PASS 2 FUNCTION INTERPOLATOR
 C     *** MUSIC V ***
-c      FUNCTION CON(G,I,T)
-      FUNCTION CON(G,T)
-      DIMENSION G(1)
-      DO 10 J=1,1000,2
+      FUNCTION CON(G,I,T)
+c      FUNCTION CON(G,T)
+      DIMENSION G(1000)
+      DO 10 J=I,1000,2
+C     VL 31/01/22 this solves the problem of P(2) beyond the
+C     metro function end    
+          IF(G(J) < G(J-2)) GOTO 21
+C         PRINT *, G(J), J, G(J)-T
 c         IF (G(J)-T) 10,20,30
          if ((G(J)-T).eq.0) go to 20
          if ((G(J)-T).lt.0) go to 10
-c 30      CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
-         CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
+ 30      CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
+c     CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
          RETURN
  10   CONTINUE
  20   CON = G(J+1)
+      RETURN
+ 21   CON = 1
       RETURN
       END
 
@@ -333,7 +343,30 @@ C        IF (P(M+1)) 32,33,34
  2    CONTINUE
  1    CONTINUE
       RETURN
-      END      
+      END
+
+c$$$C     CONVT POUR FANFARE TRIOMPHE
+c$$$      SUBROUTINE CONVT
+c$$$      COMMON IP(10),P(100),G(1000)
+c$$$      IF(P(1).NE.1.)GOTO100
+c$$$      IF(P(3).GE.7.)GOTO100
+c$$$      F=511./G(4)
+c$$$      FE=F/4.
+c$$$      P(6)=F*P(6)
+c$$$      P(8)=P(4)-P(7)-P(9)
+c$$$      IF(P(8))2,3,4
+c$$$2     P(7)=P(7)*P(4)/(P(7)+P(9))
+c$$$      P(9)=P(9)*P(4)/(P(9)+P(7))
+c$$$3     P(8)=128.
+c$$$      GOTO5
+c$$$4     P(8)=FE/P(8)
+c$$$5     P(7)=FE/P(7)
+c$$$      P(8)=FE/P(8)
+c$$$      P(9)=FE/P(9)
+c$$$100   RETURN
+c$$$      END
+c$$$     
+      
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
