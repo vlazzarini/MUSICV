@@ -345,29 +345,6 @@ C        IF (P(M+1)) 32,33,34
       RETURN
       END
 
-c$$$C     CONVT POUR FANFARE TRIOMPHE
-c$$$      SUBROUTINE CONVT
-c$$$      COMMON IP(10),P(100),G(1000)
-c$$$      IF(P(1).NE.1.)GOTO100
-c$$$      IF(P(3).GE.7.)GOTO100
-c$$$      F=511./G(4)
-c$$$      FE=F/4.
-c$$$      P(6)=F*P(6)
-c$$$      P(8)=P(4)-P(7)-P(9)
-c$$$      IF(P(8))2,3,4
-c$$$2     P(7)=P(7)*P(4)/(P(7)+P(9))
-c$$$      P(9)=P(9)*P(4)/(P(9)+P(7))
-c$$$3     P(8)=128.
-c$$$      GOTO5
-c$$$4     P(8)=FE/P(8)
-c$$$5     P(7)=FE/P(7)
-c$$$      P(8)=FE/P(8)
-c$$$      P(9)=FE/P(9)
-c$$$100   RETURN
-c$$$      END
-c$$$     
-      
-
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
       SUBROUTINE ERROR(I)
