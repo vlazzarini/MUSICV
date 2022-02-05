@@ -277,7 +277,7 @@ c     CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
  10   CONTINUE
  20   CON = G(J+1)
       RETURN
- 21   CON = 1
+ 21   CON = G(J-1)
       RETURN
       END
 
