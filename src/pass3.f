@@ -11,35 +11,17 @@ C     Most of my changes are in lower case.
 C     pass3
 
 C     This reads pass2.data and writes the raw (headerless) binary sound
-C     file snd.raw.
+C     file snd.raw.  This is a file of 4-byte floats at 44100Hz, mono.
 
-C     This reads pass2.data and writes the raw (headerless) binary sound
-C     file snd.raw.  This is a file of 4-byte floats at 44100Hz, mono.      
-      
-C     NB (VL,09): despite the above comment, SR is actually set to 44.1KHz .      
+C     NB (VL,09): despite the above comment, SR is actually set to 44.1KHz 
 
 C     Victor Lazzarini, Sept 09
 C     added GEN4,GEN5,GEN6 and GEN7 from Risset's Catalogue
 C     added IOS as a linear-interpolating oscillator
 C     which I am supposing it is what Risset means in his 
 C     catalogue
-C     NB: Feb 2022. Found the original code for the interpolating
-C     oscillator from JCR's archive (Fonds Risset, Prism)
-C     Restored it to this code, removing the 2009 implementation      
 
-C     Victor Lazzarini, Jan 22
-C     A bug in STR has been fixed where the frame counter ICT was not
-C     updated
-C     The possibility of stereo output has been restored by increasing
-C     the buffering size from 768 to 1536 and the allocated size of the
-C      IOBUF in SAMOUT has also been doubled
-C
-C     Output can now be mono or stereo with any sampling rate. 
-C     Sampling rate and stereo/mono parameters can now be set in score.
-C     A text file called "snd_params.txt" is written in pass3 containing
-C     the number of channels and sampling rate used
 
-      
 C     PASS3   PASS 3 MAIN PROGRAM
 C     *** MUSIC V ***
 C     DATA SPECIFICATION
@@ -64,7 +46,6 @@ C*****************
 C     INITIALIZATION OF PIECE
 C     ARBITRARY STARTING NUMBER FOR SUBROUTINE RANDU
 
-
       inputfile=1
       outputfile=2
       open(inputfile, FILE='pass2.data', STATUS='OLD')
@@ -75,8 +56,8 @@ c      open(outputfile, FILE='pass3.data')
      * form='unformatted', 
      * access='direct',
      * status='replace',
-     *     recl=4)
-      
+     * recl=4)
+
       I(7)=IIIRD
       IP9=IP(9)
       PEAK=0
@@ -131,10 +112,10 @@ C     INITIALIZATION OF SECTION
  221     CONTINUE
 
 C     MAIN CARD READING LOOP
-c     204  CALL DATA (NREAD)
-       PCH = 0
- 204   CALL DATA (inputfile)
+c 204  CALL DATA (NREAD)
+ 204  CALL DATA (inputfile)
 c      IF(P(2)-T(1))200,200,244
+
       IF((P(2)-T(1)).gt.0.0) go to 244
  200  IOP=P(1)
 c      IF(IOP)201,201,202
@@ -152,10 +133,7 @@ c 203  GO TO (1,2,3,4,5,6,201,201,201,201,11,11),IOP
       IVARE=IVAR+I(1)-4
       DO 297 N1=IVAR,IVARE
          IVARP=N1-IVAR+4
-         I(N1)=P(IVARP)
-C     VL:25/01/22 updated for gfortran 2018           
- 297  CONTINUE
-      
+ 297     I(N1)=P(IVARP)
       GO TO 204
  3    IGEN=P(3)
       GO TO (281,282,283,284,285,286,287,288),IGEN
@@ -175,13 +153,12 @@ C     VL:25/01/22 updated for gfortran 2018
       GO TO 204
  288  CALL GEN8
       GO TO 204
+
  4    IVAR=P(3)
       IVARE=IVAR+I(1)-4
       DO 296 N1=IVAR,IVARE
          IVARP=N1-IVAR+4
-         I(N1+100)=P(IVARP)*SCLFT
-C     VL:25/01/22 updated for gfortran 2018  
- 296  CONTINUE
+ 296     I(N1+100)=P(IVARP)*SCLFT
       GO TO 204
 
 c 6    CALL FROUT3(IDSK)
@@ -230,14 +207,10 @@ c         IF(I(N1)+1)230,231,230
       M4=N1+IP(8)-1
       DO 232 N1=M1,M2
          M5=N1-M1+1
-         I(N1)=P(M5)*SCLFT
-C     VL:25/01/22 updated for gfortran 2018           
- 232  CONTINUE   
+ 232     I(N1)=P(M5)*SCLFT
       I(M1)=P(3)
       DO 233 N1=M3,M4
-         I(N1)=0
-C     VL:25/01/22 updated for gfortran 2018  
- 233  CONTINUE   
+ 233     I(N1)=0
       DO 235 N1=1,IP9
 c         IF(TI(N1)-1000000.)235,234,235
          IF(TI(N1).ne.1000000.) go to 235
@@ -332,15 +305,7 @@ c 262  I(5)=ISAM
       GO TO 264
  263  I(5)=IP(14)
       ISAM=ISAM-IP(14)
-
-C     VL 27/01/22 printing a file with channels and sampling rate
-C     used so that a driver program can convert the output correctly      
-      if(PCH > 0) goto 264
-      open (10, file='snd_params.txt', status='replace')
-      write(10, *) I(8)+1, I(4)
-      close(10)
-      PCH = 1
-c     264  IF(I(8))290,290,291      
+c 264  IF(I(8))290,290,291
  264  IF(I(8).gt.0) go to 291
 c 290  M3=MOUT+I(5)-1
       M3=MOUT+I(5)-1
@@ -348,14 +313,11 @@ c 290  M3=MOUT+I(5)-1
       GO TO 292
  291  M3=MOUT+(2*I(5))-1
       MSAMP=2*I(5)
-
       
 C     [page 4-4]
       
  292  DO 267 N1=MOUT,M3
-         I(N1)=0
-C     VL:25/01/22 updated for gfortran 2018           
- 267  CONTINUE     
+ 267     I(N1)=0
          GO TO (268,265),IREST
  268     DO 270 NS1=MS1,MS3,MS2
 c            IF(I(NS1)+1)271,270,271
@@ -487,7 +449,6 @@ C**********ABOVE FOR FM (NEG. FREQ. TO OSCIL)
  292     J6=L1+J3-1
          I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
  293  CONTINUE
-C     PRINT *, L3
       I(L5)=IFIX(SUM*SFID)
       RETURN
 C     ADD TWO BOX
@@ -631,7 +592,7 @@ c 501  IF(M2)502,502,503
 c 502  IN2=I(L2)
        IN2=I(L2)
  503  NSSAM=2*NSAM
-C      PRINT *, L3
+      
 C     [page 5-4]
       
 C     6/29/70 L.C.SMITH
@@ -653,9 +614,7 @@ c 506     J4=L2+ICT
          IN2=I(J4)
  507     J5=L3+J3
          I(J5)=IN2+I(J5)
-         ICT=ICT+1
  510  CONTINUE
-C     PRINT *, J5, J3   
       RETURN
 C     ADD 3 BOX
 c 107  IF(M1)750,750,751
@@ -742,7 +701,7 @@ c 109  IF(M1)900,900,901
 c 901  IF(M2)902,902,903
  901  IF(M2.gt.0) go to 903
       XIN2=FLOAT(I(L2))*SFI
- 903  DO 908 J3=1,NSAM
+ 903  DO 908 J=1,NSAM
 c         IF(M1)905,905,904
          IF(M1.le.0) go to 905
          J4=L1+J3-1
@@ -799,36 +758,46 @@ c 919     SUM=SUM-XNFUN
       I(L4)=IFIX(SUM*SFID)
       I(L5)=IRN
       RETURN
-C     VL 7/02/022 restored ugen from JCR's archive material      
-C     INTERPOLATING OSCILLATOR (FROM 1968/9 LISTINGS)
+
+C     IOS
+C     ADDED V LAZZARINI SEPT 2009
+C     THIS IS SUPPOSED TO BE AN INTERPOLATING OSCILLATOR
+C     ACCORDING TO RISSET'S DESCRIPTION
  113  SUM=FLOAT(I(L5))*SFI
       IF(M1.gt.0) go to 1081
- 1080 AMP=FLOAT(I(L1))*SFI
- 1081 IF(M2.gt.0) go to 1083
- 1082 FREQ=FLOAT(I(L2))*SFI
- 1083 XNFUN = IP(6) - 1
+       AMP=FLOAT(I(L1))*SFI
+ 1081  IF(M2.gt.0) go to 1083
+       FREQ=FLOAT(I(L2))*SFI
+ 1083  CONTINUE
       DO 1093 J3=1,NSAM
          J4=INT(SUM)+L4
-         FRAC=SUM-AINT(SUM)
- 1086    F1 = FLOAT(I(J4))
-         F2 = FLOAT(I(J4+1))
- 1087    F3 = F1 + (F2-F1)*FRAC
-         IF(M2.gt.0) GOTO 1089
- 1088    SUM = SUM+FREQ
-         GOTO 1090
- 1089    J4=L2+J3-1
+         FRAC=SUM+L4-J4
+         IF(SUM.LT.XNFUN)GO TO 1084
+         J4P1=L4
+ 1084    J4P1=J4+1
+ 1085    CONTINUE
+         F=FLOAT(I(J4))+FRAC*FLOAT(I(J4P1)-I(J4))
+         IF(M2.gt.0) go to 1086
+         SUM=SUM+FREQ
+         GO TO 1090
+ 1086    J4=L2+J3-1
          SUM=SUM+FLOAT(I(J4))*SFI
- 1090    IF((SUM-XNFUN).le.0) GOTO 1085
- 1084    SUM=SUM-XNFUN
- 1085    J5=L3+J3-1
-         IF(M1.gt.0) GOTO 1092
- 1091    I(J5) = IFIX(AMP*F3*SFXX)
-         GOTO 1093
+ 1090    IF(SUM.GE.XNFUN)GO TO 1087
+         IF(SUM.LT.0.0)GO TO 1089
+ 1088    J5=L3+J3-1
+         IF(M1.gt.0) go to 1092
+         I(J5)=IFIX(AMP*F*SFXX)
+         GO TO 1093
+ 1087    SUM=SUM-XNFUN
+         GO TO 1088
+ 1089    SUM=SUM+XNFUN
+         GO TO 1088
  1092    J6=L1+J3-1
-         I(J5) = IFIX(FLOAT(I(J6))*F3*SFF)
+         I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
  1093    CONTINUE
       I(L5)=IFIX(SUM*SFID)
       RETURN
+
       END
       
 C     [page 6-1]
@@ -850,9 +819,7 @@ c 100  V1=P(M1-2)*SCLFT
       MB=N1+IFIX(P(M1+1))-1
       DO 101 J=MA,MB
          XJ=J-MA
-         I(J)=V1+V2*XJ
-C     VL:25/01/22 updated for gfortran 2018           
- 101  CONTINUE   
+ 101     I(J)=V1+V2*XJ
       IF(IFIX(P(M1+1)).EQ.(IP(6)-1))GO TO 103
       M1=M1+2
       GO TO 102
@@ -869,9 +836,7 @@ c     *** MUSIC V ***
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
       DO 101 K1=N1,N2
-         A(K1)=0.0
-C     VL:25/01/22 updated for gfortran 2018           
- 101  CONTINUE   
+ 101     A(K1)=0.0
       FAC=6.283185/(FLOAT(IP(6))-1.0)
       NMAX=I(1)
       N3=5+INT(ABS(P(NMAX)))-1
@@ -881,9 +846,7 @@ c 100  DO 103 J=5,N3
       DO 103 J=5,N3
          FACK=FAC*FLOAT(J-4)
          DO 102 K=N1,N2
-            A(K)=A(K)+SIN(FACK*FLOAT(K-N1))*P(J)
-C     VL:25/01/22 updated for gfortran 2018  
- 102     CONTINUE   
+ 102        A(K)=A(K)+SIN(FACK*FLOAT(K-N1))*P(J)
  103     CONTINUE
  104  N4=N3+1
       N5=I(1)-1
@@ -893,9 +856,7 @@ c 105  DO 107 J1=N4,N5
       DO 107 J1=N4,N5
          FACK=FAC*FLOAT(J1-N4)
          DO 106 K1=N1,N2
-            A(K1)=A(K1)+COS(FACK*FLOAT(K1-N1))*P(J1)
-C     VL:25/01/22 updated for gfortran 2018              
- 106     CONTINUE   
+ 106        A(K1)=A(K1)+COS(FACK*FLOAT(K1-N1))*P(J1)
  107     CONTINUE
  114  CONTINUE
 c      IF(P(NMAX))112,112,108
@@ -909,9 +870,7 @@ c 109     FMAX=ABS(A(K2))
          FMAX=ABS(A(K2))
  110  CONTINUE
  113  DO 111 K3=N1,N2
-         I(K3)=(A(K3)*SCLFT*.99999)/FMAX
-C     VL:25/01/22 updated for gfortran 2018           
- 111  CONTINUE   
+ 111     I(K3)=(A(K3)*SCLFT*.99999)/FMAX
       RETURN
                   
 C     [page 6-2]
@@ -939,9 +898,7 @@ C
       NR=NL+N
       DO 10 J=NL,NR
          IF(P(J).GT.RMAX) RMAX=P(J)
-         IF(P(J).LT.RMIN) RMIN=P(J)
-C     VL:25/01/22 updated for gfortran 2018            
- 10   CONTINUE   
+ 10      IF(P(J).LT.RMIN) RMIN=P(J)
       DIV=AMAX1(ABS(RMIN),ABS(RMAX))
       N1 = IP(2) + (IFIX(P(4))-1)*IP(6)
       I(N1)=(P(NL)/DIV)*SCLFT
@@ -957,12 +914,8 @@ C     VL:25/01/22 updated for gfortran 2018
          HNCR=DELTA/SEG
          DO 50 K=1,NR
             IX2 = LAST+K
-            I(IX2)=FLOAT(I(IX2-1))+HNCR
-C     VL:25/01/22 updated for gfortran 2018              
- 50      CONTINUE
-         LAST=IX
-C     VL:25/01/22 updated for gfortran 2018          
- 100  CONTINUE   
+ 50         I(IX2)=FLOAT(I(IX2-1))+HNCR
+ 100     LAST=IX
       RETURN
       END
 
@@ -1011,19 +964,17 @@ C**** END
       SUBROUTINE SAMGEN
       RETURN
       END
-
 C     GENS 4,6,7,8 from Risset's catalogue
 C     V Lazzarini, 2009
       SUBROUTINE GEN4
-      DIMENSION I(15000),P(100),IP(21),A(7000)
+      DIMENSION I(15000),P(100),IP(20),A(7000)
       COMMON I,P/PARM/IP
       EQUIVALENCE(I,A)
       SCLFT=IP(15)
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
       DO 100 K=N1,N2
-      A(K1)=0.0   
- 100  CONTINUE
+ 100  A(K1)=0.0
       FAC=6.283185/(FLOAT(IP(6))-1.0)
       NMAX=I(1)-4
       DO 103 L=5, NMAX,5
@@ -1036,18 +987,15 @@ C     V Lazzarini, 2009
          DO 105 J=IP5,IP6
             XJ=J-JP5-N1+1
             ARG=XJ*P3+P4
-            A(J)=A(J)+P2*SIN(FAC*ARG)
- 105     CONTINUE   
+ 105        A(J)=A(J)+P2*SIN(FAC*ARG)
  103     CONTINUE
       XMAX=0.0000001
       DO 115 J=N1,N2
-C     IF(XMAX-ABS(A(J))) 116,115,115
-       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
- 116   XMAX=ABS(A(J))
+      IF(XMAX-ABS(A(J))) 116,115,115
+ 116  XMAX=ABS(A(J))
  115  CONTINUE
       DO 120 L=N1,N2
-       I(L) = (A(L)*SCLFT*.99999)/XMAX
- 120  CONTINUE   
+ 120   I(L) = (A(L)*SCLFT*.99999)/XMAX
  113  RETURN
       END
 
@@ -1055,7 +1003,7 @@ C     IF(XMAX-ABS(A(J))) 116,115,115
       END
 
       SUBROUTINE GEN6
-      DIMENSION I(15000),P(100),IP(21),A(512)
+      DIMENSION I(15000),P(100),IP(20),A(512)
       COMMON I,P/PARM/IP
       SCLFT=IP(15)
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
@@ -1069,13 +1017,11 @@ C     IF(XMAX-ABS(A(J))) 116,115,115
       ARG2=P(6)
       ARG3=P(7)
       ARG4=P(8)
-C     IF(ARG1) 610,610,611
-      IF(ARG1 > 0) GOTO 611
+      IF(ARG1) 610,610,611
  610  Y1=11.*ALOG(2.)/XNQ
  611  Y1=ARG1*ALOG(2.)/XNQ
  612  CONTINUE
-C     IF(ARG2) 614,614,615
-      IF(ARG2 > 0 ) GOTO 615
+      IF(ARG2) 614,614,615
  614  Y2=.99999
       GOTO 616
  615  Y2=ARG2
@@ -1084,8 +1030,7 @@ C     IF(ARG2) 614,614,615
       GOTO 620
  619  Y3=ARG3
  620  CONTINUE
-C     IF(ARG4) 622,622,623
-      IF(ARG4 > 0) GOTO 623
+      IF(ARG4) 622,622,623
  622  Y4=11.*ALOG(2.)/XNQ
       GOTO 624
  623  Y4=ARG4*ALOG(2.)/XNQ
@@ -1095,8 +1040,7 @@ C     IF(ARG4) 622,622,623
          YJ=Y1*XJ
          A(J)=.99999*EXP(YJ)*Y2
          JJ=J+N11
-         I(JJ)=A(J)*SCLFT
- 630  CONTINUE   
+ 630     I(JJ)=A(J)*SCLFT
       FACT=(Y3-Y2)/XNQ
       NN2=N2+1
       DO 640 J=NN2,N3
@@ -1104,52 +1048,44 @@ C     IF(ARG4) 622,622,623
          A(J)=J-N2
          A(J)=.99999*(Y2+FACT*AJ)
          JJ=J+N11
-         I(JJ)=A(J)*SCLFT
- 640  CONTINUE   
+ 640     I(JJ)=A(J)*SCLFT
       NN3=N3+1
       DO 650 J=NN3,N4
          XJ=NN3-J
          YJ=Y4*XJ
          A(J)=.99999*EXP(YJ)*Y3
          JJ=J+N11
-         I(JJ)=A(J)*SCLFT
- 650     CONTINUE
+ 650     I(JJ)=A(J)*SCLFT
       NN4=N1+N4
       NN6=N11+N6
       DO 660 J=NN4,NN6
-         I(JJ)=0
- 660  CONTINUE
+ 660  I(JJ)=0
       RETURN
       END
 
       SUBROUTINE GEN7
-      DIMENSION I(15000),P(100),IP(21),A(7000)
+      DIMENSION I(15000),P(100),IP(20),A(7000)
       COMMON I,P/PARM/IP
       EQUIVALENCE(I,A)
       SCLFT=IP(15)
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
       DO 100 K=N1,N2
-         A(K)=0.0 
- 100  CONTINUE
-C     IF(P(5)) 200,300,250
-      IF(P(5) == 0) GOTO 300
-      IF(P(5) > 0) GOTO  250
+ 100  A(K)=0.0
+      IF(P(5)) 200,300,250
  200  XN=P(5)*ALOG(2.)/511.
       DO 205 J=N1,N2
       XJ=J-N1
       YJ=XN*XJ
       A(J)=EXP(YJ)*.9999
-      I(J)=A(J)*SCLFT
- 205  CONTINUE
+ 205  I(J)=A(J)*SCLFT
       GOTO 500
  250  XN=P(5)*ALOG(2.)/511.
       DO 255 J=N1,N2
       XJ=J-N1-511
       YJ=XN*XJ
       A(J)=EXP(YJ)*.999999
-      I(J)=EXP(YJ)*.999999
- 255  CONTINUE
+ 255  I(J)=EXP(YJ)*.999999
       GOTO 500
  300  CONTINUE
       DO 325 J=N1,N2
@@ -1157,24 +1093,20 @@ C     IF(P(5)) 200,300,250
       YJ=(6.2832*(XJ-256.5))/511.
       ZJ=ALOG(.008)*(1.-COS(YJ))
       A(J)=EXP(ZJ)*.99999
-      I(J)=A(J)*SCLFT
- 325  CONTINUE
+ 325  I(J)=A(J)*SCLFT
  500  RETURN
       END
 
       SUBROUTINE GEN8
-      DIMENSION I(15000),P(100),IP(21),A(7000)
+      DIMENSION I(15000),P(100),IP(20),A(7000)
       COMMON I,P/PARM/IP
       EQUIVALENCE(I,A)
       SCLFT=IP(15)
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
       DO 100 K=N1,N2
-        A(K)=0.0 
- 100  CONTINUE
-C     IF(P(5)) 200,250,300
-      IF(P(5) == 0) GOTO 250
-      IF(P(5) > 0) GOTO 300
+ 100  A(K)=0.0
+      IF(P(5)) 200,250,300
  200  CONTINUE
       XM=-P(5)
       DO 225 J=N1,N2
@@ -1182,8 +1114,7 @@ C     IF(P(5)) 200,250,300
          YJ=(6.2832*(XJ-44.))/170.
          ZJ = ALOG(.008)*(1.-SIN(YJ))*.5*XM
          A(J)=EXP(ZJ)
-         I(J)=A(J)*SCLFT
- 225     CONTINUE
+ 225     I(J)=A(J)*SCLFT
       GOTO 500
  250  CONTINUE
       XM=P(6)
@@ -1193,8 +1124,7 @@ C     IF(P(5)) 200,250,300
          YJ=(6.2832*(XJ-256.5))/511.
          ZJ=ALOG(.008)*(1.-COS(YJ))*.5*XM
          A(J)=EXP(ZJ)
-         I(J)=A(J)*SCLFT
- 275     CONTINUE
+ 275     I(J)=A(J)*SCLFT
       GOTO 500
  300  CONTINUE
       XM=P(5)
@@ -1203,10 +1133,10 @@ C     IF(P(5)) 200,250,300
          YJ=(6.2832*(XJ-65.))/256.
          ZJ=ALOG(.008)*(1.-SIN(YJ))*.5*XM
          A(J)=EXP(ZJ)
-         I(J)=A(J)*SCLFT
- 325     CONTINUE
+ 325     I(J)=A(J)*SCLFT
  500     RETURN
          END
+
 C     **** DUMMY SUBROUTINES ****
       
       
@@ -1251,15 +1181,12 @@ C     [page 6-4]
 C     DEBUG SAMOUT
       SUBROUTINE SAMOUT(IDSK,N, nwrite)
 c      DIMENSION IDBUF(2000),MS(3)
-      DIMENSION IDBUF(4000)
+      DIMENSION IDBUF(2000)
 C***  IDSK IS FLAG TO WRITE SAMPLES ON DSK -- PDP ****
 C***  IDBUF WILL STORE PACKED SAMPLES. ****
       DIMENSION I(15000),T(10),P(100),IP(21)
       COMMON I,P/PARM/IP/FINOUT/PEAK,NRSOR
       INTEGER PEAK
-C     VL 27/01/22: IOBUFSIZE constant (UG bufsize*3 to accommodate stereo)
-      IOBUFSIZE = 1536
-C      PRINT *, IDSK
       IF(IDSK.GE.0) GO TO 99
       N1=N
       PRINT 100,N1
@@ -1270,8 +1197,7 @@ C      PRINT *, IDSK
  106  DO 101 L=1,10
          J=N2+L
          T(L)=FLOAT(I(J))/FLOAT(IP(12))
-C     VL:25/01/22 updated for gfortran 2018           
- 101  CONTINUE   
+ 101  CONTINUE 
       PRINT 102, (T(K),K=1,N3)
  102  FORMAT(1H 10F11.4)
       N2=N2+10
@@ -1291,22 +1217,18 @@ c 105  N3=N1
       M2=0
       ISC=IP(12)
       IDSK=IDSK+N
-c      PRINT *, M1, J
 C     COUNTS SAMPLES TO DATE
       DO 1 K=J,IDSK
          N1=I(M1+M2)/ISC
          IF(N1.GT.PEAK)PEAK=N1
          IDBUF(K)=N1
-         M2=M2+1   
-C     VL:25/01/22 updated for gfortran 2018           
- 1    CONTINUE
-C     PRINT *, M2, M1+M2
-      IF(IDSK.LT.IOBUFSIZE)RETURN
+ 1       M2=M2+1
+      IF(IDSK.LT.768)RETURN
          
-      CALL FASTOUT(IDBUF(1), IOBUFSIZE, nwrite)
+      CALL FASTOUT(IDBUF(1), 768, nwrite)
 
 c      KL=0
-c      DO 2 K=1,IOBUFSIZE,3
+c      DO 2 K=1,768,3
 c         KL=KL+1
 c         KJ=K-1
 c         MS(1)=IDBUF(K)
@@ -1322,12 +1244,10 @@ cC     NEGATIVE NUMBERS RUN FROM 4096(I.E. -1) TO 2049(I.E. -2048).
 c
 c      CALL FASTOUT(IDBUF(1),256, nwrite)
 c
-      J=IDSK-IOBUFSIZE
+      J=IDSK-768
       IF(J.LT.1) GO TO 4
       DO 5 K=1,J
-         IDBUF(K)=IDBUF(IOBUFSIZE+K)
-C     VL:25/01/22 updated for gfortran 2018           
- 5    CONTINUE
+ 5       IDBUF(K)=IDBUF(768+K)
                   
 C     [page 6-5]
                   
@@ -1343,15 +1263,13 @@ C     [page 6-5]
       DIMENSION IARR(N)
 
       ICTR=IP(21)
-c      print *, 'output ', N, ICTR
+C      print *, 'output ', N, ICTR
 
       do 55 K=1,N
          SAMPLE=IARR(k)*0.000488
 c 1/2048
          ICTR = ICTR+1
-         WRITE(nwrite, rec=ICTR) SAMPLE
-C     VL:25/01/22 updated for gfortran 2018  
- 55   CONTINUE   
+ 55      WRITE(nwrite, rec=ICTR) SAMPLE
 
          IP(21)=ICTR
 

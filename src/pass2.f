@@ -10,11 +10,7 @@ C     This is the new version that runs (5-May-08) in gfortran and linux.
 C     Most of my changes are in lower case
 
 C     pass2 reads pass1.data and writes pass2.data.
-      
-C     V Lazzarini, Jan 22.
-C     Bug fixed and CONVT call is now working
-C     CON routine was thoroughly busted but it is now restored
-C     needs more tests but score from Little Boy is running now 
+
 
 C     PASS 2 MAIN PROGRAM
 C     *** MUSIC V ***
@@ -71,7 +67,7 @@ c 106  CALL READ2 (NREAD)
 c 100     D(13)=P(I2)
          D(I3)=P(I2)
  100     continue
-      
+
       ID=ID+I1+1
 c      IF(ID-NPAR)102,102,101
       IF((ID-NPAR).le.0) go to 102
@@ -107,9 +103,8 @@ c         IF(I6)121,121,122
  121     CALL ERROR(21)
          GO TO 1
 c 122     IF (I6-NOPC)123,123,121
- 122     IF ((I6-NOPC).gt.0) go to 121
-        
-c     123     GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
+ 122  IF ((I6-NOPC).gt.0) go to 121
+c 123     GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
           GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
  7       CALL ERROR(22)
          GO TO 1
@@ -122,14 +117,9 @@ C     [page 3-2]
          I10=IFIX(D(I5+3))-I8
          DO 124 I11=I8,I9
             I12=I10+I11
-            G(I12)=D(I11)
-
-            
-C     VL:25/01/22 updated for gfortran 2018           
- 124     CONTINUE
-C     VL 7.02.2022 typo preventing integer setting for pass 3 fixed        
-c     IF(I6-12)1,2,1
-         IF((I6-12).eq.0) go to 2
+ 124     G(I12)=D(I11)
+c         IF(I6-I2)1,2,1
+         IF((I6-I2).eq.0) go to 2
          go to 1
  10      I13=D(I5+3)
          IP(2)=I5
@@ -156,9 +146,7 @@ C     WRITE OUT SECTION
          I18=IP(1)
          DO 133 I19=1,I18
             I20=I19+I5
-            P(I19)=D(I20)
-C     VL:25/01/22 updated for gfortran 2018
- 133     CONTINUE
+ 133        P(I19)=D(I20)
 c         CALL WRITE2 (NWRITE)
          CALL WRITE2 (outputfile)
  1       CONTINUE
@@ -232,10 +220,10 @@ C     *** MUSIC V ***
       Y=P(4)
       ILOC=G(2)
       IF(P(1).NE.1.)GO TO 50
-      P(4)=P(4)*60./CON(G,ILOC,P(2))
-c      P(4)=P(4)*60./CON(G,P(2))
- 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,ILOC,P(2))
-c 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,P(2))
+c      P(4)=P(4)*60./CON(G,ILOC,P(2))
+      P(4)=P(4)*60./CON(G,P(2))
+c 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,ILOC,P(2))
+ 50   P(2)=TLAST+(P(2)-BLAST)*60./CON(G,P(2))
       TLAST=P(2)
       BLAST=X
  150  CALL CONVT
@@ -253,27 +241,20 @@ C     *** PASS II REPORT IS OPTIONAL ***
       RETURN
       END
 
-C     VL 31/01/22 this was fully busted, now restored
 C     CON2 PASS 2 FUNCTION INTERPOLATOR
 C     *** MUSIC V ***
-      FUNCTION CON(G,I,T)
-c      FUNCTION CON(G,T)
-      DIMENSION G(1000)
-      DO 10 J=I,1000,2
-C     VL 31/01/22 this solves the problem of P(2) beyond the
-C     metro function end    
-          IF(G(J) < G(J-2)) GOTO 21
-C         PRINT *, G(J), J, G(J)-T
+c      FUNCTION CON(G,I,T)
+      FUNCTION CON(G,T)
+      DIMENSION G(1)
+      DO 10 J=1,1000,2
 c         IF (G(J)-T) 10,20,30
          if ((G(J)-T).eq.0) go to 20
          if ((G(J)-T).lt.0) go to 10
- 30      CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
-c     CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
+c 30      CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
+         CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
          RETURN
  10   CONTINUE
  20   CON = G(J+1)
-      RETURN
- 21   CON = G(J-1)
       RETURN
       END
 
@@ -297,13 +278,13 @@ C      END
 
 C     GENERAL CONVT from Risset's Catalogue
 C     Added by V Lazzarini, 2009
-C     Bug in G() assignment fixed 25/01/22
+C     but it is not being called as it should
+C     pass1.f should be investigated.
+C     I suspect G() is not being set properly
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000)
-      
       IF (G(3).NE.0.0) RETURN
       IF (P(1).NE.1.0) RETURN
-C     freq conversion factor tabsize/sr
       FREQ=511.0/G(4)
       I=P(3)
       NPAR=G(10*I)
@@ -321,9 +302,7 @@ C     freq conversion factor tabsize/sr
          GOTO 2
  30      M=M-100
          P(M+1)=P(4)-P(M)-P(M+2)
-C        IF (P(M+1)) 32,33,34
-         IF (P(M+1) == 0) GOTO 33
-         IF (P(M+1) > 0) GOTO 34
+         IF (P(M+1))32,33,34
  32      P(M)=(P(M)*P(4))/(P(M)+P(M+2))
          P(M+2)=(P(M+2)*P(4))/(P(M)+P(M+2))
  33      P(M+1)=128
@@ -340,6 +319,8 @@ C        IF (P(M+1)) 32,33,34
  1    CONTINUE
       RETURN
       END
+
+
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
