@@ -23,6 +23,9 @@ C     added GEN4,GEN5,GEN6 and GEN7 from Risset's Catalogue
 C     added IOS as a linear-interpolating oscillator
 C     which I am supposing it is what Risset means in his 
 C     catalogue
+C     NB: Feb 2022. Found the original code for the interpolating
+C     oscillator from JCR's archive (Fonds Risset, Prism)
+C     Restored it to this code, removing the 2009 implementation      
 
 C     Victor Lazzarini, Jan 22
 C     A bug in STR has been fixed where the frame counter ICT was not
@@ -796,45 +799,36 @@ c 919     SUM=SUM-XNFUN
       I(L4)=IFIX(SUM*SFID)
       I(L5)=IRN
       RETURN
-C     IOS
-C     ADDED V LAZZARINI SEPT 2009
-C     THIS IS SUPPOSED TO BE AN INTERPOLATING OSCILLATOR
-C     ACCORDING TO RISSET'S DESCRIPTION
+C     VL 7/02/022 restored ugen from JCR's archive material      
+C     INTERPOLATING OSCILLATOR (FROM 1968/9 LISTINGS)
  113  SUM=FLOAT(I(L5))*SFI
       IF(M1.gt.0) go to 1081
-       AMP=FLOAT(I(L1))*SFI
- 1081  IF(M2.gt.0) go to 1083
-       FREQ=FLOAT(I(L2))*SFI
- 1083  CONTINUE
+ 1080 AMP=FLOAT(I(L1))*SFI
+ 1081 IF(M2.gt.0) go to 1083
+ 1082 FREQ=FLOAT(I(L2))*SFI
+ 1083 XNFUN = IP(6) - 1
       DO 1093 J3=1,NSAM
          J4=INT(SUM)+L4
-         FRAC=SUM+L4-J4
-         IF(SUM.LT.XNFUN)GO TO 1084
-         J4P1=L4
- 1084    J4P1=J4+1
- 1085    CONTINUE
-         F=FLOAT(I(J4))+FRAC*FLOAT(I(J4P1)-I(J4))
-         IF(M2.gt.0) go to 1086
-         SUM=SUM+FREQ
-         GO TO 1090
- 1086    J4=L2+J3-1
+         FRAC=SUM-AINT(SUM)
+ 1086    F1 = FLOAT(I(J4))
+         F2 = FLOAT(I(J4+1))
+ 1087    F3 = F1 + (F2-F1)*FRAC
+         IF(M2.gt.0) GOTO 1089
+ 1088    SUM = SUM+FREQ
+         GOTO 1090
+ 1089    J4=L2+J3-1
          SUM=SUM+FLOAT(I(J4))*SFI
- 1090    IF(SUM.GE.XNFUN)GO TO 1087
-         IF(SUM.LT.0.0)GO TO 1089
- 1088    J5=L3+J3-1
-         IF(M1.gt.0) go to 1092
-         I(J5)=IFIX(AMP*F*SFXX)
-         GO TO 1093
- 1087    SUM=SUM-XNFUN
-         GO TO 1088
- 1089    SUM=SUM+XNFUN
-         GO TO 1088
+ 1090    IF((SUM-XNFUN).le.0) GOTO 1085
+ 1084    SUM=SUM-XNFUN
+ 1085    J5=L3+J3-1
+         IF(M1.gt.0) GOTO 1092
+ 1091    I(J5) = IFIX(AMP*F3*SFXX)
+         GOTO 1093
  1092    J6=L1+J3-1
-         I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
+         I(J5) = IFIX(FLOAT(I(J6))*F3*SFF)
  1093    CONTINUE
       I(L5)=IFIX(SUM*SFID)
       RETURN
-
       END
       
 C     [page 6-1]
