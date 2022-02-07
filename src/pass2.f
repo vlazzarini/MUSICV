@@ -70,8 +70,7 @@ c 106  CALL READ2 (NREAD)
          I3=ID+I2
 c 100     D(13)=P(I2)
          D(I3)=P(I2)
- 100     continue
-      
+ 100  continue
       ID=ID+I1+1
 c      IF(ID-NPAR)102,102,101
       IF((ID-NPAR).le.0) go to 102
@@ -126,15 +125,11 @@ C     [page 3-2]
 
             
 C     VL:25/01/22 updated for gfortran 2018           
- 124     CONTINUE   
+ 124     CONTINUE
+C     VL: 7/02/22 typo stopping variable setting in pass3         
 c     IF(I6-I2)1,2,1
-C          print *, I6, I2
-C         IF((I6-I2).eq.0) go to 2
-C     go to 1
-C     VL: 27/01/22 the above lines were stopping variable setting in pass3
-C     Now instead we check whether the opcode is 8 to jump out.         
-         IF((I6).eq.8) go to 1
-         goto 2
+         IF((I6-12).eq.0) go to 2
+         goto 1
  10      I13=D(I5+3)
          IP(2)=I5
 c         IF(I13)125,125,126
@@ -262,7 +257,7 @@ C     CON2 PASS 2 FUNCTION INTERPOLATOR
 C     *** MUSIC V ***
       FUNCTION CON(G,I,T)
 c      FUNCTION CON(G,T)
-      DIMENSION G(1000)
+      DIMENSION G(I)
       DO 10 J=I,1000,2
 C     VL 31/01/22 this solves the problem of P(2) beyond the
 C     metro function end    
