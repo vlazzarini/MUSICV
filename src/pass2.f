@@ -126,15 +126,11 @@ C     [page 3-2]
 
             
 C     VL:25/01/22 updated for gfortran 2018           
- 124     CONTINUE   
-c     IF(I6-I2)1,2,1
-C          print *, I6, I2
-C         IF((I6-I2).eq.0) go to 2
-C     go to 1
-C     VL: 27/01/22 the above lines were stopping variable setting in pass3
-C     Now instead we check whether the opcode is 8 to jump out.         
-         IF((I6).eq.8) go to 1
-         goto 2
+ 124     CONTINUE
+C     VL 7.02.2022 typo preventing integer setting for pass 3 fixed        
+c     IF(I6-12)1,2,1
+         IF((I6-12).eq.0) go to 2
+         go to 1
  10      I13=D(I5+3)
          IP(2)=I5
 c         IF(I13)125,125,126
@@ -277,7 +273,7 @@ c     CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
  10   CONTINUE
  20   CON = G(J+1)
       RETURN
- 21   CON = 1
+ 21   CON = G(J-1)
       RETURN
       END
 
