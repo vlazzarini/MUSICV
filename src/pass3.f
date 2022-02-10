@@ -487,18 +487,18 @@ C**********ABOVE FOR FM (NEG. FREQ. TO OSCIL)
  292     J6=L1+J3-1
          I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
  293  CONTINUE
-C     PRINT *, L3
+C      PRINT *, L3
       I(L5)=IFIX(SUM*SFID)
       RETURN
 C     ADD TWO BOX
 c 103  IF(M1)250,250,251
- 103  IF(M1.gt.0) go to 251
+ 103   IF(M1.gt.0) go to 251
 c 250  IN1=I(L1)
        IN1=I(L1)
 c 251  IF(M2)252,252,253
  251  IF(M2.gt.0) go to 253
 c 252  IN2=I(L2)
-       IN2=I(L2)
+      IN2=I(L2)
  253  DO 258 J3=1,NSAM
 c         IF(M1)255,255,254
          IF(M1.le.0) go to 255
@@ -511,7 +511,7 @@ c 256     J5=L2+J3-1
           J5=L2+J3-1
          IN2=I(J5)
  257     J6=L3+J3-1
-         I(J6)=IN1+IN2
+       I(J6)= IN1+IN2
  258  CONTINUE
       RETURN
 C     RANDOM INTERPOLATING GENERATOR
@@ -1018,6 +1018,7 @@ C     V Lazzarini, 2009
       DIMENSION I(15000),P(100),IP(21),A(7000)
       COMMON I,P/PARM/IP
       EQUIVALENCE(I,A)
+      PRINT *, IP(2)
       SCLFT=IP(15)
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
@@ -1029,7 +1030,7 @@ C     V Lazzarini, 2009
       DO 103 L=5, NMAX,5
          P2=P(L)
          P3=P(L+1)
-         P4=P(L+3)
+         P4=P(L+2)
          JP5=P(L+3)
          IP5=JP5+N1-1
          IP6=IFIX(P(L+4))+N1-1
@@ -1045,8 +1046,8 @@ C     IF(XMAX-ABS(A(J))) 116,115,115
        IF(XMAX-ABS(A(J)) >= 0) GOTO 115
  116   XMAX=ABS(A(J))
  115  CONTINUE
-      DO 120 L=N1,N2
-       I(L) = (A(L)*SCLFT*.99999)/XMAX
+      DO 120 L=N1,N2 
+       I(L) = (A(L)*SCLFT*.99999)/XMAX   
  120  CONTINUE   
  113  RETURN
       END

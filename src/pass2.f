@@ -340,28 +340,63 @@ c$$$ 1    CONTINUE
 c$$$      RETURN
 c$$$      END
 
-C     CONVT POUR FANFARE TRIOMPHE
+c$$$C     CONVT POUR FANFARE TRIOMPHE
+c$$$      SUBROUTINE CONVT
+c$$$      COMMON IP(10),P(100),G(1000)
+c$$$      IF(P(1).NE.1.)GOTO100
+c$$$      IF(P(3).GE.7.)GOTO100
+c$$$      F=511./G(4)
+c$$$      FE=F/4.
+c$$$      P(6)=F*P(6)
+c$$$      P(8)=P(4)-P(7)-P(9)
+c$$$      IF(P(8).lt.0) GOTO 2
+c$$$      IF(P(8).eq.0) GOTO 3
+c$$$      IF(P(8).gt.0) GOTO 4    
+c$$$2     P(7)=P(7)*P(4)/(P(7)+P(9))
+c$$$      P(9)=P(9)*P(4)/(P(9)+P(7))
+c$$$3     P(8)=128.
+c$$$      GOTO5
+c$$$4     P(8)=FE/P(8)
+c$$$5     P(7)=FE/P(7)
+c$$$      P(8)=FE/P(8)
+c$$$      P(9)=FE/P(9)
+c$$$100   RETURN
+c$$$      END
+
+
+C      FORTRAN NDECK
+C   COMMENT RVN p 30-31 ;      
+C   CONVT POUR FANFARE FEEDBACK
+C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
+C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
+C
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000)
+      IF(G(10).GE..5)GOTO100
+      IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
       IF(P(1).NE.1.)GOTO100
-      IF(P(3).GE.7.)GOTO100
+      IF(P(3).GE.6.5)GOTO40
       F=511./G(4)
       FE=F/4.
+      P(2)=.1024*P(2)
+      P(4)=.1024*(P(4)+16.)
       P(6)=F*P(6)
       P(8)=P(4)-P(7)-P(9)
-      IF(P(8).lt.0) GOTO 2
-      IF(P(8).eq.0) GOTO 3
-      IF(P(8).gt.0) GOTO 4    
-2     P(7)=P(7)*P(4)/(P(7)+P(9))
+      IF(P(8))2,3,4
+ 2    P(7)=P(7)*P(4)/(P(7)+P(9))
       P(9)=P(9)*P(4)/(P(9)+P(7))
-3     P(8)=128.
+ 3    P(8)=128.
       GOTO5
-4     P(8)=FE/P(8)
-5     P(7)=FE/P(7)
-      P(8)=FE/P(8)
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
       P(9)=FE/P(9)
-100   RETURN
+      GOTO100
+ 40   P(4)=.1024*(P(4)+16.)
+ 50   P(2)=.1024*(P(2)+16.)
+ 100  RETURN
       END
+
+      
      
       
 
