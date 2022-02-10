@@ -1015,41 +1015,44 @@ C**** END
 C     GENS 4,6,7,8 from Risset's catalogue
 C     V Lazzarini, 2009
       SUBROUTINE GEN4
-      DIMENSION I(15000),P(100),IP(21),A(7000)
-      COMMON I,P/PARM/IP
-      EQUIVALENCE(I,A)
-      PRINT *, IP(2)
-      SCLFT=IP(15)
-      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
-      N2=N1+IP(6)-1
-      DO 100 K=N1,N2
-      A(K1)=0.0   
- 100  CONTINUE
-      FAC=6.283185/(FLOAT(IP(6))-1.0)
-      NMAX=I(1)-4
-      DO 103 L=5, NMAX,5
-         P2=P(L)
-         P3=P(L+1)
-         P4=P(L+2)
-         JP5=P(L+3)
-         IP5=JP5+N1-1
-         IP6=IFIX(P(L+4))+N1-1
-         DO 105 J=IP5,IP6
-            XJ=J-JP5-N1+1
-            ARG=XJ*P3+P4
-            A(J)=A(J)+P2*SIN(FAC*ARG)
- 105     CONTINUE   
- 103     CONTINUE
-      XMAX=0.0000001
-      DO 115 J=N1,N2
-C     IF(XMAX-ABS(A(J))) 116,115,115
-       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
- 116   XMAX=ABS(A(J))
- 115  CONTINUE
-      DO 120 L=N1,N2 
-       I(L) = (A(L)*SCLFT*.99999)/XMAX   
- 120  CONTINUE   
- 113  RETURN
+C     VL: I suspect this was not the GEN4 in the code at the time of little boy
+C     because if this is used, all memory I(1) - I(512) is wiped out with the
+C     line GEN 0 4 0 that is found in some of the scores.     
+c$$$      DIMENSION I(15000),P(100),IP(21),A(7000)
+c$$$      COMMON I,P/PARM/IP
+c$$$      EQUIVALENCE(I,A)
+c$$$      PRINT *, IP(2)
+c$$$      SCLFT=IP(15)
+c$$$      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+c$$$      N2=N1+IP(6)-1
+c$$$      DO 100 K=N1,N2
+c$$$      A(K1)=0.0   
+c$$$ 100  CONTINUE
+c$$$      FAC=6.283185/(FLOAT(IP(6))-1.0)
+c$$$      NMAX=I(1)-4
+c$$$      DO 103 L=5, NMAX,5
+c$$$         P2=P(L)
+c$$$         P3=P(L+1)
+c$$$         P4=P(L+2)
+c$$$         JP5=P(L+3)
+c$$$         IP5=JP5+N1-1
+c$$$         IP6=IFIX(P(L+4))+N1-1
+c$$$         DO 105 J=IP5,IP6
+c$$$            XJ=J-JP5-N1+1
+c$$$            ARG=XJ*P3+P4
+c$$$            A(J)=A(J)+P2*SIN(FAC*ARG)
+c$$$ 105     CONTINUE   
+c$$$ 103     CONTINUE
+c$$$      XMAX=0.0000001
+c$$$      DO 115 J=N1,N2
+c$$$C     IF(XMAX-ABS(A(J))) 116,115,115
+c$$$       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
+c$$$ 116   XMAX=ABS(A(J))
+c$$$ 115  CONTINUE
+c$$$      DO 120 L=N1,N2 
+c$$$       I(L) = (A(L)*SCLFT*.99999)/XMAX   
+c$$$ 120  CONTINUE   
+c$$$ 113  RETURN
       END
 
       SUBROUTINE GEN5
