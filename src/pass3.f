@@ -1029,7 +1029,7 @@ C     V Lazzarini, 2009
       DO 103 L=5, NMAX,5
          P2=P(L)
          P3=P(L+1)
-         P4=P(L+3)
+         P4=P(L+2)
          JP5=P(L+3)
          IP5=JP5+N1-1
          IP6=IFIX(P(L+4))+N1-1
