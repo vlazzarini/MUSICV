@@ -161,7 +161,9 @@ C     VL:25/01/22 updated for gfortran 2018
       
       GO TO 204
  3    IGEN=P(3)
-      GO TO (281,282,283,284,285,286,287,288),IGEN
+      GO TO (281,282,283,284,285),IGEN
+C     make sure GEN > 5 is not called      
+      GOTO 204
  281  CALL GEN1
       GO TO 204
  282  CALL GEN2
@@ -171,12 +173,6 @@ C     VL:25/01/22 updated for gfortran 2018
  284  CALL GEN4
       GO TO 204
  285  CALL GEN5
-      GO TO 204
- 286  CALL GEN6
-      GO TO 204
- 287  CALL GEN7
-      GO TO 204
- 288  CALL GEN8
       GO TO 204
  4    IVAR=P(3)
       IVARE=IVAR+I(1)-4
@@ -1019,201 +1015,16 @@ C**** END
       RETURN
       END
 
-C     GENS 4,6,7,8 from Risset's catalogue
-C     V Lazzarini, 2009
+C   dummy subroutines for little boy
       SUBROUTINE GEN4
-      DIMENSION I(15000),P(100),IP(21),A(7000)
-      COMMON I,P/PARM/IP
-      EQUIVALENCE(I,A)
-      SCLFT=IP(15)
-      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
-      N2=N1+IP(6)-1
-      DO 100 K=N1,N2
-      A(K1)=0.0   
- 100  CONTINUE
-      FAC=6.283185/(FLOAT(IP(6))-1.0)
-      NMAX=I(1)-4
-      DO 103 L=5, NMAX,5
-         P2=P(L)
-         P3=P(L+1)
-         P4=P(L+2)
-         JP5=P(L+3)
-         IP5=JP5+N1-1
-         IP6=IFIX(P(L+4))+N1-1
-         DO 105 J=IP5,IP6
-            XJ=J-JP5-N1+1
-            ARG=XJ*P3+P4
-            A(J)=A(J)+P2*SIN(FAC*ARG)
- 105     CONTINUE   
- 103     CONTINUE
-      XMAX=0.0000001
-      DO 115 J=N1,N2
-C     IF(XMAX-ABS(A(J))) 116,115,115
-       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
- 116   XMAX=ABS(A(J))
- 115  CONTINUE
-      DO 120 L=N1,N2
-       I(L) = (A(L)*SCLFT*.99999)/XMAX
- 120  CONTINUE   
- 113  RETURN
       END
 
       SUBROUTINE GEN5
       END
 
-      SUBROUTINE GEN6
-      DIMENSION I(15000),P(100),IP(21),A(512)
-      COMMON I,P/PARM/IP
-      SCLFT=IP(15)
-      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
- 6    N11=N1-1
-      N6=IP(6)
-      N2=N6/4
-      XNQ=N2-1
-      N3=N2+N2
-      N4=N3+N2
-      ARG1=P(5)
-      ARG2=P(6)
-      ARG3=P(7)
-      ARG4=P(8)
-C     IF(ARG1) 610,610,611
-      IF(ARG1 > 0) GOTO 611
- 610  Y1=11.*ALOG(2.)/XNQ
- 611  Y1=ARG1*ALOG(2.)/XNQ
- 612  CONTINUE
-C     IF(ARG2) 614,614,615
-      IF(ARG2 > 0 ) GOTO 615
- 614  Y2=.99999
-      GOTO 616
- 615  Y2=ARG2
- 616  CONTINUE
- 618  Y3=.99999
-      GOTO 620
- 619  Y3=ARG3
- 620  CONTINUE
-C     IF(ARG4) 622,622,623
-      IF(ARG4 > 0) GOTO 623
- 622  Y4=11.*ALOG(2.)/XNQ
-      GOTO 624
- 623  Y4=ARG4*ALOG(2.)/XNQ
- 624  CONTINUE
-      DO 630 J=1,N2
-         XJ=J-N2
-         YJ=Y1*XJ
-         A(J)=.99999*EXP(YJ)*Y2
-         JJ=J+N11
-         I(JJ)=A(J)*SCLFT
- 630  CONTINUE   
-      FACT=(Y3-Y2)/XNQ
-      NN2=N2+1
-      DO 640 J=NN2,N3
-         AJ=J-N2
-         A(J)=J-N2
-         A(J)=.99999*(Y2+FACT*AJ)
-         JJ=J+N11
-         I(JJ)=A(J)*SCLFT
- 640  CONTINUE   
-      NN3=N3+1
-      DO 650 J=NN3,N4
-         XJ=NN3-J
-         YJ=Y4*XJ
-         A(J)=.99999*EXP(YJ)*Y3
-         JJ=J+N11
-         I(JJ)=A(J)*SCLFT
- 650     CONTINUE
-      NN4=N1+N4
-      NN6=N11+N6
-      DO 660 J=NN4,NN6
-         I(JJ)=0
- 660  CONTINUE
-      RETURN
-      END
 
-      SUBROUTINE GEN7
-      DIMENSION I(15000),P(100),IP(21),A(7000)
-      COMMON I,P/PARM/IP
-      EQUIVALENCE(I,A)
-      SCLFT=IP(15)
-      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
-      N2=N1+IP(6)-1
-      DO 100 K=N1,N2
-         A(K)=0.0 
- 100  CONTINUE
-C     IF(P(5)) 200,300,250
-      IF(P(5) == 0) GOTO 300
-      IF(P(5) > 0) GOTO  250
- 200  XN=P(5)*ALOG(2.)/511.
-      DO 205 J=N1,N2
-      XJ=J-N1
-      YJ=XN*XJ
-      A(J)=EXP(YJ)*.9999
-      I(J)=A(J)*SCLFT
- 205  CONTINUE
-      GOTO 500
- 250  XN=P(5)*ALOG(2.)/511.
-      DO 255 J=N1,N2
-      XJ=J-N1-511
-      YJ=XN*XJ
-      A(J)=EXP(YJ)*.999999
-      I(J)=EXP(YJ)*.999999
- 255  CONTINUE
-      GOTO 500
- 300  CONTINUE
-      DO 325 J=N1,N2
-      XJ=J-N1+1
-      YJ=(6.2832*(XJ-256.5))/511.
-      ZJ=ALOG(.008)*(1.-COS(YJ))
-      A(J)=EXP(ZJ)*.99999
-      I(J)=A(J)*SCLFT
- 325  CONTINUE
- 500  RETURN
-      END
 
-      SUBROUTINE GEN8
-      DIMENSION I(15000),P(100),IP(21),A(7000)
-      COMMON I,P/PARM/IP
-      EQUIVALENCE(I,A)
-      SCLFT=IP(15)
-      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
-      N2=N1+IP(6)-1
-      DO 100 K=N1,N2
-        A(K)=0.0 
- 100  CONTINUE
-C     IF(P(5)) 200,250,300
-      IF(P(5) == 0) GOTO 250
-      IF(P(5) > 0) GOTO 300
- 200  CONTINUE
-      XM=-P(5)
-      DO 225 J=N1,N2
-         XJ=J-N1+1
-         YJ=(6.2832*(XJ-44.))/170.
-         ZJ = ALOG(.008)*(1.-SIN(YJ))*.5*XM
-         A(J)=EXP(ZJ)
-         I(J)=A(J)*SCLFT
- 225     CONTINUE
-      GOTO 500
- 250  CONTINUE
-      XM=P(6)
-      IF(XM.EQ.0)XM=1
-      DO 275 J=N1,N2
-         XJ=J-N1+1
-         YJ=(6.2832*(XJ-256.5))/511.
-         ZJ=ALOG(.008)*(1.-COS(YJ))*.5*XM
-         A(J)=EXP(ZJ)
-         I(J)=A(J)*SCLFT
- 275     CONTINUE
-      GOTO 500
- 300  CONTINUE
-      XM=P(5)
-      DO 325 J=N1,N2
-         XJ=J-N1+1
-         YJ=(6.2832*(XJ-65.))/256.
-         ZJ=ALOG(.008)*(1.-SIN(YJ))*.5*XM
-         A(J)=EXP(ZJ)
-         I(J)=A(J)*SCLFT
- 325     CONTINUE
- 500     RETURN
-         END
+
 C     **** DUMMY SUBROUTINES ****
       
       
