@@ -18,12 +18,17 @@ C     needs more tests but score from Little Boy is running now
 
 C     PASS 2 MAIN PROGRAM
 C     *** MUSIC V ***
+C     VL Feb 22 - making this a function so it can be called externally
+C     RN is expected to be the CONVT routine number      
+      INTEGER FUNCTION PASS2(RN)
+      INTEGER RN
       DIMENSION G(1000),I(1000),T(1000),D(10000),P(100),IP(10)
-      COMMON IP,P,G,I,T,D,IXJQ,TLAST,BLAST
+      COMMON IP,P,G,I,T,D,IXJQ,TLAST,BLAST,IROUT
 
       integer inputfile
       integer outputfile
-
+      IROUT = RN
+            
 C     INITIALIZING PROGRAM
 C     NOMINAL SAMPLING RATE, NOTE PARAMETER LENGTH, NUMBER OF CARDS
 C     NO OF OP CODES, PASS 11 REPORT PRINT PARAMETER
@@ -41,6 +46,7 @@ C     CONVT work
       NOPC=12
       IXJQ=0
       IEND=0
+ 
 
 C     C*****  NREAD=2
 C     C*****  NWRITE=3
@@ -76,7 +82,10 @@ c 100     D(13)=P(I2)
 c      IF(ID-NPAR)102,102,101
       IF((ID-NPAR).le.0) go to 102
  101  CALL ERROR(20)
-      STOP
+C     VL FEB 22 do not stop, set error 
+      PASS2 = 20
+      GOTO 9999
+C     STOP
  102  IN=IN+1
 
 c      IF (IN-NCAR)103,103,101
@@ -105,13 +114,15 @@ c         IF(I6)121,121,122
          IF(I6.gt.0) go to 122
 
  121     CALL ERROR(21)
+         PASS2 = 21
          GO TO 1
 c 122     IF (I6-NOPC)123,123,121
  122     IF ((I6-NOPC).gt.0) go to 121
         
 c     123     GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
           GO TO (2,2,2,2,2,2,7,8,7,10,2,8),I6
- 7       CALL ERROR(22)
+ 7        CALL ERROR(22)
+          PASS2 = 22
          GO TO 1
          
 C     [page 3-2]
@@ -136,6 +147,7 @@ c     IF(I6-12)1,2,1
 c         IF(I13)125,125,126
          IF(I13.gt.0) go to 126
  125     CALL ERROR(23)
+         PASS2 = 23
          GO TO 1
 c 126     IF(I13-5)127,127,125
  126     IF((I13-5).gt.0) go to 125
@@ -172,11 +184,13 @@ c 141  PRINT 142
       GO TO 150
  143  PRINT 144
  144  FORMAT (' END OF PASS II')
-
-      close(inputfile)
+      PASS2 = 0
+ 9999 close(inputfile)
       close(outputfile)
-
-      STOP
+  
+C    VL feb 22 do not stop, just return      
+C     STOP
+      RETURN      
       END
 
 C     READ2 PASS 2 DATA INPUT ROUTINE
@@ -226,7 +240,7 @@ C     WRIT2 DATA OUTPUTING ROUTINE FOR PASS 2
 C     *** MUSIC V ***
       SUBROUTINE WRITE2(N)
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
-     *BLAST
+     *     BLAST, IROUT
       IF(G(2).EQ.0.)GO TO 150
       X=P(2)
       Y=P(4)
@@ -279,7 +293,7 @@ c     CON = G(J-1)+((T-G(J-2))/(G(J)-G(J-2)))*(G(J+1)-G(J-1))
 
 C     CONVT FOR UNIT GENERATORS CHECK
 C     
-C     DUMMY NO OPERATION ACTUALLY PERFORMED
+C     DUMMY NO OPERATION ACTUALLY PERFORMEDC
 C******WHEN DUMMY IS REMOVED ANOTHER CONVT MUST!!!! BE LOADED!!!*****
       
 C     [page 3-4]
@@ -290,17 +304,23 @@ C***  RETURN
 C***  END
 
 c added back in
-C      SUBROUTINE CONVT
-C      COMMON IP(10),P(100),G(1000)
-C      RETURN
-C      END
+      SUBROUTINE CONVT
+      COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
+     *     BLAST, IROUT
+      PRINT *, IROUT
+      GOTO(1,9999),IROUT
+      CALL CONVT0
+      GOTO 9999
+ 1    CALL CONVT1
+      GOTO 9999      
+ 9999 RETURN
+      END
 
 C     GENERAL CONVT from Risset's Catalogue
 C     Added by V Lazzarini, 2009
 C     Bug in G() assignment fixed 25/01/22
-      SUBROUTINE CONVT
+      SUBROUTINE CONVT0
       COMMON IP(10),P(100),G(1000)
-      
       IF (G(3).NE.0.0) RETURN
       IF (P(1).NE.1.0) RETURN
 C     freq conversion factor tabsize/sr
@@ -341,9 +361,40 @@ C        IF (P(M+1)) 32,33,34
       RETURN
       END
 
+C  FORTRAN NDECK
+C   CONVT POUR FANFARE FEEDBACK
+C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
+C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
+C
+      SUBROUTINE CONVT1
+      COMMON IP(10),P(100),G(1000)
+      IF(G(10).GE..5)GOTO100
+      IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
+      IF(P(1).NE.1.)GOTO100
+      IF(P(3).GE.6.5)GOTO40
+      F=511./G(4)
+      FE=F/4.
+      P(2)=.1024*P(2)
+      P(4)=.1024*(P(4)+16.)
+      P(6)=F*P(6)
+      P(8)=P(4)-P(7)-P(9)
+      IF(P(8))2,3,4
+ 2    P(7)=P(7)*P(4)/(P(7)+P(9))
+      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 3    P(8)=128.
+      GOTO5
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
+      P(9)=FE/P(9)
+      GOTO100
+ 40   P(4)=.1024*(P(4)+16.)
+ 50   P(2)=.1024*(P(2)+16.)
+ 100  RETURN
+      END
+
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
-      SUBROUTINE ERROR(I)
+      SUBROUTINE ERROR2(I)
       PRINT 100,I
  100  FORMAT(' ERROR OF TYPE',I5)
       RETURN

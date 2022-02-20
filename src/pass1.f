@@ -38,6 +38,8 @@ C     [page 1-1] -- these are the original XGP pages to help me find my place
 C     
 C     PASS1 PASS 1 MAIN PROGRAM
 C     PASS1   *** MUSIC V ***   THIS VERSION RUNS ON THE PDP10, JULY 14,1971
+C     VL Feb 22 - making this a function so it can be called externally from a driver program      
+      INTEGER FUNCTION PASS1()
       COMMON P(100),IP(10),D(2000)
       integer ipdp
       integer pflflag
@@ -145,12 +147,18 @@ C     C	  WRITE (6, 111)
       PRINT 111
 C********PDP ********	  
  111  FORMAT (' END OF PASS I')
-      IF(IP(2).EQ.1) CALL HARVEY
+      IF(IP(2).EQ.1) GOTO 5555
+      PASS1 = 0 
+      GOTO 5556
+      
+ 5555 CALL HARVEY
+      PASS1 = 1
 
-      close(inputfile)
+ 5556 close(inputfile)
       close(outputfile)
-
-      CALL EXIT
+C     VL Feb 22 do not exit as this is not a main program      
+C     CALL EXIT
+      RETURN     
 C     SET VARIABLES IN PASS 1
  7    I2=P(3)
       I3=I2+IP(1)-4
@@ -714,12 +722,6 @@ C     C    ENTRY PLF4
 C     C    ENTRY PLF5
 c     END
 
-
-      
-
-
-      
-
 C     ERRO1    GENERAL ERROR ROUTINE
 C     ***MUSIC V ***
       SUBROUTINE ERROR(I)
@@ -733,7 +735,9 @@ C     C    WRITE (6,1)
       PRINT 1011
 C********PDP *********
  1011 FORMAT(' WHERE IS HARVEY')
-      CALL EXIT
+C     VL feb 22 do not exit from here, return instead      
+C     CALL EXIT
+      RETURN
       END
 
 c     SUBROUTINE MOVR(IBCD,LA,LB)

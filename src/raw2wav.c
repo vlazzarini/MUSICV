@@ -72,14 +72,11 @@ typedef struct wave_head{
 
 #define bufsize 512
 
-int main(int argc, const char *argv[]) {
+int raw2wav(const char *in, const char *out, int chns, int sr) {
   FILE *fp, *fpi;
   size_t r = 0, bytes =0;
   WAVEHEAD header;
   float buf[bufsize];
-  const char* fname = argc > 1 ? argv[1] : "snd.wav";
-  int chns = argc > 2 ? atoi(argv[2]) : 1;
-  int sr = argc > 3 ? atoi(argv[3]) : 44100;
   header.magic = (long)  (*(long*)RIFF_ID);			// 'RIFF' 
   header.len0 = 0;
   header.magic1 = (long)  (*(long*)WAVE_ID);			// 'WAVE' 
@@ -98,14 +95,14 @@ int main(int argc, const char *argv[]) {
   byteswap(&header.nBlockAlign,2);		// (rate*nch +7)/8 
   header.size = 32;
   byteswap(&header.size,2);			// size of each sample (8,16,32) 
-  header.magic3= (long)  (*(long*)DATA_ID);;
+  header.magic3 = (long)  (*(long*)DATA_ID);;
   header.datasize = 0;
 
-  if((fpi = fopen("snd.raw", "r")) == NULL) {
-    printf("Could not open input snd.raw \n");
+  if((fpi = fopen(in, "r")) == NULL) {
+    printf("Could not open raw input file %s \n", in);
     return -1;
   }    
-  if((fp = fopen(fname, "w")) != NULL) {
+  if((fp = fopen(out, "w")) != NULL) {
     fwrite(&header,sizeof(WAVEHEAD),1,fp);
     do {
       r = fread(buf,sizeof(float),bufsize,fpi);
@@ -121,8 +118,9 @@ int main(int argc, const char *argv[]) {
     byteswap(&header.len0,4);
     fwrite(&header,sizeof(WAVEHEAD),1,fp);
     fclose(fp);
-    printf("Wrote %zu bytes of 32-bit float sample frames to %s (%s) \n", bytes, fname, chns > 1 ? "stereo" : "mono");
-  } else printf("Could not open %s for output\n", fname);
+    printf("Wrote %zu bytes of 32-bit float sample frames to %s (%s) \n",
+	    bytes, out, chns > 1 ? "stereo" : "mono");
+  } else printf("Could not open %s for output\n", out);
   fclose(fpi);
   return 0;
 }

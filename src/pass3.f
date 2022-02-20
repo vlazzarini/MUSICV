@@ -43,6 +43,8 @@ C     the number of channels and sampling rate used
 C     PASS3   PASS 3 MAIN PROGRAM
 C     *** MUSIC V ***
 C     DATA SPECIFICATION
+C     VL Feb 22 - making this a function so it can be called externally      
+      INTEGER FUNCTION PASS3()      
       INTEGER PEAK
       DIMENSION T(50),TI(50),ITI(50)
       COMMON I(15000),P(100)/PARM/IP(21)/FINOUT/PEAK,NRSOR
@@ -140,6 +142,7 @@ c      IF(P(2)-T(1))200,200,244
 c      IF(IOP)201,201,202
       IF(IOP.gt.0) go to 202
  201  CALL ERROR(1)
+      PASS3 = 1
       GO TO 204
          
 C     [page 4-2]
@@ -198,7 +201,8 @@ C     WRITE(6,10) PEAK,NRSOR
 C      PRINT 10,PEAK,NRSOR
 C 10   FORMAT ('0PEAK AMPLITUDE WAS',I8/'0NUMBER OF SAMPLES OUT OF RANGE WAS',I8)
 C     CALL EXIT
-      IF(IDSK.LT.0)CALL EXIT
+C     IF(IDSK.LT.0) CALL EXIT
+      IF(IDSK.LT.0) GOTO 9999
       J=IP(10)
       L=J+1024
       DO 2001 K=J,L
@@ -209,11 +213,12 @@ C     WILL WRITE 1024 0'S ON DSK.
       CALL FASTOUT(I(J),1024, outputfile)
 
 c      CALL FINFILE
+ 9999 close(inputfile)
+      close(outputfile)
        
-       close(inputfile)
-       close(outputfile)
-
-      CALL EXIT
+      PASS3 = 0
+      RETURN  
+C      CALL EXIT
 c      END
 
 c      STOP
@@ -223,6 +228,7 @@ c         IF(I(N1)+1)230,231,230
          IF((I(N1)+1).eq.0) go to 231
  230  CONTINUE
       CALL ERROR(2)
+      PASS3 = 2
       GO TO 204
  231  M1=N1
       M2=N1+I(1)-1
@@ -247,6 +253,7 @@ c 234     TI(N1)=P(2)+P(4)
          GO TO 204
  235  CONTINUE
       CALL ERROR(3)
+      PASS3 = 3
       GO TO 204
 C     DEFINE INSTRUMENT
  2    M1=I(2)
@@ -1361,7 +1368,7 @@ c (XARR(J), J=1,N)
       
 C     ERROR1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
-      SUBROUTINE ERROR(I)
+      SUBROUTINE ERROR3(I)
       PRINT 100,I
  100  FORMAT(' ERROR OF TYPE',I5)
       RETURN

@@ -28,10 +28,16 @@
 #include <stdio.h>
 #define BUFSIZE 1024
 
+extern int pass1_();
+extern int pass2_(int *);
+extern int pass3_();
+extern int raw2wav(const char *, const char *, int, int); 
+
 int main(int argc, char *argv[]) {
   if (argc > 2) {
     FILE *fin,*fout;
-    int ret;
+    int ret = 0;
+    int subr = 0;
     char buffer[BUFSIZE];
     fin = fopen(argv[1],"r");
     if(fin) {
@@ -45,17 +51,23 @@ int main(int argc, char *argv[]) {
 	printf("could not open score file for writing\n");
         return -1;
       }
-      fclose(fin);
+      rewind(fin);
+      do {
+	ret = fscanf(fin," COMMENT: CONVT %d ; \n", &subr);
+	fscanf(fin, "%s\n",buffer);
+      } while(!feof(fin) || ret == 0);
+      printf(" CONVT: %d \n", subr);
+      fclose(fin);      
       fclose(fout);
     } else {
       printf("could not open %s for reading\n", argv[1]);
         return -1;
-    } 
-    ret = system("pass1");
+    }
+    ret = pass1_();
     if(ret == 0) {
-      ret = system("pass2");
+      ret = pass2_(&subr);
       if(ret == 0) {
-	ret = system("pass3");
+	ret = pass3_();
 	if(ret == 0) {
 	  int chn = 1;
 	  int sr = 44100;
@@ -63,11 +75,10 @@ int main(int argc, char *argv[]) {
 	  fscanf(fin, "%d", &chn);
 	  fscanf(fin, "%d", &sr);
 	  fclose(fin);
-	  snprintf(buffer,BUFSIZE,"raw2wav %s %d %d", argv[2], chn, sr);
 	  printf(" PASS III completed successfully\n"
 		 "Created snd.raw (32-bit floas, sr = %d KHz, %s)\n", sr,
 		  chn > 1 ? "stereo" : "mono");
-	  ret = system(buffer);
+	  ret = raw2wav("snd.raw",argv[2], chn, sr);
 	  if(ret) {
 	    printf("Failed to convert snd.raw to %s\n", argv[2]);
 	    return -1;
