@@ -77,8 +77,8 @@ int main(int argc, char *argv[]) {
 	  fclose(fin);
 	  printf(" PASS III completed successfully\n"
 		 "Created snd.raw (32-bit floas, sr = %d KHz, %s)\n", sr,
-		  chn > 1 ? "stereo" : "mono");
-	  ret = raw2wav("snd.raw",argv[2], chn, sr);
+		 chn == 2 ? "stereo" : "mono");
+	  ret = raw2wav("snd.raw",argv[2], chn == 2 ? 2 : 1, sr);
 	  if(ret) {
 	    printf("Failed to convert snd.raw to %s\n", argv[2]);
 	    return -1;

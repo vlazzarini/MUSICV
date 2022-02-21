@@ -1016,8 +1016,44 @@ C**** END
       END
 
 C   dummy subroutines for little boy
+C SUBROUTINE GEN4
+C END
       SUBROUTINE GEN4
-      END
+      DIMENSION I(15000),P(100),IP(21),A(7000)
+      COMMON I,P/PARM/IP
+      EQUIVALENCE(I,A)
+      SCLFT=IP(15)
+      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+      N2=N1+IP(6)-1
+      DO 100 K=N1,N2
+      A(K1)=0.0   
+ 100  CONTINUE
+      FAC=6.283185/(FLOAT(IP(6))-1.0)
+      NMAX=I(1)-4
+      DO 103 L=5, NMAX,5
+         P2=P(L)
+         P3=P(L+1)
+         P4=P(L+3)
+         JP5=P(L+3)
+         IP5=JP5+N1-1
+         IP6=IFIX(P(L+4))+N1-1
+         DO 105 J=IP5,IP6
+            XJ=J-JP5-N1+1
+            ARG=XJ*P3+P4
+            A(J)=A(J)+P2*SIN(FAC*ARG)
+ 105     CONTINUE   
+ 103     CONTINUE
+      XMAX=0.0000001
+      DO 115 J=N1,N2
+C     IF(XMAX-ABS(A(J))) 116,115,115
+       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
+ 116   XMAX=ABS(A(J))
+ 115  CONTINUE
+      DO 120 L=N1,N2
+       I(L) = (A(L)*SCLFT*.99999)/XMAX
+ 120  CONTINUE   
+ 113  RETURN
+      END      
 
       SUBROUTINE GEN5
       END
