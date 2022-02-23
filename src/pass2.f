@@ -307,7 +307,7 @@ c added back in
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
      *     BLAST, IROUT
-      GOTO(1,2,3),IROUT
+      GOTO(1,2,3,4,5,6.7),IROUT
       CALL CONVT0
       GOTO 9999
  1    CALL CONVT1
@@ -315,7 +315,15 @@ c added back in
  2    CALL CONVT2
       GOTO 9999
  3    CALL CONVT3
-      GOTO 9999          
+      GOTO 9999
+ 4    CALL CONVT4
+      GOTO 9999
+ 5    CALL CONVT5
+      GOTO 9999
+ 6    CALL CONVT6
+      GOTO 9999
+ 7    CALL CONVT7
+      GOTO 9999        
  9999 RETURN
       END
 
@@ -401,8 +409,47 @@ C    VOLCONVT CONVT POUR VOL LB
       P(9)=F*P(9)
  100  RETURN
       END      
-      
 
+C   CONVT POUR FANFARE TRIOMPHE
+      SUBROUTINE CONVT4
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      FE=F/4.
+      P(6)=F*P(6)
+      P(8)=P(4)-P(7)-P(9)
+      IF(P(8))2,3,3
+ 2    P(7)=P(7)*P(4)/(P(7)+P(9))
+      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 3    P(8)=128.
+      GOTO5
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
+      P(8)=FE/P(8)
+      P(9)=FE/P(9)
+ 100  RETURN
+      END      
+      
+C   CONVT POUR FANFARE TRIOMPHE
+      SUBROUTINE CONVT5
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      IF(P(3).GE.7.)GOTO100
+      F=511./G(4)
+      FE=F/4.
+      P(6)=F*P(6)
+      P(8)=P(4)-P(7)-P(9)
+      IF(P(8))2,3,4
+ 2    P(7)=P(7)*P(4)/(P(7)+P(9))
+      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 3    P(8)=128.
+      GOTO5
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
+      P(8)=FE/P(8)
+      P(9)=FE/P(9)
+ 100  RETURN
+      END      
 
 
       
@@ -436,6 +483,67 @@ C
  50   P(2)=.1024*(P(2)+16.)
  100  RETURN
       END
+
+
+C   CONVT POUR FANFARE FEEDBACK
+C...FOR FEEDBACK INSTS, P2 AND P4 INTEGERS IN SCORE
+C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
+C
+      SUBROUTINE CONVT6
+      COMMON IP(10),P(100),G(1000)
+      IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
+      IF(P(1).NE.1.)GOTO100
+      IF(P(3).GE.6.5)GOTO40
+      F=511./G(4)
+      FE=F/4.
+      P(6)=F*P(6)
+      P(8)=P(4)-P(7)-P(9)
+      IF(P(8))2,3,4
+ 2    P(7)=P(7)*P(4)/(P(7)+P(9))
+      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 3    P(8)=128.
+      GOTO5
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
+      P(9)=FE/P(9)
+ 40   P(4)=.1024*P(4)
+ 50   P(2)=.1024*P(2)
+ 100  RETURN
+      END
+
+C   CONVT POUR FANFARE FEEDBACK
+C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
+C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
+C
+      SUBROUTINE CONVT7
+      COMMON IP(10),P(100),G(1000)
+      IF(G(10).GE..5)GOTO100
+      IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
+      IF(P(1).NE.1.)GOTO100
+      IF(P(3).GE.6.5)GOTO40
+      F=511./G(4)
+      FE=F/4.
+      P(2)=.1024*P(2)
+      P(4)=.1024*(P(4)+16.)
+      P(6)=F*P(6)
+      P(8)=P(4)-P(7)-P(9)
+      IF(P(8))2,3,4
+ 2    P(7)=P(7)*P(4)/(P(7)+P(9))
+      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 3    P(8)=128.
+      GOTO5
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
+      P(9)=FE/P(9)
+      GOTO100
+ 40   P(4)=.1024*(P(4)+16.)
+ 50   P(2)=.1024*(P(2)+16.)
+ 100  RETURN
+      END
+ 
+ 
+      
+      
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***

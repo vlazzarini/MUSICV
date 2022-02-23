@@ -55,10 +55,10 @@ C     C******** DATA IIIRD/Z5EECE66D/
 
       DATA IIIRD/976545367/
 C     SET I ARRAY =0 (7/10/69)
-      DATA I/15000*0/
+C      DATA I/15000*0/
 c      CHARACTER*1 JSTR(5)
 c      CHARACTER*1 FLNM(32)
-
+      
       integer inputfile
       integer outputfile
 
@@ -66,7 +66,11 @@ C*****************
 C     INITIALIZATION OF PIECE
 C     ARBITRARY STARTING NUMBER FOR SUBROUTINE RANDU
 
+      DO 9898 JINIT=1,15000
+         I(JINIT) = 0
+ 9898 CONTINUE   
 
+      PRINT *,I(8)
       inputfile=1
       outputfile=2
       open(inputfile, FILE='pass2.data', STATUS='OLD')
