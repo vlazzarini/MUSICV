@@ -43,57 +43,32 @@ C     the number of channels and sampling rate used
 C     PASS3   PASS 3 MAIN PROGRAM
 C     *** MUSIC V ***
 C     DATA SPECIFICATION
-C     VL Feb 22 - making this a function so it can be called externally      
-      INTEGER FUNCTION PASS3()      
+      FUNCTION PASS3() 
       INTEGER PEAK
       DIMENSION T(50),TI(50),ITI(50)
       COMMON I(15000),P(100)/PARM/IP(21)/FINOUT/PEAK,NRSOR
 C     C******** DATA IIIRD/Z5EECE66D/
 
+      DATA IP/12,512,44100,14500,14400,512,13000,35,40,6657,2048,
+     *     1000000,6657,512,7777777,6*0/
+
+      DATA IIIRD/976545367/
+C     SET I ARRAY =0 (7/10/69)
+c      DATA I/15000*0/
+c      CHARACTER*1 JSTR(5)
+c      CHARACTER*1 FLNM(32)
+
       integer inputfile
       integer outputfile
 
-C     DATA IP/12,512,44100,14500,14400,512,13000,35,40,6657,2048,
-C     *     1000000,6657,512,7777777,6*0/
-      IP(1) = 12
-      IP(2) = 512
-      IP(3) = 44100
-      IP(4) = 14500
-      IP(5) = 14400
-      IP(6) = 512
-      IP(7) = 13000
-      IP(8) = 35
-      IP(9) = 40
-      IP(10) = 6657
-      IP(11) = 2048
-      IP(12) = 1000000
-      IP(13) = 6657
-      IP(14) = 512
-      IP(15) = 7777777
-      IP(16) = 0
-      IP(17) = 0
-      IP(18) = 0
-      IP(18) = 0
-      IP(20) = 0
-      IP(21) = 0 
-
-C      DATA IIIRD/976545367/
-      IIRD = 976545367     
-C     SET I ARRAY =0 (7/10/69)
-C     DATA I/15000*0/
-
-      DO 9898 JINIT=1,15000
+      DO 9998 JINIT=1,15000
          I(JINIT) = 0
- 9898 CONTINUE         
-      
-c      CHARACTER*1 JSTR(5)
-c     CHARACTER*1 FLNM(32)
-
-
+ 9998 CONTINUE   
 
 C*****************
 C     INITIALIZATION OF PIECE
 C     ARBITRARY STARTING NUMBER FOR SUBROUTINE RANDU
+
 
       inputfile=1
       outputfile=2
@@ -169,8 +144,7 @@ c      IF(P(2)-T(1))200,200,244
  200  IOP=P(1)
 c      IF(IOP)201,201,202
       IF(IOP.gt.0) go to 202
- 201  CALL ERROR3(1)
-      PASS3 = 1
+ 201  CALL ERROR(1)
       GO TO 204
          
 C     [page 4-2]
@@ -189,9 +163,7 @@ C     VL:25/01/22 updated for gfortran 2018
       
       GO TO 204
  3    IGEN=P(3)
-      GO TO (281,282,283,284,285),IGEN
-C     make sure GEN > 5 is not called      
-      GOTO 204
+      GO TO (281,282,283,284,285,286,287,288),IGEN
  281  CALL GEN1
       GO TO 204
  282  CALL GEN2
@@ -201,6 +173,12 @@ C     make sure GEN > 5 is not called
  284  CALL GEN4
       GO TO 204
  285  CALL GEN5
+      GO TO 204
+ 286  CALL GEN6
+      GO TO 204
+ 287  CALL GEN7
+      GO TO 204
+ 288  CALL GEN8
       GO TO 204
  4    IVAR=P(3)
       IVARE=IVAR+I(1)-4
@@ -225,8 +203,8 @@ C     WRITE(6,10) PEAK,NRSOR
 C      PRINT 10,PEAK,NRSOR
 C 10   FORMAT ('0PEAK AMPLITUDE WAS',I8/'0NUMBER OF SAMPLES OUT OF RANGE WAS',I8)
 C     CALL EXIT
-C     IF(IDSK.LT.0) CALL EXIT
-      IF(IDSK.LT.0) GOTO 9999
+C     IF(IDSK.LT.0)CALL EXIT
+      IF(IDSK.LT.0) RETURN
       J=IP(10)
       L=J+1024
       DO 2001 K=J,L
@@ -237,12 +215,12 @@ C     WILL WRITE 1024 0'S ON DSK.
       CALL FASTOUT(I(J),1024, outputfile)
 
 c      CALL FINFILE
- 9999 close(inputfile)
-      close(outputfile)
        
-      PASS3 = 0
-      RETURN  
-C      CALL EXIT
+       close(inputfile)
+       close(outputfile)
+
+c     CALL EXIT
+       RETURN
 c      END
 
 c      STOP
@@ -251,8 +229,7 @@ C     ENTER NOTE TO BE PLAYED
 c         IF(I(N1)+1)230,231,230
          IF((I(N1)+1).eq.0) go to 231
  230  CONTINUE
-      CALL ERROR3(2)
-      PASS3 = 2
+      CALL ERROR(2)
       GO TO 204
  231  M1=N1
       M2=N1+I(1)-1
@@ -276,8 +253,7 @@ c 234     TI(N1)=P(2)+P(4)
          ITI(N1)=M1
          GO TO 204
  235  CONTINUE
-      CALL ERROR3(3)
-      PASS3 = 3
+      CALL ERROR(3)
       GO TO 204
 C     DEFINE INSTRUMENT
  2    M1=I(2)
@@ -388,7 +364,7 @@ C     [page 4-4]
 C     VL:25/01/22 updated for gfortran 2018           
  267  CONTINUE     
          GO TO (268,265),IREST
- 268     DO 270 NS1=MS1,MS3,MS2
+ 268  DO 270 NS1=MS1,MS3,MS2
 c            IF(I(NS1)+1)271,270,271
             IF((I(NS1)+1).eq.0) go to 270
 C     GO THROUGH UNIT GENERATORS IN INSTRUMENT
@@ -401,7 +377,7 @@ CC***** IF((IGEN)-101)293,294,294
 CC***** 293 CALL SAMGEN(I)
 CC***** ABOVE FOR MACHINE LANG. UNIT GENERATORS ******
 CC***** GO TO 295
-c 294        CALL FORSAM
+c     294        CALL FORSAM            
           CALL FORSAM
 c 295        IGEN=I(IGEN+1)
         IGEN=I(IGEN+1)
@@ -518,18 +494,18 @@ C**********ABOVE FOR FM (NEG. FREQ. TO OSCIL)
  292     J6=L1+J3-1
          I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
  293  CONTINUE
-C     PRINT *, L3
+C      PRINT *, L3
       I(L5)=IFIX(SUM*SFID)
       RETURN
 C     ADD TWO BOX
 c 103  IF(M1)250,250,251
- 103  IF(M1.gt.0) go to 251
+ 103   IF(M1.gt.0) go to 251
 c 250  IN1=I(L1)
        IN1=I(L1)
 c 251  IF(M2)252,252,253
  251  IF(M2.gt.0) go to 253
 c 252  IN2=I(L2)
-       IN2=I(L2)
+      IN2=I(L2)
  253  DO 258 J3=1,NSAM
 c         IF(M1)255,255,254
          IF(M1.le.0) go to 255
@@ -542,7 +518,7 @@ c 256     J5=L2+J3-1
           J5=L2+J3-1
          IN2=I(J5)
  257     J6=L3+J3-1
-         I(J6)=IN1+IN2
+       I(J6)= IN1+IN2
  258  CONTINUE
       RETURN
 C     RANDOM INTERPOLATING GENERATOR
@@ -1043,10 +1019,121 @@ C**** END
       RETURN
       END
 
-C   dummy subroutines for little boy
-C SUBROUTINE GEN4
-C END
+C     GENS 4,6,7,8 from Risset's catalogue
+C     V Lazzarini, 2009
       SUBROUTINE GEN4
+C     VL: I suspect this was not the GEN4 in the code at the time of little boy
+C     because if this is used, all memory I(1) - I(512) is wiped out with the
+C     line GEN 0 4 0 that is found in some of the scores.     
+c$$$      DIMENSION I(15000),P(100),IP(21),A(7000)
+c$$$      COMMON I,P/PARM/IP
+c$$$      EQUIVALENCE(I,A)
+c$$$      PRINT *, IP(2)
+c$$$      SCLFT=IP(15)
+c$$$      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+c$$$      N2=N1+IP(6)-1
+c$$$      DO 100 K=N1,N2
+c$$$      A(K1)=0.0   
+c$$$ 100  CONTINUE
+c$$$      FAC=6.283185/(FLOAT(IP(6))-1.0)
+c$$$      NMAX=I(1)-4
+c$$$      DO 103 L=5, NMAX,5
+c$$$         P2=P(L)
+c$$$         P3=P(L+1)
+c$$$         P4=P(L+2)
+c$$$         JP5=P(L+3)
+c$$$         IP5=JP5+N1-1
+c$$$         IP6=IFIX(P(L+4))+N1-1
+c$$$         DO 105 J=IP5,IP6
+c$$$            XJ=J-JP5-N1+1
+c$$$            ARG=XJ*P3+P4
+c$$$            A(J)=A(J)+P2*SIN(FAC*ARG)
+c$$$ 105     CONTINUE   
+c$$$ 103     CONTINUE
+c$$$      XMAX=0.0000001
+c$$$      DO 115 J=N1,N2
+c$$$C     IF(XMAX-ABS(A(J))) 116,115,115
+c$$$       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
+c$$$ 116   XMAX=ABS(A(J))
+c$$$ 115  CONTINUE
+c$$$      DO 120 L=N1,N2 
+c$$$       I(L) = (A(L)*SCLFT*.99999)/XMAX   
+c$$$ 120  CONTINUE   
+c$$$ 113  RETURN
+      END
+
+      SUBROUTINE GEN5
+      END
+
+      SUBROUTINE GEN6
+      DIMENSION I(15000),P(100),IP(21),A(512)
+      COMMON I,P/PARM/IP
+      SCLFT=IP(15)
+      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+ 6    N11=N1-1
+      N6=IP(6)
+      N2=N6/4
+      XNQ=N2-1
+      N3=N2+N2
+      N4=N3+N2
+      ARG1=P(5)
+      ARG2=P(6)
+      ARG3=P(7)
+      ARG4=P(8)
+C     IF(ARG1) 610,610,611
+      IF(ARG1 > 0) GOTO 611
+ 610  Y1=11.*ALOG(2.)/XNQ
+ 611  Y1=ARG1*ALOG(2.)/XNQ
+ 612  CONTINUE
+C     IF(ARG2) 614,614,615
+      IF(ARG2 > 0 ) GOTO 615
+ 614  Y2=.99999
+      GOTO 616
+ 615  Y2=ARG2
+ 616  CONTINUE
+ 618  Y3=.99999
+      GOTO 620
+ 619  Y3=ARG3
+ 620  CONTINUE
+C     IF(ARG4) 622,622,623
+      IF(ARG4 > 0) GOTO 623
+ 622  Y4=11.*ALOG(2.)/XNQ
+      GOTO 624
+ 623  Y4=ARG4*ALOG(2.)/XNQ
+ 624  CONTINUE
+      DO 630 J=1,N2
+         XJ=J-N2
+         YJ=Y1*XJ
+         A(J)=.99999*EXP(YJ)*Y2
+         JJ=J+N11
+         I(JJ)=A(J)*SCLFT
+ 630  CONTINUE   
+      FACT=(Y3-Y2)/XNQ
+      NN2=N2+1
+      DO 640 J=NN2,N3
+         AJ=J-N2
+         A(J)=J-N2
+         A(J)=.99999*(Y2+FACT*AJ)
+         JJ=J+N11
+         I(JJ)=A(J)*SCLFT
+ 640  CONTINUE   
+      NN3=N3+1
+      DO 650 J=NN3,N4
+         XJ=NN3-J
+         YJ=Y4*XJ
+         A(J)=.99999*EXP(YJ)*Y3
+         JJ=J+N11
+         I(JJ)=A(J)*SCLFT
+ 650     CONTINUE
+      NN4=N1+N4
+      NN6=N11+N6
+      DO 660 J=NN4,NN6
+         I(JJ)=0
+ 660  CONTINUE
+      RETURN
+      END
+
+      SUBROUTINE GEN7
       DIMENSION I(15000),P(100),IP(21),A(7000)
       COMMON I,P/PARM/IP
       EQUIVALENCE(I,A)
@@ -1054,41 +1141,83 @@ C END
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
       DO 100 K=N1,N2
-      A(K1)=0.0   
+         A(K)=0.0 
  100  CONTINUE
-      FAC=6.283185/(FLOAT(IP(6))-1.0)
-      NMAX=I(1)-4
-      DO 103 L=5, NMAX,5
-         P2=P(L)
-         P3=P(L+1)
-         P4=P(L+3)
-         JP5=P(L+3)
-         IP5=JP5+N1-1
-         IP6=IFIX(P(L+4))+N1-1
-         DO 105 J=IP5,IP6
-            XJ=J-JP5-N1+1
-            ARG=XJ*P3+P4
-            A(J)=A(J)+P2*SIN(FAC*ARG)
- 105     CONTINUE   
- 103     CONTINUE
-      XMAX=0.0000001
-      DO 115 J=N1,N2
-C     IF(XMAX-ABS(A(J))) 116,115,115
-       IF(XMAX-ABS(A(J)) >= 0) GOTO 115
- 116   XMAX=ABS(A(J))
- 115  CONTINUE
-      DO 120 L=N1,N2
-       I(L) = (A(L)*SCLFT*.99999)/XMAX
- 120  CONTINUE   
- 113  RETURN
-      END      
-
-      SUBROUTINE GEN5
+C     IF(P(5)) 200,300,250
+      IF(P(5) == 0) GOTO 300
+      IF(P(5) > 0) GOTO  250
+ 200  XN=P(5)*ALOG(2.)/511.
+      DO 205 J=N1,N2
+      XJ=J-N1
+      YJ=XN*XJ
+      A(J)=EXP(YJ)*.9999
+      I(J)=A(J)*SCLFT
+ 205  CONTINUE
+      GOTO 500
+ 250  XN=P(5)*ALOG(2.)/511.
+      DO 255 J=N1,N2
+      XJ=J-N1-511
+      YJ=XN*XJ
+      A(J)=EXP(YJ)*.999999
+      I(J)=EXP(YJ)*.999999
+ 255  CONTINUE
+      GOTO 500
+ 300  CONTINUE
+      DO 325 J=N1,N2
+      XJ=J-N1+1
+      YJ=(6.2832*(XJ-256.5))/511.
+      ZJ=ALOG(.008)*(1.-COS(YJ))
+      A(J)=EXP(ZJ)*.99999
+      I(J)=A(J)*SCLFT
+ 325  CONTINUE
+ 500  RETURN
       END
 
-
-
-
+      SUBROUTINE GEN8
+      DIMENSION I(15000),P(100),IP(21),A(7000)
+      COMMON I,P/PARM/IP
+      EQUIVALENCE(I,A)
+      SCLFT=IP(15)
+      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+      N2=N1+IP(6)-1
+      DO 100 K=N1,N2
+        A(K)=0.0 
+ 100  CONTINUE
+C     IF(P(5)) 200,250,300
+      IF(P(5) == 0) GOTO 250
+      IF(P(5) > 0) GOTO 300
+ 200  CONTINUE
+      XM=-P(5)
+      DO 225 J=N1,N2
+         XJ=J-N1+1
+         YJ=(6.2832*(XJ-44.))/170.
+         ZJ = ALOG(.008)*(1.-SIN(YJ))*.5*XM
+         A(J)=EXP(ZJ)
+         I(J)=A(J)*SCLFT
+ 225     CONTINUE
+      GOTO 500
+ 250  CONTINUE
+      XM=P(6)
+      IF(XM.EQ.0)XM=1
+      DO 275 J=N1,N2
+         XJ=J-N1+1
+         YJ=(6.2832*(XJ-256.5))/511.
+         ZJ=ALOG(.008)*(1.-COS(YJ))*.5*XM
+         A(J)=EXP(ZJ)
+         I(J)=A(J)*SCLFT
+ 275     CONTINUE
+      GOTO 500
+ 300  CONTINUE
+      XM=P(5)
+      DO 325 J=N1,N2
+         XJ=J-N1+1
+         YJ=(6.2832*(XJ-65.))/256.
+         ZJ=ALOG(.008)*(1.-SIN(YJ))*.5*XM
+         A(J)=EXP(ZJ)
+         I(J)=A(J)*SCLFT
+ 325     CONTINUE
+ 500     RETURN
+         END
 C     **** DUMMY SUBROUTINES ****
       
       
