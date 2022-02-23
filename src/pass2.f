@@ -451,40 +451,6 @@ C   CONVT POUR FANFARE TRIOMPHE
  100  RETURN
       END      
 
-
-      
-C  FORTRAN NDECK
-C   CONVT POUR FANFARE FEEDBACK
-C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
-C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
-C
-      SUBROUTINE CONVTA
-      COMMON IP(10),P(100),G(1000)
-      IF(G(10).GE..5)GOTO100
-      IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
-      IF(P(1).NE.1.)GOTO100
-      IF(P(3).GE.6.5)GOTO40
-      F=511./G(4)
-      FE=F/4.
-      P(2)=.1024*P(2)
-      P(4)=.1024*(P(4)+16.)
-      P(6)=F*P(6)
-      P(8)=P(4)-P(7)-P(9)
-      IF(P(8))2,3,4
- 2    P(7)=P(7)*P(4)/(P(7)+P(9))
-      P(9)=P(9)*P(4)/(P(9)+P(7))
- 3    P(8)=128.
-      GOTO5
- 4    P(8)=FE/P(8)
- 5    P(7)=FE/P(7)
-      P(9)=FE/P(9)
-      GOTO100
- 40   P(4)=.1024*(P(4)+16.)
- 50   P(2)=.1024*(P(2)+16.)
- 100  RETURN
-      END
-
-
 C   CONVT POUR FANFARE FEEDBACK
 C...FOR FEEDBACK INSTS, P2 AND P4 INTEGERS IN SCORE
 C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
