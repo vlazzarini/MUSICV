@@ -169,7 +169,7 @@ c      IF(P(2)-T(1))200,200,244
  200  IOP=P(1)
 c      IF(IOP)201,201,202
       IF(IOP.gt.0) go to 202
- 201  CALL ERROR(1)
+ 201  CALL ERROR3(1)
       PASS3 = 1
       GO TO 204
          
@@ -251,7 +251,7 @@ C     ENTER NOTE TO BE PLAYED
 c         IF(I(N1)+1)230,231,230
          IF((I(N1)+1).eq.0) go to 231
  230  CONTINUE
-      CALL ERROR(2)
+      CALL ERROR3(2)
       PASS3 = 2
       GO TO 204
  231  M1=N1
@@ -276,7 +276,7 @@ c 234     TI(N1)=P(2)+P(4)
          ITI(N1)=M1
          GO TO 204
  235  CONTINUE
-      CALL ERROR(3)
+      CALL ERROR3(3)
       PASS3 = 3
       GO TO 204
 C     DEFINE INSTRUMENT
