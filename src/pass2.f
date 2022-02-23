@@ -307,7 +307,7 @@ c added back in
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
      *     BLAST, IROUT
-      GOTO(1,2,3,4,5,6.7),IROUT
+      GOTO(1,2,3,4,5,6,7),IROUT
       CALL CONVT0
       GOTO 9999
  1    CALL CONVT1

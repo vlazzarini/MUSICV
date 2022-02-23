@@ -50,27 +50,51 @@ C     VL Feb 22 - making this a function so it can be called externally
       COMMON I(15000),P(100)/PARM/IP(21)/FINOUT/PEAK,NRSOR
 C     C******** DATA IIIRD/Z5EECE66D/
 
-      DATA IP/12,512,44100,14500,14400,512,13000,35,40,6657,2048,
-     *     1000000,6657,512,7777777,6*0/
-
-      DATA IIIRD/976545367/
-C     SET I ARRAY =0 (7/10/69)
-C      DATA I/15000*0/
-c      CHARACTER*1 JSTR(5)
-c      CHARACTER*1 FLNM(32)
-      
       integer inputfile
       integer outputfile
+
+C     DATA IP/12,512,44100,14500,14400,512,13000,35,40,6657,2048,
+C     *     1000000,6657,512,7777777,6*0/
+      IP(1) = 12
+      IP(2) = 512
+      IP(3) = 44100
+      IP(4) = 14500
+      IP(5) = 14400
+      IP(6) = 512
+      IP(7) = 13000
+      IP(8) = 35
+      IP(9) = 40
+      IP(10) = 6657
+      IP(11) = 2048
+      IP(12) = 1000000
+      IP(13) = 6657
+      IP(14) = 512
+      IP(15) = 7777777
+      IP(16) = 0
+      IP(17) = 0
+      IP(18) = 0
+      IP(18) = 0
+      IP(20) = 0
+      IP(21) = 0 
+
+C      DATA IIIRD/976545367/
+      IIRD = 976545367     
+C     SET I ARRAY =0 (7/10/69)
+C     DATA I/15000*0/
+
+      DO 9898 JINIT=1,15000
+         I(JINIT) = 0
+ 9898 CONTINUE         
+      
+c      CHARACTER*1 JSTR(5)
+c     CHARACTER*1 FLNM(32)
+
+
 
 C*****************
 C     INITIALIZATION OF PIECE
 C     ARBITRARY STARTING NUMBER FOR SUBROUTINE RANDU
 
-      DO 9898 JINIT=1,15000
-         I(JINIT) = 0
- 9898 CONTINUE   
-
-      PRINT *,I(8)
       inputfile=1
       outputfile=2
       open(inputfile, FILE='pass2.data', STATUS='OLD')
