@@ -10,7 +10,6 @@
  OUT B2 B1;
  END;
  SIA 0 4 10000;
- COMMENT: VL the line below was written as a NOT , but looks like a a GEN instead; 
  GEN 0 1 1 0 1 .999 2 .999 255 -.999 257 -.999 511 0 512;
  NOT 1 1 2 1500 103.752;
  NOT 4 1 2 1500 427.692;
