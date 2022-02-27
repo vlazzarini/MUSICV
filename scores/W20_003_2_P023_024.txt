@@ -45,7 +45,7 @@
  STR V1 B12 B1;
  END;
 
- COMMENT: VL added missing feedback instruments from p018_019
+ COMMENT VL: these were missing causing a segfault;
  INS 0 7;
  MLT B7 V1 B7;
  END;
