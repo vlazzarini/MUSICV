@@ -760,7 +760,11 @@ C     SET NEW FUNCTION IN OSC OR ENV
       IF(I(N1+1).EQ.105) ILOC=N1+4
       IN1=I(3)+I(N1)-1
       IIN1=I(IN1)/IP(12)
-      IF(IIN1.EQ.0) I(ILOC)=-IP(2)-(IIN1-1)*IP(6)
+C     VL 27 Feb 22 this was wrong
+C     correct is as in the comment
+C     IF(IIN1) 960, 960, 955
+C     955 being the line below without the IF      
+      IF(IIN1.GT.0) I(ILOC)=-IP(2)-(IIN1-1)*IP(6)
 c 960  RETURN
       RETURN
 
