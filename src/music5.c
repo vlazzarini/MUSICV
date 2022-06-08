@@ -135,7 +135,7 @@ int main(int argc, const char *argv[]) {
 	  fclose(fin);
 	}
 	printf(" PASS III completed successfully\n"
-	       "Created snd.raw (32-bit floas, sr = %d KHz, %s)\n", sr,
+	       "Created snd.raw (32-bit floats, sr = %d KHz, %s)\n", sr,
 	       chn == 2 ? "stereo" : "mono");
 	ret = raw2wav("snd.raw", p.fname ? p.fname : "out.wav", chn == 2 ? 2 : 1, sr);
 	if(ret) {
