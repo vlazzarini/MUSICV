@@ -418,8 +418,9 @@ C   CONVT POUR FANFARE TRIOMPHE
       FE=F/4.
       P(6)=F*P(6)
       P(8)=P(4)-P(7)-P(9)
-C      IF(P(8))2,3,3
-      IF(P(8) >= 0) GOTO 3
+C      IF(P(8))2,3,3 -- supposed to be 2,3,4
+      IF(P(8) > 0) GOTO 4
+      IF(P(8) == 0) GOTO 3      
  2    P(7)=P(7)*P(4)/(P(7)+P(9))
       P(9)=P(9)*P(4)/(P(9)+P(7))
  3    P(8)=128.
