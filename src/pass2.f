@@ -307,7 +307,7 @@ c added back in
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
      *     BLAST, IROUT
-      GOTO(1,2,3,4,5,6,7),IROUT
+      GOTO(1,2,3,4,5,6,7,8,9,10,11),IROUT
       CALL CONVT0
       GOTO 9999
  1    CALL CONVT1
@@ -323,7 +323,15 @@ c added back in
  6    CALL CONVT6
       GOTO 9999
  7    CALL CONVT7
-      GOTO 9999        
+      GOTO 9999
+ 8    CALL CONVT8
+      GOTO 9999
+ 9    CALL CONVT9
+      GOTO 9999
+ 10   CALL CONVT10
+      GOTO 9999
+ 11   CALL CONVT11
+      GOTO 9999     
  9999 RETURN
       END
 
@@ -418,7 +426,8 @@ C   CONVT POUR FANFARE TRIOMPHE
       FE=F/4.
       P(6)=F*P(6)
       P(8)=P(4)-P(7)-P(9)
-C      IF(P(8))2,3,3 -- supposed to be 2,3,4
+      IF(P(8))2,3,4 
+C     and not 2,3,3 as in JCR printout
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3      
  2    P(7)=P(7)*P(4)/(P(7)+P(9))
@@ -514,7 +523,60 @@ C      IF(P(8))2,3,4
  50   P(2)=.1024*(P(2)+16.)
  100  RETURN
       END
- 
+
+C   RVN USED IN W20_003_2_P103 
+C   CONVT FUSEES POUR LA CHUTE
+C
+      SUBROUTINE CONVT8
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      P(6)=F*P(6)
+      P(8)=F/P(8)
+      IF(P(3).EQ.2.)GOTO50
+      P(7)=F/P(7)
+      GOTO100
+ 50   P(7)=P(7)*P(6)*.01
+      P(9)=F*P(9)
+ 100  RETURN
+      END
+
+C    RVN USED IN W20_003_2_P134
+C    CIG CONVT FOR INTERPOL GLISS
+C
+     SUBROUTINE CONVT9
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).NE.1.)GOTO100
+     F=511./G(4)
+     P(7)=F*P(7)
+     P(8)=F*P(8)
+     P(9)=F/P(9)
+ 100 RETURN
+     END
+
+C    RVN USED IN W20_003_2_P124
+C    
+     SUBROUTINE CONVT10
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).NE.1.)GOTO100
+     F=511./G(4)
+     P(6)=F*P(6)
+     P(7)=F/P(4)
+     100 RETURN
+     END
+
+C    RVN USED IN W20_003_2_P113
+C    CONVT POUR FANFARE TRIOMPHE
+C
+     SUBROUTINE CONVT11
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).NE.1.)GOTO100
+     IF(P(3).GE.7.)GOTO100
+     F=511./G(4)
+     IF(G(10).GE..5)P(7)=F*P(7)
+     P(6)=F*P(6)
+     100 RETURN
+     END 
  
       
       
