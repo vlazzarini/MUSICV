@@ -426,7 +426,7 @@ C   CONVT POUR FANFARE TRIOMPHE
       FE=F/4.
       P(6)=F*P(6)
       P(8)=P(4)-P(7)-P(9)
-      IF(P(8))2,3,4 
+C      IF(P(8))2,3,4 
 C     and not 2,3,3 as in JCR printout
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3      
@@ -544,39 +544,39 @@ C
 C    RVN USED IN W20_003_2_P134
 C    CIG CONVT FOR INTERPOL GLISS
 C
-     SUBROUTINE CONVT9
-     COMMON IP(10),P(100),G(1000)
-     IF(P(1).NE.1.)GOTO100
-     F=511./G(4)
-     P(7)=F*P(7)
-     P(8)=F*P(8)
-     P(9)=F/P(9)
- 100 RETURN
-     END
+      SUBROUTINE CONVT9
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      P(7)=F*P(7)
+      P(8)=F*P(8)
+      P(9)=F/P(9)
+ 100  RETURN
+      END
 
 C    RVN USED IN W20_003_2_P124
 C    
-     SUBROUTINE CONVT10
-     COMMON IP(10),P(100),G(1000)
-     IF(P(1).NE.1.)GOTO100
-     F=511./G(4)
-     P(6)=F*P(6)
-     P(7)=F/P(4)
-     100 RETURN
-     END
+      SUBROUTINE CONVT10
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      P(6)=F*P(6)
+      P(7)=F/P(4)
+ 100  RETURN
+      END
 
 C    RVN USED IN W20_003_2_P113
 C    CONVT POUR FANFARE TRIOMPHE
 C
-     SUBROUTINE CONVT11
-     COMMON IP(10),P(100),G(1000)
-     IF(P(1).NE.1.)GOTO100
-     IF(P(3).GE.7.)GOTO100
-     F=511./G(4)
-     IF(G(10).GE..5)P(7)=F*P(7)
-     P(6)=F*P(6)
-     100 RETURN
-     END 
+      SUBROUTINE CONVT11
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      IF(P(3).GE.7.)GOTO100
+      F=511./G(4)
+      IF(G(10).GE..5)P(7)=F*P(7)
+      P(6)=F*P(6)
+ 100  RETURN
+      END 
  
       
       
