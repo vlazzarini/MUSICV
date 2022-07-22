@@ -307,7 +307,7 @@ c added back in
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
      *     BLAST, IROUT
-      GOTO(1,2,3,4,5,6,7,8,9,10,11),IROUT
+      GOTO(1,2,3,4,5,6,7,8,9,10,11,12),IROUT
       CALL CONVT0
       GOTO 9999
  1    CALL CONVT1
@@ -331,7 +331,9 @@ c added back in
  10   CALL CONVT10
       GOTO 9999
  11   CALL CONVT11
-      GOTO 9999     
+      GOTO 9999
+ 12   CALL CONVT12
+      GOTO 9999
  9999 RETURN
       END
 
@@ -577,7 +579,21 @@ C
       P(6)=F*P(6)
  100  RETURN
       END 
- 
+
+C    RVN CONVT USED IN W20_003_2P58
+C
+      SUBROUTINE CONVT12
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      P(6)=F*P(6)
+      IF(P(3).EQ.1.)GOTO100
+      P(7)=F/P(4)
+      IF(P(3).EQ.3.)GOTO100
+      P(8)=.01*P(5)
+      P(9)=F*P(9)
+ 100  RETURN
+      END 
       
       
 
