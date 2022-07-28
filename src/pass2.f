@@ -737,15 +737,15 @@ C     RVN next 3 lines JCR marked with *!*
       P(9)=P(4)-P(8)-P(10)
       IF(P(9))202,203,204
 C     RVN line above not entirely legible, but most probably ok as here    
- 202 P(8)=(P(8)*P(4))/(P(8)+P(10))
-     P(10)=(P(10)*P(4))/(P(8)+P(10))
- 203 P(9)=128.
-     GOTO205
- 204 P(9)=FENV/P(9)
- 205 P(8)=FENV/P(8)
-     P(10)=FENV/P(10)
- 100 RETURN
-     END
+ 202  P(8)=(P(8)*P(4))/(P(8)+P(10))
+      P(10)=(P(10)*P(4))/(P(8)+P(10))
+ 203  P(9)=128.
+      GOTO205
+ 204  P(9)=FENV/P(9)
+ 205  P(8)=FENV/P(8)
+      P(10)=FENV/P(10)
+ 100  RETURN
+      END
 
 
 C     ERRO1 GENERAL ERROR ROUTINE
