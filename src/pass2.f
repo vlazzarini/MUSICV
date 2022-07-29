@@ -307,7 +307,7 @@ c added back in
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
      *     BLAST, IROUT
-      GOTO(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18),IROUT
+      GOTO(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19),IROUT
       CALL CONVT0
       GOTO 9999
  1    CALL CONVT1
@@ -345,7 +345,9 @@ c added back in
  17   CALL CONVT17
       GOTO 9999
  18   CALL CONVT18
-      GOTO 9999  
+      GOTO 9999
+ 19   CALL CONVT19
+      GOTO 9999
  9999 RETURN
       END
 
@@ -747,6 +749,35 @@ C     RVN line above not entirely legible, but most probably ok as here
  100  RETURN
       END
 
+
+C     RVN used in W20_003_2 P219 
+C     with JCR annotation *mauvaise CONVT* 
+C 
+      SUBROUTINE CONVT19
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      P(6)=F*P(6)
+      IF(P(3).EQ.1.)GOTO10
+      IF(P(3).GE.7.)GOTO70
+      P(7)=F/P(4)
+      GOTO100
+ 70   FENV=F*.25
+      P(9)=P(4)-P(8)-P(10)
+      IF(P(9))2,3,4
+ 2    P(8)=(P(8)*P(4))/(P(8)+P(10))
+      P(10)=(P(10)*P(4))/(P(8)+P(10))
+ 3    P(9)=128.
+      GOTO5
+ 4    P(9)=FENV/P(9)
+ 5    P(8)=FENV/P(8)
+      P(10)=FENV/P(10)
+      GOTO100
+ 10   P(5)=.01*P(5)*P(6)
+      P(7)=F*P(7)
+      GOTO100
+ 100  RETURN
+      END
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***
