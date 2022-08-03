@@ -1,0 +1,240 @@
+ COMMENT RVN P30-31 ;
+ COMMENT RVN RISSET PEN FANFARE LONGS ACCORDS T1598 08_20_68 ;
+
+ COMMENT:MICROFILM CHECK FOR FUNCTION THEN FEEDBACK FANFARE;
+ COMMENT:TAPE H0892 FILE 1 MICROFILM FILE 2 FANFARE STEREO;
+ COMMENT:FOR MICROFILM CHECK;
+
+
+ COMMENT: aRVN where is the microfilm? what one?? ;
+ 
+ INS 0 1;
+ OSC P5 P6 B3 F1 P25;
+ OUT B3 B1;
+ END;
+ COMMENT: aRVN simple oscilator with amp and pitch control ;
+ COMMENT: aRVN using P25 as temporary storage - so it doesn't use the same storage as the ins that come later ;
+
+
+ SIA 0 4 1000;
+ COMMENT:FOR CONVT CONTROL:NO OPERATION PERFORMED; 
+ COMMENT: aRVN seting G4 at 1000 - mistake? ;
+ 
+ SV2 0 10 1;
+ COMMENT: aRVN seting G10 as 1 ;
+
+ COMMENT:TO WRITE EOF;
+ GEN 0 4 0; 
+ COMMENT RVN RISSET PENCIL AN ARROW AND EXCLAMATION MARK POINTING GEN4;
+ COMMENT: aRVN setting Gen4 to use F0 -why?
+ GEN 0 3 1 0;
+ COMMENT: aRVN setting Gen3 to store F1 but only 0 as argument - so all values are 0 in this function ;
+ NOT 0 1 .5 1900 1.024;
+ SEC .5;
+
+
+ GEN 0 3 1 1;
+ COMMENT: aRVN setting Gen3 to store F1 all values 1 ;
+ NOT 0 1 .5 1900 1.024;
+ SEC .5;
+ 
+ GEN 0 3 1 -1;
+ COMMENT: aRVN setting Gen3 to store F1 all values -1 ;
+ NOT 0 1 .5 1000 1.024;
+ SEC .5;
+
+ GEN 0 3 1 -1;
+ NOT 0 1 .5 1900 1.024;
+ SEC .5;
+
+ GEN 0 5 1 -6;
+ COMMENT: aRVN all these lines for one note of 1.024 Hz??? of the amplitude 1000 or 1900 and different GENs ; 
+ NOT .5 1 .5 1900 1.024;
+ SEC 5;
+ COMMENT; RVN SHOULD THIS BE .5 INSTEAD OF 5 ? ;
+ COMMENT: aRVN theres no GEN3 nor 5 after this note ;
+ COMMENT: aRVN what is this section all about?? ;
+ COMMENT: aRVN all this previous section creates a click at the beginning ;
+ COMMENT: aRVN if i delete all the section the sound file starts without the click at sec 5 ;
+
+
+
+
+ COMMENT:FANFARE FEEDBACK AVEC MEILLEUR CONTROLE D L ENVELOPPE;
+ COMMENT:CHORDS SUSTAINED LONGER;
+ COMMENT:CONVT CHANGED FOR P2 AND P4;
+ COMMENT:100 PER CENT FEEDBACK;
+
+ INS 0 1;
+ AD2 B7 P5 B3;
+ SET P10;
+ ENV B3 F2 B3 P7 P8 P9 P30;
+ OSC B3 P6 B7 F1 P29;
+ STR B7 V1 B1;
+ END;
+
+
+ INS 0 2;
+ AD2 B8 P5 B3;
+ SET P10;
+ ENV B3 F2 B3 P7 P8 P9 P30;
+ OSC B3 P6 B8 F1 P29;
+ STR B8 V1 B1;
+ END;
+
+ INS 0 3;
+ AD2 B9 P5 B3;
+ SET P10;
+ ENV B3 F2 B3 P7 P8 P9 P30;
+ OSC B3 P6 B9 F1 P29;
+ STR B9 V1 B1;
+ END;
+
+ INS 0 4;
+ AD2 B10 P5 B3;
+ SET P10;
+ ENV B3 F2 B3 P7 P8 P9 P30;
+ OSC B3 P6 B10 F1 P29;
+ STR V1 B10 B1;
+ END;
+
+ INS 0 5;
+ AD2 B11 P5 B3;
+ SET P10;
+ ENV B3 F2 B3 P7 P8 P9 P30;
+ OSC B3 P6 B11 F1 P29;
+ STR V1 B11 B1;
+ END;
+ 
+ INS 0 6;
+ AD2 B12 P5 B3;
+ SET P10;
+ ENV B3 F2 B3 P7 P8 P9 P30;
+ OSC B3 P6 B12 F1 P29;
+ STR V1 B12 B1;
+ END;
+
+ INS 0 7 ;
+ MLT B7  V1 B7 ;
+ END;
+
+ INS 0 8 ;
+ MLT B8  V1 B8 ;
+ END;
+ 
+ INS 0 9 ;
+ MLT B9  V1 B9 ;
+ END;
+ 
+ INS 0 10;
+ MLT B10 V1 B10;
+ END;
+ 
+ INS 0 11;
+ MLT B11 V1 B11;
+ END;
+ 
+ INS 0 12;
+ MLT B12 V1 B12;
+ END;
+ 
+ SIA 0 4 10000;
+ COMMENT:TO CONTROL CONVT;
+ COMMENT: aRVN G4 set to 10000 ;
+ SV2 0 10 0;
+ COMMENT: aRVN V10 set to 0 but unclear where is it used perhaps in convt ;
+ SV3 0 1 0;
+ COMMENT: aRVN V1 set to 0 used to define stereo panning ;
+ 
+ GEN 0 2 1 1 1;
+ GEN 0 1 2 0 1 .8 85 .6 105 .999 128 .7 256 .3 285 .10 333 0 384 0 512;
+ GEN 0 1 3 0 1 .75 128 .75 140 .25 150 .999 250 .999 256 .3 280 .13 325 0 384 0 512;
+ COMMENT: aRVN GEN2 makes a sine F1 GEN1 makes F2 and F3 - F2 used by ENV then replaced through not p10 as F3 ;
+ COMMENT: aRVN i need to draw these functions to see the envelope shape! ;
+ SEC 4;
+
+ NOT 31 2 14 500 103.8 .06 3 .18 3;
+ NOT 34 4 11 500 146.8 .04 2 .17 3;
+ NOT 35 1 10 500 164.8 .05 2 .16 3;
+ NOT 37 5 8 500 196 .04 2 .15 3;
+ NOT 39 3 6 500 233.1 .04 1 .14 3;
+ NOT 41 6 4 500 277.2 .04 1 .13 3;
+ NOT 45 7 1;
+ NOT 45 8 1;
+ NOT 45 9 1;
+ NOT 45 10 1;
+ NOT 45 11 1;
+ NOT 45 12 1;
+
+
+ SEC 48;
+ COMMENT: aRVN SEC is restarting the counter - at the beat 48 it starts the beats from 0  ;
+ NOT 1 1 24 200 103.8 .05 1 .15;
+ NOT 5 4 20 240 233 .04 1 .14;
+ NOT 8 2 17 350 174.6 .04 1 .12;
+ NOT 9 5 16 350 329.6 .02 1 .11;
+ NOT 11 3 14 300 440 .04 1 .15;
+ NOT 15 6 10 300 554.3 .03 1 .1;
+ NOT 26 7 1;
+ NOT 26 8 1;
+ NOT 26 9 1;
+ NOT 26 10 1;
+ NOT 26 11 1;
+ NOT 26 12 1;
+
+ SEC 30;
+ NOT 1 1 20 200 311.1 .04 1 .10;
+ NOT 2 4 19 200 440 .03 1 .9;
+ NOT 5 2 16 350 370 .03 1 .08;
+ NOT 8 5 13 350 523.2 .03 1 .08;
+ NOT 9 3 12 300 698.5 .03 1 .07;
+ NOT 11 6 10 300 987.9 .03 1 .07;
+ NOT 22 7 1;
+ NOT 22 8 1;
+ NOT 22 9 1;
+ NOT 22 10 1;
+ NOT 22 11 1;
+ NOT 22 12 1;
+ SEC 25;
+ 
+ NOT 1 1 20 300 51.9 .06 1 .15;
+ NOT 5 4 16 250 73.4 .05 1 .14;
+ NOT 8 2 13 250 98 .04 1 .12;
+ NOT 9 5 12 250 164 .03 1 .11;
+ NOT 11 3 10 300 247 .03 1 .10;
+ NOT 13 6 8 350 466 .02 1 .10;
+ TER 25;
+ ;
+ 
+ COMMENT: CONVT 7;
+   FORTRAN NDECK
+ C   CONVT POUR FANFARE FEEDBACK
+ C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
+ C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
+ C
+     SUBROUTINE CONVT
+     COMMON IP(10),P(100),G(1000)
+     IF(G(10).GE..5)GOTO100
+    IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
+     IF(P(1).NE.1.)GOTO100
+     IF(P(3).GE.6.5)GOTO40
+     F=511./G(4)
+     FE=F/4.
+     P(2)=.1024*P(2)
+     P(4)=.1024*(P(4)+16.)
+     P(6)=F*P(6)
+     P(8)=P(4)-P(7)-P(9)
+     IF(P(8))2,3,4
+ 2   P(7)=P(7)*P(4))/(P(7)+P(9))
+     P(9)=P(9)*P(4))/(P(9)+P(7))
+ 3   P(8)=128.
+     GOTO5
+ 4   P(8)=FE/P(8)
+ 5   P(7)=FE/P(7)
+     P(9)=FE/P(9)
+     GOTO100
+ 40  P(4)=.1024*(P(4)+16.)
+ 50  P(2)=.1024*(P(2)+16.)
+ 100 RETURN
+     END
+ 

@@ -1,0 +1,187 @@
+ COMMENT RVN P18-19 ;
+ COMMENT RVN RISSET PENCIL T1526 08_16_68 ;
+ COMMENT:FANFARE POUR LE TRIOMPHE;
+ COMMENT:TAPE HO892 STEREO 4 KC EACH CHANNEL;
+ COMMENT:100 PER CENT FEEDBACK;
+ INS 0 1;
+ SET P10;
+ ENV P5 F2 B3 P7 P8 P9 P30;
+ AD2 B3 B7 B3;
+ OSC B3 P6 B7 F1 P29;
+ STR B7 V1 B1;
+ END;
+ COMMENT: aRVN same as P016_017 ;
+
+ INS 0 2;
+ SET P10;
+ ENV P5 F2 B3 P7 P8 P9 P30;
+ AD2 B3 B8 B3;
+ OSC B3 P6 B8 F1 P29;
+ STR B8 V1 B1;
+ END;
+
+ INS 0 3;
+ SET P10;
+ ENV P5 F2 B3 P7 P8 P9 P30;
+ AD2 B3 B9 B3;
+ OSC B3 P6 B9 F1 P29;
+ STR B9 V1 B1;
+ END;
+
+ INS 0 4;
+ SET P10;
+ ENV P5 F2 B3 P7 P8 P9 P30;
+ AD2 B3 B10 B3;
+ OSC B3 P6 B10 F1 P29;
+ STR V1 B10 B1;
+ END;
+ INS 0 5;
+ SET P10;
+ ENV P5 F2 B3 P7 P8 P9 P30;
+ AD2 B3 B11 B3;
+ OSC B3 P6 B11 F1 P29;
+ STR V1 B11 B1;
+ END;
+ INS 0 6;
+ SET P10;
+ ENV P5 F2 B3 P7 P8 P9 P30;
+ AD2 B3 B12 B3;
+ OSC B3 P6 B12 F1 P29;
+ STR V1 B12 B1;
+ END;
+ INS 0 7;
+ MLT B7 V1 B7;
+ END;
+ 
+ INS 0 8;
+ MLT B8 V1 B8;END;
+ INS 0 9;
+ MLT B9 V1 B9;
+ END;
+ INS 0 10;
+ MLT B10 V1 B10;
+ END;
+ INS 0 11;
+ MLT B11 V1 B11;
+ END;
+ INS 0 12;
+ MLT B12 V1 B12;
+ END;
+ SIA 0 4 10000;
+ SV3 0 1 0;
+ COMMENT: aRVN no metronome definition in SV2, CONVT defines the tempo similar to P021 ;
+ GEN 0 2 1 1 1;
+ GEN 0 1 2 0 1 .8 85 .8 105 .999 128 .8 256 .33 285 .12 333 0 384 0 512;
+ GEN 0 1 3 0 1 .75 128 .6 140 .999 256 .3 280 .13 325 0 384 0 512;
+ COMMENT: aRVN the same Function as 16_17 ;
+ SEC 4;
+ COMMENT: aRVN a  new section starts at 4 beats ;
+ NOT 1 1 3 350 329.6 .06 1 .15 0;
+ COMMENT: aRVN this is the polyphonic section from P016_017 ;
+ NOT 4 7 1;
+ COMMENT: aRVN here Risset avoids two pitches from the same ins to sound simultaneously and create additional feedback as in 16_17 ;
+ COMMENT: aRVN he cleans the feedback with the INS7 that multiplies the signal with 0 at the beat 4 with ins 7 that last 1 beat;
+ NOT 3 4 3 300 523.2 .06 1 .15 0;
+ COMMENT: aRVN beat 3 ins 4 duration 3 plays 523Hz ... so it overlaps with ins 1 for 1 beat;
+ NOT 7 10 1;
+ NOT 5 1 3 350 440 .06 1 .15 0;
+ NOT 8 7 1;
+ NOT 7 4 3 300 622.2 .06 1 .15 0;
+ NOT 10 10 0;
+ NOT 9 1 3 300 329.6 .06 1 .15 0;
+ NOT 12 7 1;
+ NOT 11 4 1 400 554.3 .04 1 .15 0;
+ NOT 12 10 1;
+ NOT 13 4 3 300 523.2 .06 1 .15 0;
+ NOT 16 10 1;
+ NOT 15 1 3 350 440 .06 1 .15 0;
+ NOT 18 7 1;
+ NOT 17 4 3 300 622.2 .06 1 .15 0;
+ NOT 20 10 1;
+ NOT 19 1 3 350 349.2 .06 1 915 0;
+ NOT 22 7 1;
+ NOT 21 4 3 200 830 .06 1 .15 0;
+ NOT 24 10 1;
+ NOT 23 1 3 300 523.2 .06 1 .15 0;
+ NOT 26 7 1;
+ NOT 25 4 1 300 740 .04 1 .1 0;
+ NOT 26 10 1;
+ NOT 29 1 2 200 440 .03 1 .1 0;
+ NOT 31 7 1;
+ NOT 27 4 4 200 932 .05 1 .10 0;
+ NOT 31 10 1;
+ NOT 31 2 14 500 103.8 .06 3 .18 3;
+ NOT 34 4 11 500 146.8 .04 2 .17 3;
+ NOT 35 1 10 500 164.8 .05 2 .16 3;
+ NOT 37 5 8 500 196 .04 2 .15 3;
+ NOT 39 3 6 500 233.1 .04 1 .14 3;
+ NOT 41 6 4 500 277.2 .04 1 .13 3;
+ NOT 45 7 1;
+ NOT 45 8 1;
+ NOT 45 9 1;
+ NOT 45 10 1;
+ NOT 45 11 1;
+ NOT 45 12 1;
+ SEC 48;
+ NOT 1 1 24 200 103.8 .05 1 .15;
+ COMMENT: aRVN this is the section of chords from P014 ;
+ NOT 5 4 20 240 233 .04 1 .14;
+ NOT 8 2 17 350 174.6 .04 1 .12;
+ NOT 9 5 16 350 329.6 .02 1 .11;
+ NOT 11 3 14 300 440 .04 1 .15;
+ NOT 15 6 10 300 554.3 .03 1 .1;
+ NOT 26 7 1;
+ NOT 26 8 1;
+ NOT 26 9 1;
+ NOT 26 10 1;
+ NOT 26 11 1;
+ NOT 26 12 1;
+ SEC 30;
+ NOT 1 1 20 200 311.1 .04 1 .10;
+ NOT 2 4 19 200 440 .03 1 .9;
+ NOT 5 2 16 350 370 .03 1 .08;
+ NOT 8 5 13 350 523.2 .03 1 .08;
+ NOT 9 3 12 300 698.5 .03 1 .07;
+ NOT 11 6 10 300 987.9 .03 1 .07;
+ NOT 22 7 1;
+ NOT 22 8 1;
+ NOT 22 9 1;
+ NOT 22 10 1;
+ NOT 22 11 1;
+ NOT 22 12 1;
+ SEC 25;
+ NOT 1 1 20 300 51.9 .06 1 .15;
+ NOT 5 4 16 250 73.4 .05 1 .14;
+ NOT 8 2 13 250 98 .04 1 .12;
+ NOT 9 5 12 250 164 .03 1 .11;
+ NOT 11 3 10 300 247 .03 1 .10;
+ NOT 13 6 8 350 466 .02 1 .10;
+ TER 25;
+ COMMENT: CONVT 6;
+ $   FORTRAN NDECK
+ C   CONVT POUR FANFARE FEEDBACK
+ C...FOR FEEDBACK INSTS, P2 AND P4 INTEGERS IN SCORE
+ C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
+ C
+     SUBROUTINE CONVT
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
+     IF(P(1).NE.1.)GOTO100
+     IF(P(3).GE.6.5)GOTO40
+     F=511./G(4)
+     FE=F/4.
+     P(6)=F*P(6)
+     P(8)=P(4)-P(7)-P(9)
+     IF(P(8))2,3,4
+ 2   P(7)=P(7)*P(4))/(P(7)+P(9))
+     P(9)=P(9)*P(4))/(P(9)+P(7))
+ 3   P(8)=128.
+     GOTO5
+ 4   P(8)=FE/P(8)
+ 5   P(7)=FE/P(7)
+     P(9)=FE/P(9)
+ 40  P(4)=.1024*P(4)
+ 50  P(2)=.1024*P(2)
+ 100 RETURN
+     END
+ 
