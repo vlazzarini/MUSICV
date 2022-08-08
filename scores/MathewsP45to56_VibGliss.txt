@@ -1,0 +1,196 @@
+ COMMENT: MATHEWS P. 45 - SIMPLE INS;
+ INS 0 1;
+ OSC P5 P7 B2 F2 P30; 
+ OUT B2 B1;
+ END;
+ 
+ COMMENT: MATHEWS P.56 - VIBRATO with amplitude envelope;
+ INS 0 2;
+ OSC P5 P6 B2 F1 P30;
+ SET P11;
+ OSC P8 P9 B3 F3 P29;
+ AD2 P7 B3 B3;
+ SET P10;
+ OSC B2 B3 B2 F2 P28;
+ OUT B2 B1;
+ END;
+ 
+ COMMENT: MATHEWS P.54 - AMPLITUDE ENVELOPE;
+ INS 0 3;
+ SET P8 ;
+ OSC P5 P6 B2 F1 P30;
+ OSC B2 P7 B2 F2 P29;
+ OUT B2 B1;
+ END;
+ 
+ COMMENT: Inharmonicité LB W20_003_2 P156 ;
+ INS 0 4 ;
+ ENV P5 F1 B3 P8 P9 P10 P30;
+ SET P11;
+ OSC P6 P7 B4 F7 P29;
+ SET P12;
+ OSC B3 B4 B3 F3 P28;
+ OUT B3 B1;
+ END;
+ 
+ COMMENT: Inharmonicité NO ENV;
+ INS 0 5 ;
+ SET P10;
+ OSC P6 P7 B4 F7 P29;
+ SET P11;
+ OSC P5 B4 B3 F3 P28;
+ OUT B3 B1;
+ END;
+
+ COMMENT: Mathews 1969, p 59 crescendo decrescendo ;
+ INS 0 6;
+ OSC P5 P7 B2 F8 P30 ;
+ OSC P6 P7 B3 F9 P29 ;
+ AD2 B2 B3 B2 ; 
+ OSC B2 P8 B3 F3 V1 ;
+ OUT B3 B1 ;
+ END;
+
+ COMMENT: RVN correction of Mathews 1969, p 59 crescendo decrescendo ;
+ INS 0 7;
+ SET P10;
+ OSC P5 P7 B2 F8 P30 ;
+ COMMENT: OSC P9 P7 B3 F9 P29 ;
+ COMMENT: AD2 B2 B3 B2 ; 
+ OSC B2 P8 B3 F3 V1 ;
+ OUT B3 B1 ;
+ END;
+
+ SIA 0 4 20000;
+ GEN 0 1 1 0 1 .99 200 .99 480 0 512 ;
+ GEN 0 1 2 0 1 .99 50 .99 205 -.99 306 -.99 461 0 512;
+ GEN 0 2 3 1 1;
+ GEN 0 1 4 0 1 .99 10 .2 50 .1 312 0 512 ;
+ GEN 0 2 5 1 1;
+ GEN 0 1 6 0 1 .99 511 0 512 ;
+ GEN 0 1 7 .100 1 .100 512;
+ GEN 0 1 8 0 1 .99 511 0 512 ;
+ GEN 0 1 9 .99 1 0 511 0 512 ; 
+ 
+ GEN 0 1 10 .99 0 0 511;
+ GEN 0 1 11 0 0 .99 511;
+
+ NOT 0 7 5 1000 0 0.2 200 0 10; 
+ NOT 5 7 5 1000 0 0.2 200 0 11;
+ NOT 10 7 5 1000 0 0.2 200 0 10 ;
+ NOT 15 7 5 1000 0 0.2 200 0 11;
+
+ TER 20;
+
+ COMMENT: CONVT 20 ;
+C RVN CONVT for Mathews, 1969, p.54
+ SUBROUTINE CONVT20
+ COMMON IP(10),P(100),G(1000)
+ IF(P(1).NE.1.)GOTO100
+ F=511./G(4)
+ P(6)=F*P(6)
+ P(7)=F*P(7)
+ P(8)=F*P(8)
+ P(9)=F*P(9)
+ 100  RETURN
+ END
+ 
+  
+  CONVT_ 21 - for crescendo  ;
+C RVN CONVT for Mathews, 1969, p.54
+ SUBROUTINE CONVT20
+ COMMON IP(10),P(100),G(1000)
+ IF(P(1).NE.1.)GOTO100
+ F=511./G(4)
+ P(7)=F*P(7)
+ P(8)=F*P(8)
+ P(9)=F*P(9)
+ 100  RETURN
+ END
+
+P7 is converted in normal convt 0 subroutine. Even in Convt 1 P7 is converted in COnvt 0.
+
+ to be used in the above score:
+ NOT 0 1 5 500 0 440 ;
+ 
+ NOT 0 3 2 1000 0.5 262;
+ NOT 2 3 1 1000 1 330 4;
+
+ used for vibrato ins2:
+ NOT 0 2 5 1000 0.2 220 2.2 8 ;
+ 
+ used for glissando& vibrato:
+ NOT 0 2 5 1000 0.2 220 110 0.2 3 6 ;
+ NOT 5 2 5 1000 0.2 220 2.2 8 ;
+
+
+ used for notes for Inharmonicité NO ENV;
+ NOT 0 5 5 1000 110 0.2 0 0 2 3;
+ NOT 5 5 5 1000 220 0.2 0 0 2 3;
+ NOT 10 5 5 1000 440 0.2 0 0 2 3;
+ NOT 15 5 5 1000 880 0.2 0 0 2 3;
+
+ used for crescrendo decrecnedo correction (ins7)
+ NOT 0 7 5 1000 0 0.2 200 0 9; 
+ NOT 5 7 5 1000 0 0.2 200 0 8;
+ NOT 10 7 5 1000 0 0.2 200 0 9 ;
+ NOT 15 7 5 0 0 0.2 200 0 8;
+
+
+used with cresc decresc ins 6
+ NOT 0 6 5 1000 0 0.2 200; 
+ NOT 5 6 5 1000 1000 0.2 200;
+ NOT 10 6 5 1000 0 0.2 200 ;
+ NOT 15 6 5 0 1000 0.2 200;
+
+ --- 
+
+ if not convt:
+
+ COMMENT: NOT 0 2 2 1000 .0032 6.70 .13 .1;
+ COMMENT: NOT 3 2 2 1000 .0032 8.44 .16 .1; 
+ NOT 0 1 4 250 6.70;
+ SEC 5;
+
+ GEN 0 1 3 0 0 .999 511;
+ NOT 0 2 2 1000 .0128 6.70 4.55 .0128 ; 
+ NOT 2 2 1 1000 .0256 11.25 0 .0256 ;
+
+
+ INS 0 1 ;
+ SET P9;
+ OSC P6 P7 B4 F2 P29;
+ AD2 P8 B4 B4;
+ OSC P5 B4 B3 F1 P28;
+ OUT B3 B1;
+ END;
+
+ INS 0 2 ;
+ OSC P5 P6 B3 F1 P27;
+ OUT B3 B1;
+ END;
+ SIA 0 4 5000;
+ GEN 0 2 1 1 1;
+ GEN 0 1 2 .100 1 .100 512;
+ GEN 0 1 3 .1001 1 .100 61 .100 512;
+ GEN 0 1 4 .1002 1 .100 88 .100 512;
+ GEN 0 1 5 .1007 1 .100 102 .100 512;
+ GEN 0 1 6 .1010 1 .100 110 .100 512;
+ GEN 0 1 7 .1013 1 .100 128 .100 512;
+ GEN 0 1 8 .1016 1 .100 128 .100 512;
+ GEN 0 1 9 .1020 1 .100 128 .100 512;
+ GEN 0 1 10 .1020 1 .100 129 .100 512;
+ GEN 0 1 11 0 1 .999 128 .999 256 0 384 0 512;
+ 
+ NOT 0 2 5 200 220;
+
+ TER 5;
+
+ NOT 0 2 4 200 220;
+ NOT 0 1 5 200 1 1 7;
+ SIA 0 4 20000;
+  
+ NOT 0 1 5 200 1 5 7;
+ SEC 5 ;
+
+ NOT 0 1 5 200 1 2;

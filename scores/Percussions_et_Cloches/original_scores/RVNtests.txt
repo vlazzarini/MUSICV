@@ -1,0 +1,22 @@
+ INS 0 1;
+ OSC P5 P6 B2 F1 P30; 
+ RAN B2 P8 B2 P29 P27 P26 ; 
+ OSC B2 P7 B2 F2 P28 ; 
+ OUT B2 B1 ; 
+ END;
+ GEN 0 2 1 1 .4 .2 .1 .1 .05 6
+ GEN 0 2 2 1 1;
+ 
+ NOT 0 1 5 150 19.6 50 40 ;
+ 
+ TER 7 ;
+ COMMENT: CONVT 10;
+ $   FORTRAN N DECK;
+     SUBROUTINE CONVT
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).NE.1.)GOTO100
+     F=511./G(4)
+     P(6)=F*P(6)
+     P(7)=F/P(4)
+ 100 RETURN
+     END
