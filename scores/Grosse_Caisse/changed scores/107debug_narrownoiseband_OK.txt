@@ -21,7 +21,8 @@
  END;
  
  GEN 0 2 1 1 1;
- GEN 0 5 2 -10;
+ COMMENT: rvn i replace GEN 0 5 2 -10 with the line below;
+ GEN 0 2 2 1 1;
  GEN 0 4 3 1 10 0 1 512;
  GEN 0 4 4 1 10 0 1 512;
  GEN 0 5 7 -8;

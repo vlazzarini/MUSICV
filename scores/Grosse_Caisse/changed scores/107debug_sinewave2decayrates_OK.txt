@@ -21,7 +21,8 @@
  END;
  
  GEN 0 2 1 1 1;
- GEN 0 5 2 -9;
+ COMMENT: rvn i replace GEN 0 5 2 -9 with the line below;
+ GEN 0 2 2 1 1;
  GEN 0 4 3 1 10 0 1 512;
  GEN 0 4 4 1 10 0 1 512;
  GEN 0 5 7 -8;
@@ -30,26 +31,26 @@
  COMMENT:TO WRITE EOF;
  COMMENT: GEN 0 3 0;
  COMMENT:JUST SINE WAVE WITH 2 DECAY RATES;
-
  
  SIA 0 4 5000; 
  SV3 0 1 7.5 2.5 1400 600;
  
- NOT  .4 1 .45 0 7.5 0;
- NOT  .8 1 .45 0 7.5 0;
- NOT 1.2 1 .45 0 7.5 0;
- NOT 1.6 1 .45 0 7.5 0;
- NOT 2.0 1 .45 0 7.5 0;
- NOT 2.4 1 .45 0 7.5 0;
- NOT 2.8 1 .45 0 7.5 0;
- NOT 3.2 1 .45 0 7.5 0;
- NOT 3.6 1 .45 0 7.5 0;
- NOT 4.0 1 .45 0 7.5 0;
- NOT 4.4 1 .45 0 7.5 0;
- NOT 4.8 1 .45 0 7.5 0;
- NOT 5.2 1 .45 0 7.5 0;
- NOT 5.6 1 .45 0 7.5 0;
- NOT 6.0 1 .55 0 7.5 0;
+ COMMENT: RVN P5 modified note zero but set to 500 ;
+ NOT  .4 1 .45 500 7.5 0;
+ NOT  .8 1 .45 500 7.5 0;
+ NOT 1.2 1 .45 500 7.5 0;
+ NOT 1.6 1 .45 500 7.5 0;
+ NOT 2.0 1 .45 500 7.5 0;
+ NOT 2.4 1 .45 500 7.5 0;
+ NOT 2.8 1 .45 500 7.5 0;
+ NOT 3.2 1 .45 500 7.5 0;
+ NOT 3.6 1 .45 500 7.5 0;
+ NOT 4.0 1 .45 500 7.5 0;
+ NOT 4.4 1 .45 500 7.5 0;
+ NOT 4.8 1 .45 500 7.5 0;
+ NOT 5.2 1 .45 500 7.5 0;
+ NOT 5.6 1 .45 500 7.5 0;
+ NOT 6.0 1 .55 500 7.5 0;
   
  
  TER 8 ;
