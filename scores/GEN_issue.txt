@@ -1,0 +1,33 @@
+ INS 0 3;
+ SET P8;
+ OSC P5 P7 B3 F8 P30;
+ OSC P6 P7 B4 F9 P29;
+ OSC B3 B4 B3 F1 P28;
+ OUT B3 B1;
+ END;
+
+ SIA 0 4 10000;
+ SV2 0 2 30;
+ SV2 0 30 0 70 20 70;
+ 
+ GEN 0 2 1 1 1;
+  
+ COMMENT: RVN F8 for the amplitude envelope;
+ GEN 0 1 8 0 1 .4 150 .99 350 0 512;
+ 
+ COMMENT: RVN F9 for the frequency envelope ;
+ COMMENT: RVN this makes a weird slope GEN 0 1 9 .895 1 .99 512;
+ 
+ COMMENT: testing 3 functions below;
+ GEN 0 1 9 .895 1 .99 512;
+ GEN 5 1 9 .895 1 .99 511 0 512;
+ GEN 10 1 9 .895 0 .99 511;
+
+ NOT 0 3 5 1200 440 5;
+ NOT 6 3 5 1200 440 5;
+ NOT 12 3 5 1200 440 5;
+ TER 18;
+ COMMENT: CONVT 12;
+ 
+ RVN my assumtption is all scores should use 0 to 511 and not 1 to 512
+ or is there smth. in the src we could modify?

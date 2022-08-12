@@ -5,6 +5,8 @@
  END;
  
  COMMENT: MATHEWS P.56 - vibrato glissando FM with amplitude envelope;
+ COMMENT: see W20_003_2_P134 for a similar instrument ;
+ COMMENT: P7 and B3 can be reversed in Ad2! ;
  INS 0 2;
  OSC P5 P6 B2 F1 P30;
  SET P11;
