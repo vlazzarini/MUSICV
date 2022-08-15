@@ -17,18 +17,18 @@
  
  SIA 0 4 10000;  
 
- GEN 0 4 6 1 21 0 1 512 1 29 0 1 512 1 39 0 1 512;
+ GEN 0 4 1 1 21 0 1 512 1 29 0 1 512 1 39 0 1 512;
  COMMENT: GEN 0 4 1 100 12 0 1 512 100 30 0 1 512 100 46 0 1 512;
  GEN 0 7 2 -8;
  GEN 0 2 3 1 1;
 
- COMMENT: INS 1 using GEN 4 produces silence;
+ COMMENT: INS 1 using GEN4/F1 produces silence;
  NOT 1 1 .1 1000 0 440 0 .1;
  NOT 1 1 1 500 0 440 0 1;
  NOT 1 1 3 200 0 440 0 4;
  SEC 5 ;
 
- COMMENT: INS 2 using GEN 3 produces sine wave;
+ COMMENT: INS 2 using GEN2/F3 produces sine wave;
  NOT 1 2 .1 1000 0 440 0 .1;
  NOT 1 2 1 500 0 440 0 1;
  NOT 1 2 3 200 0 440 0 4;
