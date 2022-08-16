@@ -1041,8 +1041,8 @@ C     directly in the score.
       SCLFT=IP(15)
       N1=IP(2)+(IFIX(P(4))-1)*IP(6)
       N2=N1+IP(6)-1
-      DO 100 K=N1,N2
-      A(K1)=0.0   
+      DO 100 K1=N1,N2
+         A(K1)=0.0   
  100  CONTINUE
       FAC=6.283185/(FLOAT(IP(6))-1.0)
       NMAX=I(1)-4
