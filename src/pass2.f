@@ -745,10 +745,10 @@ C    IF(P(9))2,3,4
       P(9)=.001*P(9)
       P(10)=.001*P(10)
       P(9)=P(4)-P(8)-P(10)
-C      IF(P(9))202,203,204
+C     IF(P(9))202,203,204
+C     RVN line above not entirely legible, but most probably ok as here        
       IF(P(9) > 0) GOTO 204
       IF(P(9) == 0) GOTO 203
-C     RVN line above not entirely legible, but most probably ok as here    
  202  P(8)=(P(8)*P(4))/(P(8)+P(10))
       P(10)=(P(10)*P(4))/(P(8)+P(10))
  203  P(9)=128.
