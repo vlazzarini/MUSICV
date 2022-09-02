@@ -1,7 +1,7 @@
+ COMMENT: header pencil JCR 08/05/68 ;
+ COMMENT: header pencil JCR T1678 M2994 ;
  COMMENT:FANFARE POUR LE TRIOMPHE;
  COMMENT:100 PER CENT FEEDBACK;
- COMMENT: RVN Risset pencil 08/05/68 ;
- COMMENT: RVN Risset pencil T1678 M2994 ;
  INS 0 1;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
@@ -21,10 +21,12 @@
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
  AD2 B3 B10 B3;
+
  INS 0 5;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
  AD2 B3 B11 B3;
+
  INS 0 6;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
@@ -47,8 +49,8 @@
  NOT 6.5 1 .9 280 523.2 .06 1 .15 0;
  NOT 7.0 4 .5 230 740 .04 1 .1 0;
  NOT 7.5 4 .99 215 923.3 .05 1 .1 0; 
- COMMENT: RVN Risset corrects this to 932.3 pencil ;
- COMMENT: RVN Rissets writes pencil .0086 399 samples out of range ;
+ COMMENT: l.a. pencil JCR 923.3 corrected to 932.3;
+ COMMENT: margin pencil JCR .0086 399 samples out of range ;
  NOT 8 1 .49 200 440 .03 1 .1 0;
  NOT 8.5 1 4.25 400 103.8 .06 3 .18 3;
  NOT 9.25 4 3.50 400 146.8 .04 2 .17 3;
@@ -57,7 +59,7 @@
  NOT 10.5 3 2.25 400 233.1 .04 1 .14 3;
  NOT 11.0 6 .75 400 277.2 .04 1 .13 3;
  TER 14;
-  COMMENT: RVN unclear if this CONVT belongs to the score missing CONVT subroutine line ;
+ COMMENT: RVN unclear if this CONVT belongs to the score missing CONVT subroutine line ;
      F=511./G(4)
      FE=F/4.
      P(6)=F*P(6)

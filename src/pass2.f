@@ -307,7 +307,7 @@ c added back in
       SUBROUTINE CONVT
       COMMON IP(10),P(100),G(1000),I(1000),T(1000),D(10000),IXJQ,TLAST,
      *     BLAST, IROUT
-      GOTO(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20),IROUT
+      GOTO(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21),IROUT
       CALL CONVT0
       GOTO 9999
  1    CALL CONVT1
@@ -349,6 +349,8 @@ c added back in
  19   CALL CONVT19
       GOTO 9999
  20   CALL CONVT20
+      GOTO 9999
+ 21   CALL CONVT21
       GOTO 9999 
  9999 RETURN
       END
@@ -793,6 +795,28 @@ C
       P(9)=F*P(9)
  100  RETURN
       END      
+
+
+C     RVN CONVT for W20_003_2 P36 
+C
+      SUBROUTINE CONVT21
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      FE=F/4.
+      P(6)=F*P(6)
+      P(8)=P(4)-P(7)-P(9)
+      IF(P(8))2,3,4
+ 2    P(7)=(P(7)*P(4))/(P(7)+P(9))
+      P(9)=(P(9)*P(4))/(P(9)+P(7))
+ 3    P(8)=128.
+      GOTO5
+ 4    P(8)=FE/P(8)
+ 5    P(7)=FE/P(7)
+      P(9)=FE/P(9)
+ 100  RETURN
+      END
+
 
 C     ERRO1 GENERAL ERROR ROUTINE
 C     *** MUSIC V ***

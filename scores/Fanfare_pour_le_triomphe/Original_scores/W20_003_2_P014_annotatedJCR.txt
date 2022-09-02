@@ -1,3 +1,10 @@
+ 
+ COMMENT: annotations to be finished! ;
+ COMMENT: RVN attached is a notated staff with score of four chords that sound ;
+ COMMENT: PEN RISSET T1131 08_07_68 ;
+ COMMENT: PENCIL RISSET modifié séparée par max every beginning and end 
+ multiple of 512 from 1st note ;
+ COMMENT: RVN WAV 1.1GB 1H44MIN ;
  COMMENT: ACCORD FEEDBACK POUR FANFARE TRIOMPHE;
  COMMENT: TAPE M1172 STEREO;
  INS 0 1;
@@ -98,6 +105,7 @@
  NOT 3.5 3 2.5 300 247;
  NOT 4 6 2 350 466;
  TER 8;
+ COMMENT: CONVT 1;
  $   FORTRAN NDECK
  C   CONVT POUR FANFARE TRIOMPHE
      SUBROUTINE CONVT

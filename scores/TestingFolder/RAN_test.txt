@@ -1,0 +1,33 @@
+ INS 0 1;
+ SET P10 ;
+ OSC P5 P6 B2 F2 P30 ;
+ RAN B2 P8 B2 P29 P28 P26 ;
+ OSC B2 P7 B2 F1 P27;
+ OUT B2 B1;
+ END ;
+ GEN 0 2 1 1 1;
+ GEN 0 1 2 0 1 .99 50 .99 412 0 511 ;
+ GEN 0 1 3 0 1 .99 511 ;
+
+ NOT 0 1 5 1500 2 10 10 0 3;
+ NOT 5 1 1 1500 5 20 10 0 0;
+ NOT 6 1 1 1500 10 30 10 0 0;
+ NOT 7 1 1 1500 15 40 10 0 0;
+ NOT 8 1 1 1500 30 50 10 0 0;
+ TER 9 ;
+ COMMENT: CONVT 20 ;
+
+C     RVN CONVT for Mathews, 1969, p.54
+C
+      SUBROUTINE CONVT20
+      COMMON IP(10),P(100),G(1000)
+      IF(P(1).NE.1.)GOTO100
+      F=511./G(4)
+      P(6)=F*P(6)
+      P(7)=F*P(7)
+      P(8)=F*P(8)
+      P(9)=F*P(9)
+ 100  RETURN
+      END   
+
+ P7 center Fq, P8 widht of band-pass noise ;
