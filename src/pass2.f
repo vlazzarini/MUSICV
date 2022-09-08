@@ -439,7 +439,7 @@ C    VOLCONVT CONVT POUR VOL LB
       END      
 
 C   CONVT POUR FANFARE TRIOMPHE 
-C   RVN CONVT for W20_003_2 P16
+C   RVN CONVT for W20_003_2 P16 P36
       SUBROUTINE CONVT4
       COMMON IP(10),P(100),G(1000)
       IF(P(1).NE.1.)GOTO100
@@ -447,8 +447,7 @@ C   RVN CONVT for W20_003_2 P16
       FE=F/4.
       P(6)=F*P(6)
       P(8)=P(4)-P(7)-P(9)
-C      IF(P(8))2,3,4 
-C     and not 2,3,3 as in JCR printout
+C      IF(P(8))2,3,4
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3      
  2    P(7)=(P(7)*P(4))/(P(7)+P(9))
@@ -457,7 +456,6 @@ C     and not 2,3,3 as in JCR printout
       GOTO5
  4    P(8)=FE/P(8)
  5    P(7)=FE/P(7)
-      P(8)=FE/P(8)
       P(9)=FE/P(9)
  100  RETURN
       END      
@@ -481,7 +479,6 @@ C      IF(P(8))2,3,4
       GOTO5
  4    P(8)=FE/P(8)
  5    P(7)=FE/P(7)
-      P(8)=FE/P(8)
       P(9)=FE/P(9)
  100  RETURN
       END      
@@ -810,7 +807,7 @@ C
       END      
 
 
-C     RVN CONVT for W20_003_2 P36 
+C     RVN CONVT for W20_003_2 P36 but the same as convt7
 C
       SUBROUTINE CONVT21
       COMMON IP(10),P(100),G(1000)

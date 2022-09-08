@@ -1,7 +1,8 @@
+ COMMENT header pencil JCR T1126 08_07_68 ;
  COMMENT:FANFARE:NOUVEL ESSAI POUR FEEDBACK PBS;
  COMMENT:NEW CONVT;
  COMMENT:TAPE M1172 STEREO 4 KC EACH CHANNEL;
-
+ 
  INS 0 1;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
@@ -65,18 +66,22 @@
  INS 0 7;
  MLT B7   V1 B7;
  END;
+
  INS 0 8;
  MLT B8   V1 B8;
  END;
  INS 0 9;
  MLT B9   V1 B9;
  END;
+
  INS 0 10;
  MLT B10 V1 B10;
  END;
+
  INS 0 11;
  MLT B11 V1 B11;
  END;
+
  INS 0 12;
  MLT B12 V1 B12;
  END;
@@ -94,6 +99,8 @@
 
  NOT 1 1 .8 300 329.6 .03 0 .35 0 0 0;
  NOT 1.5 4 .8 250 523.2 .03 0 .35;
+ COMMENT: RVN this is the same as the next record but without P11 P12 ;
+ COMMNT: RVN what happens when two same records are played simultan?
  NOT 1.5 4 .8 250 523.2 .03 0 .35 0 0 0;
  NOT 2 1 .8 300 440 .03 0 .35 0 0 0;
  NOT 2.5 4 .8 250 622.2 .03 0 .35 0 0 0;
@@ -128,7 +135,9 @@
  NOT 3.3 10 .12;
  NOT 2.8 7 .12;
  NOT 1.8 7 .12;
+ COMMENT: margin pencil JCR .0109 46 SAMPLES OUT OF RANGE ;
  TER 14;
+ COMMENT CONVT 21;
  C   CONVT POUR FANFARE TRIOMPHE
      SUBROUTINE CONVT
      COMMON IP(10),P(100),G(1000)
@@ -139,13 +148,12 @@
      P(6)=F*P(6)
      P(8)=P(4)-P(7)-P(9)
      IF(P(8))2,3,4
- 2   P(7)=P(7)*P(4))/(P(7)+P(9))
-     P(9)=P(9)*P(4))/(P(9)+P(7))
+ 2   P(7)=(P(7)*P(4))/(P(7)+P(9))
+     P(9)=(P(9)*P(4))/(P(9)+P(7))
  3   P(8)=128.
      GOTO5
  4   P(8)=FE/P(8)
  5   P(7)=FE/P(7)
-     P(8)=FE/P(8)
      P(9)=FE/P(9)
  100 RETURN
      END
