@@ -438,7 +438,8 @@ C    VOLCONVT CONVT POUR VOL LB
  100  RETURN
       END      
 
-C   CONVT POUR FANFARE TRIOMPHE
+C   CONVT POUR FANFARE TRIOMPHE 
+C   RVN CONVT for W20_003_2 P16
       SUBROUTINE CONVT4
       COMMON IP(10),P(100),G(1000)
       IF(P(1).NE.1.)GOTO100
@@ -450,8 +451,8 @@ C      IF(P(8))2,3,4
 C     and not 2,3,3 as in JCR printout
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3      
- 2    P(7)=P(7)*P(4)/(P(7)+P(9))
-      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 2    P(7)=(P(7)*P(4))/(P(7)+P(9))
+      P(9)=(P(9)*P(4))/(P(9)+P(7))
  3    P(8)=128.
       GOTO5
  4    P(8)=FE/P(8)
@@ -462,6 +463,7 @@ C     and not 2,3,3 as in JCR printout
       END      
       
 C   CONVT POUR FANFARE TRIOMPHE
+C   RVN CONVT for W20_003_2 P33
       SUBROUTINE CONVT5
       COMMON IP(10),P(100),G(1000)
       IF(P(1).NE.1.)GOTO100
@@ -473,8 +475,8 @@ C   CONVT POUR FANFARE TRIOMPHE
 C      IF(P(8))2,3,4
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3
- 2    P(7)=P(7)*P(4)/(P(7)+P(9))
-      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 2    P(7)=(P(7)*P(4))/(P(7)+P(9))
+      P(9)=(P(9)*P(4))/(P(9)+P(7))
  3    P(8)=128.
       GOTO5
  4    P(8)=FE/P(8)
@@ -488,6 +490,7 @@ C   CONVT POUR FANFARE FEEDBACK
 C...FOR FEEDBACK INSTS, P2 AND P4 INTEGERS IN SCORE
 C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
 C
+C   RVN CONVT for W20_003_2 P18 P23 P28
       SUBROUTINE CONVT6
       COMMON IP(10),P(100),G(1000)
       IF((P(1).EQ.5.).OR.(P(1).EQ.6.))GOTO50
@@ -500,8 +503,8 @@ C
 C      IF(P(8))2,3,4
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3      
- 2    P(7)=P(7)*P(4)/(P(7)+P(9))
-      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 2    P(7)=(P(7)*P(4))/(P(7)+P(9))
+      P(9)=(P(9)*P(4))/(P(9)+P(7))
  3    P(8)=128.
       GOTO5
  4    P(8)=FE/P(8)
@@ -516,6 +519,7 @@ C   CONVT POUR FANFARE FEEDBACK
 C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
 C   P2 AND P4 MULTIPLIED BY .1024 IN CONVT
 C
+C   RVN CONVT for W20_003_2 P26 P30
       SUBROUTINE CONVT7
       COMMON IP(10),P(100),G(1000)
       IF(G(10).GE..5)GOTO100
@@ -531,8 +535,8 @@ C
 C      IF(P(8))2,3,4
       IF(P(8) > 0) GOTO 4
       IF(P(8) == 0) GOTO 3      
- 2    P(7)=P(7)*P(4)/(P(7)+P(9))
-      P(9)=P(9)*P(4)/(P(9)+P(7))
+ 2    P(7)=(P(7)*P(4))/(P(7)+P(9))
+      P(9)=(P(9)*P(4))/(P(9)+P(7))
  3    P(8)=128.
       GOTO5
  4    P(8)=FE/P(8)
@@ -547,6 +551,7 @@ C      IF(P(8))2,3,4
 C   RVN USED IN W20_003_2_P103 
 C   CONVT FUSEES POUR LA CHUTE
 C
+
       SUBROUTINE CONVT8
       COMMON IP(10),P(100),G(1000)
       IF(P(1).NE.1.)GOTO100
