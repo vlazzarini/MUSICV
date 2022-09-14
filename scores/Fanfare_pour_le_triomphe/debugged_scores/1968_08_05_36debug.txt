@@ -89,7 +89,7 @@
  NOT 11.0 6 .75 400 277.2 .04 1 .13 3;
  TER 14;
  
- COMMENT: CONVT 21;
+ COMMENT: CONVT 4;
  
  COMMENT: RVN unclear if this CONVT belongs to the 
  score CONVT is missing the beginning I added the first two lines ;

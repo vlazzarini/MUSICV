@@ -8,6 +8,8 @@
  OSC B3 P6 B7 F1 P29;
  STR B7 V1 B1;
  END;
+ COMMENT: l.a. pencil JCR pas vraiment de feedback
+ ---> T ;
  INS 0 2;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
@@ -27,7 +29,9 @@
  ENV P5 F2 B3 P7 P8 P9 P30;
  AD2 B3 B10 B3;
  OSC B3 P6 B3 F1 P29;
+ COMMENT: RVN l.a. output should be B10 otherwise no feedback ; 
  STR V1 B3 B1;
+ COMMENT: RVN l.a. P3 should be B10 otherwise no feedback;
  END;
  INS 0 5;
  SET P10;
@@ -64,6 +68,7 @@
  NOT 6.5 1 .9 280 523.2 .06 1 .15 0;
  NOT 7.0 4 .5 230 740 .04 1 .1 0;
  NOT 7.5 4 .99 215 923.3 .05 1 .1 0;
+ COMMENT: l.a. 923.3 should be 932.3 pen JCR ;
  NOT 8 1 .49 200 440 .03 1 .1 0;
  NOT 8.5 1 3.25 400 103.8 .06 3 .18 3;
  NOT 9.25 4 2.50 400 146.8 .04 2 .17 3;
@@ -71,8 +76,9 @@
  NOT 10.0 5 1.75 400 196.0 .04 2 .15 3;
  NOT 10.5 3 1.25 400 233.1 .04 1 .14 3;
  NOT 11.0 6 .75 400 277.2 .04 1 .13 3;
+ COMMENT: pen margin JCR add 1s to the end;
  TER 12.5;
- 
+ COMMENT: CONVT 4;
  $   FORTRAN NDECK
  C   CONVT POUR FANFARE TRIOMPHE
      SUBROUTINE CONVT

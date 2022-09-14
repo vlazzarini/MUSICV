@@ -1,3 +1,6 @@
+ COMMENT: header pen JCR (3)
+ COMMENT: header pen JCR comment new CONVT ;
+ 
  COMMENT:FANFARE:NOUVEL ESSAI POUR FEEDBACK PBS;
  COMMENT:TAPE M1172 STEREO 4 KC EACH CHANNEL;
  INS 0 1;
@@ -9,6 +12,7 @@
  OSC B3 P6 B7 F1 P28;
  STR B7 V1 B1;
  END;
+
  INS 0 2;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
@@ -16,7 +20,8 @@
  OSC B8 P12 B4 F4 P29;
  AD2 B4 B3 B3;
  OSC B3 P6 B8 F1 P28;
- STR B8 V1 B1;END;
+ STR B8 V1 B1;
+ END;
  INS 0 3;
  SET P10;
  ENV P5 F2 B3 P7 P8 P9 P30;
@@ -52,6 +57,7 @@
  AD2 B4 B3 B3;
  OSC B3 P6 B12 F1 P28;
  STR V1 B11 21 ;
+ 
  END;
  INS 0 7;
  MLT B7   V1 B7;
@@ -95,6 +101,7 @@
  NOT 7 4 .38 170 740 .02 0 .15;
  NOT 7.5 4 1 180 740 .02 0 .45;
  NOT 8.5 2 4 400 103.8 .06 1 .2; 
+ COMMENT: l.a. pencil JCR ---? ;
  NOT 8.5 2 4 400 103.8 .06 1 .2 3 5;
  NOT 9.25 4 3.25 400 146.8 .03 1 .2 3 5;
  NOT 9.5 1 3 400 164.8 .04 0 .2 3 5;
@@ -114,5 +121,8 @@
  NOT 3.8 7 .12;
  NOT 3.3 10 .12;
  COMMENT: RVN missing TER and CONVT;
- 
- 
+ COMMENT: margin pen JCR CONVT IP(1)=12
+ P(12)=5/F(4) This didn't work because P(10)&P(11) were not
+ in genereal written on note cords, so they were copied from
+ the previous values xxx? which were aberrant values written
+ for GEN definitions ;

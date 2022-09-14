@@ -1,7 +1,10 @@
+ COMMENT header pencil JCR T1092 08_17_68 ;
  COMMENT RVN RISSET PEN _BAD: NOT TRULY CONTROL OF THE ENVELOPE SEE NEXT PAGE_ ;
  COMMENT:FANFARE FEEDBACK AVEC MEILLEUR CONTROLE DE L ENVELOPPE;
  COMMENT:TAPE HO892 4 KC STEREO FILE 2;
  COMMENT:100 PER CENT FEEDBACK;
+ COMMENT: margin pencil JCR Bad: nor truly control of the envelope 
+ see next page;
  INS 0 1;
  AD2 B7 P5 B3;
  SET P10;
@@ -146,6 +149,7 @@
  NOT 11 3 10 300 247 .03 1 .10;
  NOT 13 6 8 350 466 .02 1 .10;
  TER 25;
+ 
  $   FORTRAN NDECK
  C   CONVT POUR FANFARE FEEDBACK
  C...FOR FEEDBACK INSTS,P2 AND P4 INTEGERS IN SCORE
@@ -159,7 +163,13 @@
      F=511./G(4)
      FE=F/4.
      P(6)=F*P(6) 
+     COMMENT: after l.a. pencil JCR P(2)= and P(4)=  ;
+     COMMENT: RVN this applies to starting time and duration
+     see P21 -> multiplying with .1024 ;
      P(8)=P(4)-P(7)-P(9)
+     COMMENT: for the line above pencil JCR NB encore mauvais 
+     car cette soustraction est faite avant que P(4) ne soit converti 
+     à sa valeur réele;
      IF(P(8))2,3,4
  2   P(7)=(P(7)*P(4))/(P(7)+P(9))
      P(9)=(P(9)*P(4))/(P(9)+P(7))
@@ -168,6 +178,7 @@
  4   P(8)=FE/P(8)
  5   P(7)=FE/P(7)
      P(9)=FE/P(9)
+     COMMENT: after the line above pencil JCR GOTO100 ;
  40  P(4)=.1024*P(4)
  50  P(2)=.1024*P(2)
  100 RETURN
