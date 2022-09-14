@@ -105,7 +105,7 @@
  NOT 7 4 .38 170 740 .02 0 .15;
  NOT 7.5 4 1 180 740 .02 0 .45;
  COMMENT: l.b. pencil JCR ---? ;
- COMMENT: RN 2 next lines start at the same moment
+ COMMENT: RVN 2 next lines start at the same moment
  only the second one will be used;
  COMMENT: NOT 8.5 2 4 400 103.8 .06 1 .2; 
  NOT 8.5 2 4 400 103.8 .06 1 .2 3 5;
