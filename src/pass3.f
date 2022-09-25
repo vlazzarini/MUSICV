@@ -1307,8 +1307,9 @@ c 104  IF(N1-10)105,106,106
 c 105  N3=N1
       N3=N1
       GO TO 106
-      
- 99   J=IDSK+1
+C     VL: this was IDSK+1 but that looked like it was offsetting the stream by 1
+C     and inverting the stereo image  
+ 99   J=IDSK
       M1=IP(10)
       M2=0
       ISC=IP(12)
