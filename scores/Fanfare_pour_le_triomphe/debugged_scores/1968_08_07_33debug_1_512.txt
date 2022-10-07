@@ -101,7 +101,8 @@
  GEN 0 1 5 .9 1 .9 512;
  COMMENT: RVN i get Feedback if i replace GEN above with GEN below from GEN P43_44;
  COMMENT: GEN 0 1 5 .9 0 .9 512;
-
+ COMMENT: RVN it is unclear if Risset did get feedback with 1-512;
+ 
  NOT 1 1 .8 300 329.6 .03 0 .35 0 0 0;
  COMMENT: NOT 1.5 4 .8 250 523.2 .03 0 .35;
  COMMENT: RVN this is the same as the next record but without P11 P12 ;
