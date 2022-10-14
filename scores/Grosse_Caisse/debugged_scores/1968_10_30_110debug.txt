@@ -1,0 +1,157 @@
+ COMMENT RVN P110 is the same code as P107 only the annotations are different ;
+ COMMENT: header pen JCR T1561 10/30/68 ;
+ COMMENT:ESSAI DE GROSSE CAISSE TAPE M2912 FILES 7,8,9;
+ COMMENT:TO SKIP FILES 1 TO 6;
+ COMMENT: GEN 0 3 6;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
+ COMMENT:MEMBRANE SPRECTRUM,SINE WAVE,NO NOISE BAND;
+
+ SIA 0 4 5000;
+ COMMENT: SV3 0 7.5 2.5 500 1500;
+ COMMENT: l.a. pen inserted 1 between 0 and 7.5 JCR ;
+ COMMENT: RVN this means this is another printout, not identical to 107 ;
+ COMMENT: RVN corrected SV3 ;
+ SV3 0 1 7.5 2.5 500 1500;
+ 
+ COMMENT:FOR DRUM;
+ INS 0 1;
+ OSC P5 P7 B3 F2 P30;
+ RAN B3 V2 B3 P29 P28 P27;
+ OSC B3 V1 B3 F1 P26;
+ OUT B3 B1;
+ OSC V3 P7 B4 F2 P25;
+ SET P8;
+ OSC B4 P6 B4 F3 P24;
+ OUT B4 B1;
+ OSC V4 P7 B5 F8 P23;
+ SET P9;
+ OSC B5 P6 B5 F4 P22;
+ OUT B5 B1;
+ END;
+
+ COMMENT: GEN 0 4 3 1 10 0 1 512 1.5 16 0 1 512 2 22 0 1 512 1.5 23 0 1 512;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 4 3 1 10 0 0 511 1.5 16 0 0 511 2 22 0 0 511 1.5 23 0 0 511; 
+ 
+ COMMENT: GEN 0 5 2 -10;
+ COMMENT: RVN replaced GEN 5 with GEN7;
+ GEN 0 7 2 -10;
+
+ GEN 0 2 1 1 1;
+
+ GEN 0 4 4 1 10 0 1 512;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 4 4 1 10 0 0 511;
+
+ COMMENT: GEN 0 5 7 -8;
+ COMMENT: GEN 0 5 8 -8;
+ COMMENT: RVN replaced GEN 5 with GEN7;
+ GEN 0 7 7 -8;
+ GEN 0 7 8 -8;
+
+ COMMENT: margin pencil JCR mauvais mais bon vitesse *70/60 en 
+ low pass filtered vers 150Hz ;
+ COMMENT: margin pencil JCR 2 fois+vite tambour ;
+
+ NOT  .4 1 .45 0 7.5 0;
+ NOT  .8 1 .45 0 7.5 0;
+ NOT 1.2 1 .45 0 7.5 0;
+ NOT 1.6 1 .45 0 7.5 0;
+ NOT 2.0 1 .45 0 7.5 0;
+ NOT 2.4 1 .45 0 7.5 0;
+ NOT 2.8 1 .45 0 7.5 0;
+ NOT 3.2 1 .45 0 7.5 0;
+ NOT 3.6 1 .45 0 7.5 0;
+ NOT 4.0 1 .45 0 7.5 0;
+ NOT 4.4 1 .45 0 7.5 0;
+ NOT 4.8 1 .45 0 7.5 0;
+ NOT 5.2 1 .45 0 7.5 0;
+ NOT 5.6 1 .45 0 7.5 0;
+ NOT 6.0 1 .6 0 7.5 0;
+ SEC 8;
+
+ COMMENT:TO WRITE EOF;
+ COMMENT: GEN 0 3 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
+
+ COMMENT:NO MB SPRECTRUM,NARROW NOISE BAND CENTERED ON RESONANT FREQ;
+ COMMENT:DIFFERENT DECAY RATES FOR SINE WAVE;
+ COMMENT: margin pencil JCR un peu meilleur ;
+
+ COMMENT: SV3 0 7.5 2.5 1200 400;
+ COMMENT: l.a. pen inserted 1 between 0 and 7.5 JCR ;
+ COMMENT: RVN corrected SV3 ;
+ SV3 0 1 7.5 2.5 1200 400;
+
+
+ COMMENT: GEN 0 4 3 1 10 0 1 512;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 4 3 1 10 0 0 511;
+
+ NOT  .4 1 .45 500 7.5 0;
+ NOT  .8 1 .45 500 7.5 0;
+ NOT 1.2 1 .45 500 7.5 0;
+ NOT 1.6 1 .45 500 7.5 0;
+ NOT 2.0 1 .45 500 7.5 0;
+ NOT 2.4 1 .45 500 7.5 0;
+ NOT 2.8 1 .45 500 7.5 0;
+ NOT 3.2 1 .45 500 7.5 0;
+ NOT 3.6 1 .45 500 7.5 0;
+ NOT 4.0 1 .45 500 7.5 0;
+ NOT 4.4 1 .45 500 7.5 0;
+ NOT 4.8 1 .45 500 7.5 0;
+ NOT 5.2 1 .45 500 7.5 0;
+ NOT 5.6 1 .45 500 7.5 0;
+ NOT 6.0 1 .55 800 7.5 0;
+ SEC 8;
+
+ COMMENT:TO WRITE EOF;
+ COMMENT: GEN 0 3 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
+ 
+ COMMENT:JUST SINE WAVE WITH 2 DECAY RATES;
+ COMMENT: margin pencil JCR NB 2 fois + vite + sonore? ;
+ 
+ COMMENT: GEN 0 5 2 -9;
+ COMMENT: GEN 0 5 8 -7;
+ COMMENT: RVN replaced GEN 5 with GEN7;
+ GEN 0 7 2 -9;
+ GEN 0 7 8 -7;
+ 
+ 
+ COMMENT: SV3 0 7.5 2.5 1400 600;
+ COMMENT: l.a. pen inserted 1 between 0 and 7.5 JCR ;
+ COMMENT: RVN corrected SV3 ;
+ SV3 0 1 7.5 2.5 1200 400;
+
+ NOT  .4 1 .45 0 7.5 0;
+ NOT  .8 1 .45 0 7.5 0;
+ NOT 1.2 1 .45 0 7.5 0;
+ NOT 1.6 1 .45 0 7.5 0;
+ NOT 2.0 1 .45 0 7.5 0;
+ NOT 2.4 1 .45 0 7.5 0;
+ NOT 2.8 1 .45 0 7.5 0;
+ NOT 3.2 1 .45 0 7.5 0;
+ NOT 3.6 1 .45 0 7.5 0;
+ NOT 4.0 1 .45 0 7.5 0;
+ NOT 4.4 1 .45 0 7.5 0;
+ NOT 4.8 1 .45 0 7.5 0;
+ NOT 5.2 1 .45 0 7.5 0;
+ NOT 5.6 1 .45 0 7.5 0;
+ NOT 6.0 1 .55 0 7.5 0;
+ TER 8;
+
+ COMMENT: CONVT 16;
+
+ $   FORTRAN NDECK
+     SUBROUTINE CONVT
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).NE.1.)GOTO100
+     F=511./G(4)
+     P(6)=F*P(6)
+     P(7)=F/P(4)
+     IF(P(3).EQ.1.)GOTO100
+     P(6)=P(6)*6(11)
+ 100 RETURN
+     END
+ 

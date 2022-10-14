@@ -81,7 +81,7 @@
  $   FORTRAN NDECK
  CIGCONVT         CONVT FOR INTERPOL GLISS
      SUBROUTINE CONVT
-     COMMON IP(10),P(100),G(1000)
+     COMMONIP(10),P(100),G(1000)
  COMMENT: l.a. RVN corrected, instead of COMMONIP in the original it is now COMMON IP ;
      IF(P(1).NE.1.)GOTO100
      F=511./G(4)

@@ -2,12 +2,16 @@
  COMMENT: header pencil JCR Proc .0108 coupé un peu avant fin ;
  COMMENT:GROSSE CAISSE,DRUM,SNARE ON TAPE M2912 FILES 10 TO 12;
  COMMENT:TO SKIP FILES 1 TO 9;
- GEN 0 3 9;
+ COMMENT: GEN 0 3 9;
+ COMMENT: RVN pass.3 uses GEN4 so we comment out all skipping commands 
+ using all GENs except GEN5;
+
  COMMENT:GROSSE CAISSE 5 KC SAMPLING;
  SIA 0 4 5000;
- COMMENT:NO MB SPECTRUM,NARROW NOISE BAND CERERED ON RESONANT FREQ;
+ COMMENT:NO MB SPECTRUM,NARROW NOISE BAND CENRERED ON RESONANT FREQ;
  SV3 0 1 7.5 2.5 1200 400;
  COMMENT:FOR DRUM;
+
  INS 0 1;
  OSC P5 P7 B3 F2 P30;
  RAN B3 V2 B3 P29 P28 P27;
@@ -22,12 +26,18 @@
  OSC B5 P6 B5 F4 P22;
  OUT B5 B1;
  END;
+
  GEN 0 2 1 1 1;
  GEN 0 5 2 -10;
  GEN 0 4 3 1 10 0 1 512;
  GEN 0 4 4 1 10 0 1 512;
- GEN 0 5 7 -8;
- GEN 0 5 8 -8;
+
+ COMMENT: GEN 0 5 7 -8;
+ COMMENT: GEN 0 5 8 -8;
+ COMMENT: RVN GEN 5 replaced with GEN 7;
+ GEN 0 7 7 -8;
+ GEN 0 7 8 -8;
+ 
  COMMENT: margin pencil JCR Bon filtre (low pass= 150 Hz) ;
  NOT  .4 1 .48 500 8.7 0;
  NOT  .8 1 .48 500 8.7 0;
@@ -45,12 +55,17 @@
  NOT 5.6 1 .48 500 8.7 0;
  NOT 6.0 1 .6 0 8.7 0;
  SEC 8;
+
  COMMENT:TO WRITE EOF;
- GEN 0 3 0;
+ COMMENT: GEN 0 3 0;
+ COMMENT: RVN pass.3 uses GEN4 so we comment out all skipping commands 
+ using all GENs except GEN5;
+
  COMMENT:DRUM;
  COMMENT:MEMBRANE SPECTRUM, SINE WAVE, NO NOISE BAND;
  GEN 0 4 3 1 10 0 1 512 1.5 16 0 1 512 2 22 0 1 512 1.5 23 0 1 512;
  SV3 0 1 7.5 2.5 500 1500;
+
  COMMENT: margin pencil JCR Bon SS filtre ;
  NOT  .4 1 .22 0 15 0;
  NOT  .8 1 .22 0 15 0;
@@ -69,18 +84,27 @@
  NOT 6.0 1 .22 0 15 0;
  SEC 8;
  COMMENT:TO WRITE EOF;
- GEN 0 3 0;
+ COMMENT: RVN pass.3 uses GEN4 so we comment out all skipping commands 
+ using all GENs except GEN5;
+ COMMENT: GEN 0 3 0;
+
  COMMENT:SNARE;
  COMMENT:4 KC CENTER 3 KC BAND NOISE 200 HZ SINE AND MEMBRANE SPECTRUM;
  COMMENT:20 KC SAMPLING;
  SIA 0 4 20000;
  GEN 0 1 2 -12;
+
  COMMENT: l.a. pen JCR error - should be GEN 0 5 2 -12
  decay 12 octaves [drawing of a descending exp. function];
  COMMENT: l.a. pencil JCR OK ;
  GEN 0 1 7 0 1 .99 5 0 100 0 512;
- GEN 0 5 8 -8;
+ 
+ COMMENT: GEN 0 5 8 -8;
+ COMMENT: RVN GEN 5 replaced with GEN 7;
+ GEN 0 7 8 -8;
+
  SV3 0 1 100 65 300 800;
+ 
  NOT 0.4 1 .2 1000 20 0;
  NOT 0.8 1 .2 1000 20 0;
  COMMENT: RVN 2 l.a. not legible P1-3, this is my assumption ;
@@ -104,6 +128,9 @@
  NOT 5.6 1 .2 1000 20 0 ;
  NOT 6.0 1 .25 1300 20 0 ;
  TER 8;
+ 
+ COMMENT: CONVT 16 ;
+ 
  $      FORTRAN NDECK
         SUBROUTINE CONVT
         COMMON IP(10),P(100),G(1000)

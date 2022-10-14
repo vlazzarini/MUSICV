@@ -1,0 +1,48 @@
+ COMMENT: header pen JCR Gong Flute Bells corrigés;
+ COMMENT: JCR T1667 10/04/68 ;
+ COMMENT:POUR CONTRE APOTHEOSE GONG AND FLUTE;
+ COMMENT:ON TAPE M3406;
+ COMMENT:  TO SKIP FIRST FILE;
+ COMMENT: GEN 0 4 1 ;
+ COMMENT: 2 l.a. stroke pen JCR ;
+ COMMENT:GONGLIKE SOUND VARIABLE CHORD SPECTRUM;
+ INS 0 1;
+ OSC P5 P7 B3 F2 P8;
+ OSC B3 P6 B3 F1 P25;
+ OUT B3 B1;
+ END;
+ SIA 0 4 10000;
+ GEN 0 2 1 1 1;
+ COMMENT: GEN 0 3 2 0 ;
+ COMMENT: RVN l.a. replaced with l.b. - missing parameters
+ for GEN3 otherwise set to 0;
+ GEN 0 3 2 0 1 0 ;
+ COMMENT: RVN a possible solution would be as in P58 
+ or P85 GEN 0 1 2 0 1 .99 85 .20 125 .70 170 .20 255 .99 340 0 512 ;
+ NOT 1 1 4 600 659 .015 0;
+ NOT 1 1 4 1000 104 .015 85.17;
+ NOT 1 1 4 400 988 .015 170.33;
+ NOT 1 1 4 400 1865 .015 255.5;
+ NOT 1 1 4 700 294 .015 340.67;
+ NOT 1 1 4 500 784 .015 125.83;
+ SEC 7;
+
+ TER 27;
+ COMMENT: CONVT 12;
+ $   FORTRAN NDECK
+     SUBROUTINE CONVT
+     COMMON IP(10),P(100),G(1000)
+     IF(P(1).NE.1.)GOTO100
+     F=511./G(4)
+     P(6)=F*P(6)
+     IF(G(10).GE..5)GOTO50
+     IF(P(3).EQ.1.)GOTO100
+     P(7)=F/P(4)
+     IF(P(3).EQ.3.)GOTO100
+     P(8)=.01*P(5)
+     P(9)=F*P(9)
+     GOTO100
+ 50  P(7)=F/P(4)
+ 100 RETURN
+     END
+ 
