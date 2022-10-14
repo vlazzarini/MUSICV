@@ -16,8 +16,12 @@
 
  GEN 0 2 1 1 1;
  GEN 0 2 2 1 .5 .3 .1 4;
- GEN 0 1 3 .999 1 .999 50 0 462 0 512;
- GEN 0 1 4 0 1 0 25 .999 231 .999 281 0 487 0 512;
+ 
+ COMMENT: GEN 0 1 3 .999 1 .999 50 0 462 0 512;
+ COMMENT: GEN 0 1 4 0 1 0 25 .999 231 .999 281 0 487 0 512;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 1 3 .999 0 .999 50 0 462 0 511;
+ GEN 0 1 4 0 0 0 25 .999 231 .999 281 0 487 0 511;
 
  SIA 0 4 10000;
 
@@ -69,23 +73,27 @@
 
  GEN 0 2 1 1 1;
  GEN 0 2 2 1 .5 .3 .1 4;
- GEN 0 1 3 .999 1 .999 50 0 462 0 512;
- GEN 0 1 4 0 1 0 25 .999 231 .999 281 0 487 0 512;
+ 
+ COMMENT: GEN 0 1 3 .999 1 .999 50 0 462 0 512;
+ COMMENT: GEN 0 1 4 0 1 0 25 .999 231 .999 281 0 487 0 512;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 1 3 .999 0 .999 50 0 462 0 511;
+ GEN 0 1 4 0 0 0 25 .999 231 .999 281 0 487 0 511;
 
  COMMENT: GEN5 in the line below replaced with GEN7;
  COMMENT: GEN 0 5 5 -8;
  GEN 0 7 5 -8;
  
- COMMENT: GEN 4 for F6 is not producing a proper function?;
  COMMENT: GEN 0 4 6 100 21 0 1 512 100 29 0 1 512 100 39 0 1 512;
  COMMENT: GEN 0 4 7 100 12 0 1 512 100 30 0 1 512 100 46 0 1 512;
- COMMENT: F6 and F7 replaced by sine wave collection of GEN2 ;
- GEN 0 2 6 1 .5 .3 .2 .15 .12 6;
- GEN 0 2 7 1 .5 .3 .2 .15 .12 6;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 4 6 100 21 0 0 511 100 29 0 0 511 100 39 0 0 511;
+ GEN 0 4 7 100 12 0 0 511 100 30 0 0 511 100 46 0 0 511;
 
  GEN 0 3 8 0 10 10 10 0 -10 -10 -10 0;
  GEN 0 2 9 1 .5 .3 .2 .15 .12 6;
  GEN 0 2 10 1 1;
+ 
  COMMENT:ONE SPECTRUM,DECAYS .1,1,4;
  COMMENT: pen for the following section JCR Bon à 
  vitesse normale x 2 fois moindre ;

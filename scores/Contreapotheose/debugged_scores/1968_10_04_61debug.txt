@@ -6,12 +6,15 @@
  COMMENT: GEN 0 4 1 ;
  COMMENT: 2 l.a. stroke pen JCR ;
  COMMENT:GONGLIKE SOUND VARIABLE CHORD SPECTRUM;
+
  INS 0 1;
  OSC P5 P7 B3 F2 P8;
  OSC B3 P6 B3 F1 P25;
  OUT B3 B1;
  END;
+
  SIA 0 4 10000;
+
  GEN 0 2 1 1 1;
  COMMENT: GEN 0 3 2 0 ;
  COMMENT: RVN l.a. replaced with l.b. - missing parameters
@@ -19,6 +22,7 @@
  GEN 0 3 2 0 1 0 ;
  COMMENT: RVN a possible solution would be as in P58 
  or P85 GEN 0 1 2 0 1 .99 85 .20 125 .70 170 .20 255 .99 340 0 512 ;
+ 
  NOT 1 1 4 600 659 .015 0;
  NOT 1 1 4 1000 104 .015 85.17;
  NOT 1 1 4 400 988 .015 170.33;
@@ -26,7 +30,6 @@
  NOT 1 1 4 700 294 .015 340.67;
  NOT 1 1 4 500 784 .015 125.83;
  SEC 7;
-
  
  
  COMMENT:FOR FLUTELIKE SOUND;
@@ -57,6 +60,7 @@
  GEN 0 2 2 1 .2 .08 .07 4;
  GEN 0 2 3 1 .4 .2 .1 .1 .05 6;
  GEN 0 2 4 1 .63 .2 .18 .15 .12 .11 .10 .05 9;
+ 
  COMMENT: GEN 0 1 5 0 1 .2 50 .6 150 .99 200 .2 350 0 512;
  COMMENT: GEN 0 1 6 0 1 .2 50 .4 200 .99 400 0 512;
  COMMENT: GEN 0 1 7 0 1 .5 80 .5 140 .99 160 .4 280 .6 420 0 512;

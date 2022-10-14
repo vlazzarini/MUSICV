@@ -20,18 +20,22 @@
  COMMENT: l.a. pencil JCR <--- ! ;
  
  GEN 0 3 1 0;
+ COMMENT: RVN GEN 3 appears to be missing an argument ;
  NOT 0 1 .5 1900 1.024;
  SEC .5;
 
  GEN 0 3 1 1;
+ COMMENT: RVN GEN 3 appears to be missing an argument ;
  NOT 0 1 .5 1900 1.024;
  SEC .5;
 
  GEN 0 3 1 -1;
+ COMMENT: RVN GEN 3 appears to be missing an argument ;
  NOT 0 1 .5 1000 1.024;
  SEC .5;
  
  GEN 0 3 1 -1;
+ COMMENT: RVN GEN 3 appears to be missing an argument ;
  NOT 0 1 .5 1900 1.024;
  SEC .5;
  
@@ -125,8 +129,12 @@
  SV3 0 1 0;
 
  GEN 0 2 1 1 1;
- GEN 0 1 2 0 1 .8 85 .6 105 .999 128 .7 256 .3 285 .10 333 0 384 0 512;
- GEN 0 1 3 0 1 .75 128 .75 140 .25 150 .999 250 .999 256 .3 280 .13 325 0 384 0 512;
+ COMMENT: GEN 0 1 2 0 1 .8 85 .6 105 .999 128 .7 256 .3 285 .10 333 0 384 0 512;
+ COMMENT: GEN 0 1 3 0 1 .75 128 .75 140 .25 150 .999 250 .999 256 .3 280 .13 325 0 384 0 512;
+ COMMENT: RVN replaced indexing 1-512 with 0-511 ;
+ GEN 0 1 2 0 0 .8 85 .6 105 .999 128 .7 256 .3 285 .10 333 0 384 0 511;
+ GEN 0 1 3 0 0 .75 128 .75 140 .25 150 .999 250 .999 256 .3 280 .13 325 0 384 0 511;
+
  SEC 4;
 
  NOT 31 2 14 400 103.8 .06 3 .18 3;

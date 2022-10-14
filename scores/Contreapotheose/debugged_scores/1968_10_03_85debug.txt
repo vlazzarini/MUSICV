@@ -111,6 +111,7 @@
  NOT 70 2 16 400 554;
  NOT 70 4 16 500 466 0 15;
  SEC 100;
+
  SIA 0 4 5000;
  COMMENT: RVN I could comment out SIA to prevent 
  the change of tempo/pitch for the whole run ;
@@ -118,10 +119,12 @@
  or 10khz, can0t have two SIA in the score ;
  COMMENT: RVN if two SIA in the score - the 
  last one will be considered ;
+
  INS 0 8;
  OSC P5 P6 B3 F1 P30;
  OUT B3 B1;
  END;
+ 
  NOT 1 8 20 280 392;
  NOT 1 8 30 280 440;
  COMMENT: RVN unclear why the above note is only 1 second

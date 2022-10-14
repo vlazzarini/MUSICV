@@ -1,7 +1,9 @@
  COMMENT header pencil JCR T1685 08_15_68 ;
  COMMENT:FEEDBACK RUN POUR FANFARE TRIOMPHE;
  COMMENT:TAPE HO892;
+ 
  COMMENT:ALL NOTE BEGINNINGS AND ENDS SEPARATED BY MULTIPLIES OF 512;
+ 
  INS 0 1;
  AD2 B7 P5 B3;
  OSC B3 P6 B7 F1 P30;
@@ -50,11 +52,16 @@
  INS 0 12;
  MLT B12 V1 B12;
  END;
+
  SIA 0 4 10000;
+
  GEN 0 2 1 1 1;
+
  COMMENT :PAS DE METRONOME MAIS CONVT;
+ 
  COMMENT :FOR SILENCE AT BEGINNING ;
  SEC 1;
+
  NOT 1 1 24 200 103.8;
  NOT 5 4 20 240 233;
  NOT 8 2 17 350 174.6;
@@ -72,6 +79,7 @@
  COMMENT: l.a. JCR SORT will mess all with that!;
  COMMENT: RVN since SEC goes into convt6 it needs to be given 
  in BPM as NOT and not in seconds;
+
  NOT 1 1 20 200 311.1;
  NOT 2 4 19 200 440;
  NOT 5 2 16 350 370;
@@ -86,6 +94,7 @@
  NOT 22 12 1;
  COMMENT: SEC 7;
  SEC 23;
+
  COMMENT: l.a. JCR --->;
  COMMENT: the section below pencik margins JCR 
  essentiellt ça marche, le problème es supprimé ->
@@ -142,6 +151,7 @@
  NOT 13 6 8 350 466;
  COMMENT: TER 8;
  TER 23;
+ 
  COMMENT: CONVT 6;
  COMMENT: RVN originally this below is CONVTsubroutine 2
  but it doesn't convert SEC and TER into BPM which creates 

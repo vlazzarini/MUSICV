@@ -51,12 +51,16 @@
  INS 0 12;
  MLT B12 V1 B12;
  END;
+ 
  COMMENT: VL I"VE ADDED THE GEN below otherwise there was no sound;
  GEN 0 2 1 1 1;
+
  SIA 0 4 10000;
+
  SV2 0 2 30;
  SV2 0 30 0 120 12.5 120;
  SV3 0 1 0;
+ 
  NOT 1 1 6 200 103.8;
  NOT 2 4 5 240 233;
  NOT 2.75 2 4.25 350 174.6;
@@ -70,6 +74,7 @@
  NOT 8 8 .2;
  NOT 8 7 .2;
  SEC 9;
+
  NOT 1 1 5 200 311.1;
  NOT 1.25 4 4.75 220 440;
  NOT 2 2 4 350 370;
@@ -83,6 +88,7 @@
  NOT 8 8 .2;
  NOT 8 7 .2;
  SEC 9;
+
  NOT 1 1 5 200 103.8;
  NOT 1.75 4 4.25 250 146.8;
  NOT 2 2 4 250 164.8;
@@ -96,6 +102,7 @@
  NOT 8 8 .2;
  NOT 8 7 .2;
  SEC 9;
+
  NOT 1 1 5 300 51.9;
  NOT 2 4 4 250 73.4;
  NOT 2.75 2 3.25 250 98;

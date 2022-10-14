@@ -1,7 +1,9 @@
+ COMMENT: HEADER PEN JCR T1691 08/09/68 ;
  COMMENT:RAFALES POUR VOL LB,FEEDBACK CHECK POUR ACCORDS FANFARE LB;
  COMMENT:M1988 STEREO;
  COMMENT:FILE 1 RAFAELES, FILE 2 A 7 FEEDBACK;
  COMMENT:POUR RAFALES;
+
  INS 0 1;
  RAN P5 P7 B3 P30 P29 P28;
  OSC B3 P6 B3 F1 P27;
@@ -15,7 +17,9 @@
  END;
 
  SV2 0 10 1;
+ COMMENT: l.a. pen JCR -> FOR CONVT ;
  GEN 0 2 1 1 1;
+
  NOT 1 1 .12 2000 2000 2000;
  NOT 1.2 1 .12 2000 2000 2000;
  NOT 1.4 1 .12 2000 2000 2000;
@@ -33,7 +37,8 @@
  NOT 4.9 1 .10 2500 1500 1500;
 
  COMMENT:TO WRITE END OF FILE;
- GEN 5.999 4 0;
+ COMMENT: GEN 5.999 4 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
  SEC 6;
 
  COMMENT:POUR FEEDBACK, NOTES DE L ACCORD SEPAREMENT;
@@ -74,17 +79,17 @@
  END;
 
 
- SV2 0 10 0;
+ SV2 0 10 0; 
+ COMMENT: l.a. pen JCR -> FOR CONVT ;
  SV2 0 2 30;
  SV2 0 30 0 120 10 120;
-
+ COMMENT: l.a. pen JCR METRONOME Q=120 ;
  NOT 1 1 5 400 311.1;
 
  COMMENT:TO WRITE END OF FILE;
- GEN 7 4 0;
+ COMMENT: GEN 7 4 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
  SEC 7.001;
-
-
 
  SV2 0 2 30;
  SV2 0 30 0 120 10 120;
@@ -92,7 +97,8 @@
  NOT 1.75 4 4.25 400 146.8;
 
  COMMENT:TO WRITE END OF FILE;
- GEN 7 4 0;
+ COMMENT: GEN 7 4 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
  SEC 7.001;
 
 
@@ -102,9 +108,9 @@
  NOT 2 2 4 400 164.8;
 
  COMMENT:TO WRITE END OF FILE;
- GEN 7 4 0;
+ COMMENT: GEN 7 4 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
  SEC 7.001;
-
 
 
  SV2 0 2 30;
@@ -113,9 +119,9 @@
  NOT 2.5 5 3.5 400 196;
 
  COMMENT:TO WRITE END OF FILE;
- GEN 7 4 0;
+ COMMENT: GEN 7 4 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
  SEC 7.001;
-
 
 
  SV2 0 2 30;
@@ -124,9 +130,9 @@
  NOT 3 3 3 400 233;
 
  COMMENT:TO WRITE END OF FILE;
- GEN 7 4 0;
+ COMMENT: GEN 7 4 0;
+ COMMENT: RVN l.a. commented out - no need for skipping files ;
  SEC 7.001;
-
 
 
  SV2 0 2 30;
