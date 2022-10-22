@@ -398,9 +398,11 @@ C     *** MUSIC V ***
       SUBROUTINE FORSAM
       DIMENSION I(15000),P(100),IP(21),L(8),M(8)
       COMMON I,P/PARM/IP
-      EQUIVALENCE (M1,M(1)),(M2,M(2)),(M3,M(3)),(M4,M(4)),(M5,M(5))
+      EQUIVALENCE (M1,M(1)),(M2,M(2)),(M3,M(3)),(M4,M(4)),(M5,M(5)),
+     * (M6,M(6)),(M7,M(7))
       EQUIVALENCE (M6,M(6)),(M7,M(7)),(M8,M(8)),(L1,L(1)),(L2,L(2))
-      EQUIVALENCE (L3,L(3)),(L4,L(4)),(L5,L(5)),(L6,L(6)),(L7,L(7))
+      EQUIVALENCE (L3,L(3)),(L4,L(4)),(L5,L(5)),(L6,L(6)),(L7,L(7)),
+     * (L8,L(8))
       EQUIVALENCE (L8,L(8)),(RN1,IRN1),(RN3,IRN3),(RN,IRN)
 C     C***** DATA IMULT/Z5EECE66D/
       DATA IIIRD/976545367/
@@ -432,7 +434,9 @@ c 202     L(J2)=I(J1)+I(3)-1
       NSAM=I(5)
       N3=I(N1-2)
       NGEN=N3-100
-      GO TO (101,102,103,104,105,106,107,108,109,110,111,112,113),NGEN
+
+      GO TO (101,102,103,104,105,106,107,108,109,110,111,112,113,114),
+     * NGEN
  112  RETURN
 C     UNIT GENERATORS
 C     OUTPUT BOX
@@ -840,6 +844,56 @@ C     INTERPOLATING OSCILLATOR (FROM 1968/9 LISTINGS)
  1093    CONTINUE
       I(L5)=IFIX(SUM*SFID)
       RETURN
+C     FBAM OSCILLATOR
+C     FBM A,F,O,FN,S,G,D
+C     G - feedback amount (B or P)
+C     D - delay in samples (P), 1 - 512      
+ 114  IDL = IFIX(FLOAT(I(L8))*SFI)
+      IF(IDL.gt.1) GOTO 1181
+      IDL = 1
+      GOTO 1182
+ 1181 IF(IDL.lt.NSAM) GOTO 1182
+      IDL = NSAM
+ 1182 SUM=FLOAT(I(L5))*SFI
+      IF(M1.gt.0) go to 1183
+       AMP=FLOAT(I(L1))*SFI
+ 1183  IF(M2.gt.0) go to 1184
+       FREQ=FLOAT(I(L2))*SFI
+ 1184  IF(M6.gt.0) go to 1185
+       G=FLOAT(I(L6))*SFI
+ 1185 DO 1196 J3=1,NSAM 
+c     L6 feedback amount
+c     L7 feedback delay (samples)
+         IPOS = MOD(J3 - 1 - IDL + NSAM, NSAM) 
+         FDB = FLOAT(I(L3+IPOS))*SFI        
+         J4=INT(SUM)+L4
+         F=FLOAT(I(J4))
+         IF(M2.gt.0) go to 1186
+         SUM=SUM+FREQ
+         GO TO 1190
+ 1186     J4=L2+J3-1
+         SUM=SUM+FLOAT(I(J4))*SFI
+ 1190     IF(SUM.GE.XNFUN)GO TO 1187
+         IF(SUM.LT.0.0)GO TO 1189
+ 1188    J5=L3+J3-1
+c         if feedbback amout is a buffer 
+          IF(M6.gt.0) go to 1192
+          GO TO 1193
+c         g = fdb[n]
+ 1192     G=FLOAT(I(L6+J3-1))*SFI
+c     out = (a + g*out[n-d])*f[ndx]         
+ 1193     IF(M1.gt.0) go to 1194
+          GO TO 1195
+ 1187     SUM=SUM-XNFUN
+         GO TO 1188
+ 1189     SUM=SUM+XNFUN
+         GO TO 1188
+ 1194    J6=L1+J3-1
+         AMP = FLOAT(I(J6))*SFI
+ 1195    I(J5)=IFIX((AMP+FDB*G)*F*SFXX)
+ 1196 CONTINUE
+      I(L5)=IFIX(SUM*SFID)
+      RETURN 
       END
       
 C     [page 6-1]

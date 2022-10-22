@@ -48,14 +48,14 @@ C     VL Feb 22 - making this a function so it can be called externally from a d
 
       CHARACTER*1 IBCD(300)
       CHARACTER*1 CARD(129)
-      DATA NOPS,NBC,NC/27,3,72/
+      DATA NOPS,NBC,NC/28,3,72/
       CHARACTER IDEC, ISTAR, IGAD
       DATA IDEC,ISTAR/'.','*'/
       CHARACTER JSEMI, JBLANK
       CHARACTER*1 IBC(4)
       DATA IBC/';',' ',',','-'/
       CHARACTER*1 IVT (4)
-      CHARACTER*1 LOP (81)
+      CHARACTER*1 LOP (84)
       integer IDEF, I100
 
       DATA IVT/'P','F','B','V'/
@@ -64,7 +64,7 @@ C     VL Feb 22 - making this a function so it can be called externally from a d
      *     'P','L','S','S','I','3','S','I','A','C','O','M','E','N','D',
      *     'O','U','T','O','S','C','A','D','2','R','A','N','E','N','V',
      *     'S','T','R','A','D','3','A','D','4','M','L','T','F','L','T',
-     *     'R','A','H','S','E','T','I','O','S'/
+     *     'R','A','H','S','E','T','I','O','S','F','A','M'/
 
       EQUIVALENCE (JSEMI,IBC(1)), (JBLANK,IBC(2))
 
@@ -377,9 +377,10 @@ C     TO SCAN FOR OP CODE
  27   L=L+1
       IF (IBCD(L).NE.JBLANK) GO TO 27
 
-      
+ 
  29   GO TO (9100,9200,300,400,500,600,700,800,900,1000,1100,1200,1300,
-     *     217,9201,202,203,204,205,206,207,208,209,210,211,212,213),M
+     *     217,9201,202,203,204,205,206,207,208,209,210,211,212,213,214),
+     *     M
 
 C     OP CODE 1 TO PLAY NOTE
  9100 P(1)=1.
@@ -452,9 +453,14 @@ C     RANDOM AND HOLD
  211  P(3)=111.
       NPW=5
       GO TO 220
-C     IOS V Lazzarini, 2009
+C     IOS 
  213  P(3)=113.
       NPW=5
+      GO TO 220
+C     FBM
+ 214  P(3)=114.
+C     7 parameters      
+      NPW=7
       GO TO 220
 C     SET NEW FUNCTION
  212  P(3)=110.
