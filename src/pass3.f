@@ -846,9 +846,9 @@ C     INTERPOLATING OSCILLATOR (FROM 1968/9 LISTINGS)
       RETURN
 C     FBAM OSCILLATOR
 C     FBM A,F,O,FN,S,G,D
-C     G - feedback amount (B or P)
+C     G - feedback amount (0 - 1)
 C     D - delay in samples (P), 1 - 512      
- 114  IDL = IFIX(FLOAT(I(L8))*SFI)
+ 114  IDL = IFIX(FLOAT(I(L7))*SFI)
       IF(IDL.gt.1) GOTO 1181
       IDL = 1
       GOTO 1182
@@ -862,9 +862,7 @@ C     D - delay in samples (P), 1 - 512
  1184  IF(M6.gt.0) go to 1185
        G=FLOAT(I(L6))*SFI
  1185 DO 1196 J3=1,NSAM 
-c     L6 feedback amount
-c     L7 feedback delay (samples)
-         IPOS = MOD(J3 - 1 - IDL + NSAM, NSAM) 
+         IPOS = MOD(J3 - 1 - IDL + NSAM, NSAM)
          FDB = FLOAT(I(L3+IPOS))*SFI        
          J4=INT(SUM)+L4
          F=FLOAT(I(J4))
@@ -875,13 +873,10 @@ c     L7 feedback delay (samples)
          SUM=SUM+FLOAT(I(J4))*SFI
  1190     IF(SUM.GE.XNFUN)GO TO 1187
          IF(SUM.LT.0.0)GO TO 1189
- 1188    J5=L3+J3-1
-c         if feedbback amout is a buffer 
+ 1188    J5=L3+J3-1 
           IF(M6.gt.0) go to 1192
           GO TO 1193
-c         g = fdb[n]
- 1192     G=FLOAT(I(L6+J3-1))*SFI
-c     out = (a + g*out[n-d])*f[ndx]         
+ 1192     G=FLOAT(I(L6+J3-1))*SFI    
  1193     IF(M1.gt.0) go to 1194
           GO TO 1195
  1187     SUM=SUM-XNFUN
@@ -890,6 +885,7 @@ c     out = (a + g*out[n-d])*f[ndx]
          GO TO 1188
  1194    J6=L1+J3-1
          AMP = FLOAT(I(J6))*SFI
+c        out = (a + g*out[n-d])*f[ndx]         
  1195    I(J5)=IFIX((AMP+FDB*G)*F*SFXX)
  1196 CONTINUE
       I(L5)=IFIX(SUM*SFID)
