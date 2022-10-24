@@ -849,7 +849,7 @@ C     *** MUSIC V ***
       SUBROUTINE GEN1
       DIMENSION I(15000),P(100),IP(21)
       COMMON I,P/PARM/IP
-      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+      N1=IP(2)+(IFIX(P(4))-1)*IP(6)-1
       M1=7
       SCLFT=IP(15)
 c 102  IF(P(M1+1))103,103,100
@@ -864,10 +864,10 @@ c 100  V1=P(M1-2)*SCLFT
          I(J)=V1+V2*XJ
 C     VL:25/01/22 updated for gfortran 2018           
  101  CONTINUE   
-      IF(IFIX(P(M1+1)).EQ.(IP(6)-1))GO TO 103
+      IF(IFIX(P(M1+1)).EQ.(IP(6)))GO TO 103
       M1=M1+2
       GO TO 102
- 103  I(MB+1)=P(M1)*SCLFT
+ 103  I(MB+1)=P(M1-2)*SCLFT
       RETURN
       END
 C     GEN2 FUNCTION GENERATOR 2
