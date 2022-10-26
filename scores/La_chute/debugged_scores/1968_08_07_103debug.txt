@@ -41,8 +41,11 @@
  GEN 0 1 7 1 0 .06 512;
  GEN 0 1 8 1 0 .007 512;
  GEN 0 1 9 1 0 1 160 .01 512;
+ COMMENT: RVN 3 lines aabove it should probably 
+ be GEN . . . 0 1 etc and not 1 0;
  GEN 0 3 10 0 10 10 0 -10 -10 0;
  GEN 0 1 11 0 1 1 100 0 512;
+ COMMENT: RVN the same as above ;
 
  SIA 0 4 12500;
 
