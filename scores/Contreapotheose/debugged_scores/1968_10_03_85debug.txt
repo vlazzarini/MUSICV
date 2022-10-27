@@ -116,7 +116,7 @@
  COMMENT: RVN I could comment out SIA to prevent 
  the change of tempo/pitch for the whole run ;
  COMMENT: RVN either the whole run uses 5khz
- or 10khz, can0t have two SIA in the score ;
+ or 10khz, can't have two SIA in the score ;
  COMMENT: RVN if two SIA in the score - the 
  last one will be considered ;
 

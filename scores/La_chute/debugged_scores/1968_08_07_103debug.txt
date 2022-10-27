@@ -18,8 +18,8 @@
  COMMENT:GLISSANDO PLUS VIBRATO;
  INS 0 2;
  OSC P5 P8 B3 F3 P30;
- COMMENT: replaced F& with F8, but it can be also F7 or F9;
  COMMENT: OSC P6 P8 B4 F& P29;
+ COMMENT: RVN l.a. replaced F& with F8, but it can be also F7 or F9;
  OSC P6 P8 B4 F8 P29;
  OSC P7 P8 B5 F11 P28;
  OSC B5 P9 B5 F1 P26;
@@ -41,7 +41,7 @@
  GEN 0 1 7 1 0 .06 512;
  GEN 0 1 8 1 0 .007 512;
  GEN 0 1 9 1 0 1 160 .01 512;
- COMMENT: RVN 3 lines aabove it should probably 
+ COMMENT: RVN 3 lines above it should probably 
  be GEN . . . 0 1 etc and not 1 0;
  GEN 0 3 10 0 10 10 0 -10 -10 0;
  GEN 0 1 11 0 1 1 100 0 512;
