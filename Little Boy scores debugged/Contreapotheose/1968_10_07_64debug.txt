@@ -20,11 +20,9 @@
  GEN 0 3 2 0 1;
  
  GEN 0 5 11 -7;
- COMMENT: RVN l.a. replaced with GEN 7 
  COMMENT: RVN and -7 from JCR annotations 
  is not replaced with -8;
  
-
  NOT 1 1 4 600 659 .015 0;
  NOT 1 1 4 1000 104 .015 85.17; 
  NOT 1 1 4 400 988 .015 170.33;

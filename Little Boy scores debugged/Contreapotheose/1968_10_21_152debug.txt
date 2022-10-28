@@ -20,7 +20,9 @@
  
  SIA 0 4 10000;
  GEN 0 2 1 1 1;
- GEN 0 3 2 0;
+ COMMENT: GEN 0 3 2 0;
+ COMMENT: RVN GEN 3 is missing one or more arguments
+ it is corrected in the line below;
  GEN 0 5 11 -8;
  
  NOT 1 2 4 450 0 0 0 0;
