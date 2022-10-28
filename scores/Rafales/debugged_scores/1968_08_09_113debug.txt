@@ -44,6 +44,9 @@
  NOT 1.4 1 .12 2500 1500 1500;
  NOT 1.6 1 .12 2500 1500 1500;
  NOT 1.8 1 .12 2500 1500 1500;
+  COMMENT: pen reffers to the section until SEC5 JCR 
+ correct. corrigé. remplacé par .12 -> T1172 08/09/68
+ (printout conservé avec decay ?? ) ;
  NOT 1.11 2 .12 2500 1500 1500; 
  NOT 1.32 2 .12 2500 1500 1500;
  NOT 1.54 2 .12 2500 1500 1500;
@@ -55,6 +58,8 @@
  NOT 2.70 2 .12 2500 1500 1500;
  NOT 2.91 2 .12 2500 1500 1500;
  NOT 3.12 2 .12 2500 1500 1500;
+ COMMENT: RVN the sction above 12 replaced by .12 
+ according to JCR annotations;
  SEC 5;
 
  NOT 1   1 .12 4000 1500 2500;

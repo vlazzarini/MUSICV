@@ -40,9 +40,8 @@
  NOT 0 1 .5 1900 1.024;
  SEC .5;
  
- COMMENT: GEN 0 5 1 -6;
- COMMENT: RVN l.a. replaced with the GEN 7 see GEN5 in pass3 ;
- GEN 0 7 1 -6 ;
+ GEN 0 5 1 -6;
+ 
  NOT .5 1 .5 1900 1.024;
  SEC 5;
  

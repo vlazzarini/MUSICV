@@ -32,11 +32,8 @@
  GEN 0 4 3 1 10 0 1 512;
  GEN 0 4 4 1 10 0 1 512;
 
- COMMENT: GEN 0 5 7 -8;
- COMMENT: GEN 0 5 8 -8;
- COMMENT: RVN GEN 5 replaced with GEN 7;
- GEN 0 7 7 -8;
- GEN 0 7 8 -8;
+ GEN 0 5 7 -8;
+ GEN 0 5 8 -8;
  
  COMMENT: margin pencil JCR Bon filtre (low pass= 150 Hz) ;
  NOT  .4 1 .48 500 8.7 0;
@@ -63,7 +60,9 @@
 
  COMMENT:DRUM;
  COMMENT:MEMBRANE SPECTRUM, SINE WAVE, NO NOISE BAND;
+ 
  GEN 0 4 3 1 10 0 1 512 1.5 16 0 1 512 2 22 0 1 512 1.5 23 0 1 512;
+ 
  SV3 0 1 7.5 2.5 500 1500;
 
  COMMENT: margin pencil JCR Bon SS filtre ;
@@ -83,25 +82,27 @@
  NOT 5.6 1 .22 0 15 0;
  NOT 6.0 1 .22 0 15 0;
  SEC 8;
+
  COMMENT:TO WRITE EOF;
+ COMMENT: GEN 0 3 0;
  COMMENT: RVN pass.3 uses GEN4 so we comment out all skipping commands 
  using all GENs except GEN5;
- COMMENT: GEN 0 3 0;
+ 
 
  COMMENT:SNARE;
  COMMENT:4 KC CENTER 3 KC BAND NOISE 200 HZ SINE AND MEMBRANE SPECTRUM;
  COMMENT:20 KC SAMPLING;
  SIA 0 4 20000;
- GEN 0 1 2 -12;
 
+ GEN 0 1 2 -12;
  COMMENT: l.a. pen JCR error - should be GEN 0 5 2 -12
  decay 12 octaves [drawing of a descending exp. function];
  COMMENT: l.a. pencil JCR OK ;
+ 
  GEN 0 1 7 0 1 .99 5 0 100 0 512;
  
- COMMENT: GEN 0 5 8 -8;
- COMMENT: RVN GEN 5 replaced with GEN 7;
- GEN 0 7 8 -8;
+ GEN 0 5 8 -8;
+ 
 
  SV3 0 1 100 65 300 800;
  

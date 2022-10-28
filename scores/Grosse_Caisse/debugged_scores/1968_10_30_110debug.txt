@@ -29,26 +29,17 @@
  OUT B5 B1;
  END;
 
- COMMENT: GEN 0 4 3 1 10 0 1 512 1.5 16 0 1 512 2 22 0 1 512 1.5 23 0 1 512;
- COMMENT: RVN replaced indexing 1-512 with 0-511 ;
- GEN 0 4 3 1 10 0 0 511 1.5 16 0 0 511 2 22 0 0 511 1.5 23 0 0 511; 
+ GEN 0 4 3 1 10 0 1 512 1.5 16 0 1 512 2 22 0 1 512 1.5 23 0 1 512;
  
- COMMENT: GEN 0 5 2 -10;
- COMMENT: RVN replaced GEN 5 with GEN7;
- GEN 0 7 2 -10;
+ GEN 0 5 2 -10;
 
  GEN 0 2 1 1 1;
 
  GEN 0 4 4 1 10 0 1 512;
- COMMENT: RVN replaced indexing 1-512 with 0-511 ;
- GEN 0 4 4 1 10 0 0 511;
-
- COMMENT: GEN 0 5 7 -8;
- COMMENT: GEN 0 5 8 -8;
- COMMENT: RVN replaced GEN 5 with GEN7;
- GEN 0 7 7 -8;
- GEN 0 7 8 -8;
-
+ 
+ GEN 0 5 7 -8;
+ GEN 0 5 8 -8;
+ 
  COMMENT: margin pencil JCR mauvais mais bon vitesse *70/60 en 
  low pass filtered vers 150Hz ;
  COMMENT: margin pencil JCR 2 fois+vite tambour ;
@@ -84,10 +75,8 @@
  SV3 0 1 7.5 2.5 1200 400;
 
 
- COMMENT: GEN 0 4 3 1 10 0 1 512;
- COMMENT: RVN replaced indexing 1-512 with 0-511 ;
- GEN 0 4 3 1 10 0 0 511;
-
+ GEN 0 4 3 1 10 0 1 512;
+ 
  NOT  .4 1 .45 500 7.5 0;
  NOT  .8 1 .45 500 7.5 0;
  NOT 1.2 1 .45 500 7.5 0;
@@ -112,12 +101,8 @@
  COMMENT:JUST SINE WAVE WITH 2 DECAY RATES;
  COMMENT: margin pencil JCR NB 2 fois + vite + sonore? ;
  
- COMMENT: GEN 0 5 2 -9;
- COMMENT: GEN 0 5 8 -7;
- COMMENT: RVN replaced GEN 5 with GEN7;
- GEN 0 7 2 -9;
- GEN 0 7 8 -7;
- 
+ GEN 0 5 2 -9;
+ GEN 0 5 8 -7; 
  
  COMMENT: SV3 0 7.5 2.5 1400 600;
  COMMENT: l.a. pen inserted 1 between 0 and 7.5 JCR ;
