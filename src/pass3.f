@@ -1071,10 +1071,47 @@ C     IF(XMAX-ABS(A(J))) 116,115,115
  113  RETURN
       END
 
-C     RVN&VL there is no code found for GEN5. However it is used both in 
-C     Catalogue and Little Boy. When GEN7 used instead, the scores work. 
+C     GEN5 is from GEN7 in the catalogue
       SUBROUTINE GEN5
+      DIMENSION I(15000),P(100),IP(21),A(7000)
+      COMMON I,P/PARM/IP
+      EQUIVALENCE(I,A)
+      SCLFT=IP(15)
+      N1=IP(2)+(IFIX(P(4))-1)*IP(6)
+      N2=N1+IP(6)-1
+      DO 100 K=N1,N2
+         A(K)=0.0 
+ 100  CONTINUE
+C     IF(P(5)) 200,300,250
+      IF(P(5) == 0) GOTO 300
+      IF(P(5) > 0) GOTO  250
+ 200  XN=P(5)*ALOG(2.)/511.
+      DO 205 J=N1,N2
+      XJ=J-N1
+      YJ=XN*XJ
+      A(J)=EXP(YJ)*.9999
+      I(J)=A(J)*SCLFT
+ 205  CONTINUE
+      GOTO 500
+ 250  XN=P(5)*ALOG(2.)/511.
+      DO 255 J=N1,N2
+      XJ=J-N1-511
+      YJ=XN*XJ
+      A(J)=EXP(YJ)*.999999
+      I(J)=EXP(YJ)*.999999
+ 255  CONTINUE
+      GOTO 500
+ 300  CONTINUE
+      DO 325 J=N1,N2
+      XJ=J-N1+1
+      YJ=(6.2832*(XJ-256.5))/511.
+      ZJ=ALOG(.008)*(1.-COS(YJ))
+      A(J)=EXP(ZJ)*.99999
+      I(J)=A(J)*SCLFT
+ 325  CONTINUE
+ 500  RETURN
       END
+
 
       SUBROUTINE GEN6
       DIMENSION I(15000),P(100),IP(21),A(512)
