@@ -104,7 +104,7 @@
  NOT 1 1 .8 300 329.6 .03 0 .35 0 0 0;
  COMMENT: NOT 1.5 4 .8 250 523.2 .03 0 .35;
  COMMENT: RVN this is the same as the next record but without P11 P12 ;
- COMMENT: RVN what happens when two same records are played simultan?
+ COMMENT: RVN what happens when two same records are played simult?
  NOT 1.5 4 .8 250 523.2 .03 0 .35 0 0 0;
  NOT 2 1 .8 300 440 .03 0 .35 0 0 0;
  NOT 2.5 4 .8 250 622.2 .03 0 .35 0 0 0;

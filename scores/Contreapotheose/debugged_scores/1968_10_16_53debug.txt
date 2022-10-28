@@ -11,10 +11,8 @@
  COMMENT:ORIGINAL SAMPLING 20 KC;
  SIA 0 4 20000;
  GEN 0 2 1 1 1;
- COMMENT: GEN 0 5 2 -7;
- COMMENT: RVN replaced by GEN 7;
- GEN 0 7 2 -7;
-
+ GEN 0 5 2 -7;
+ 
  COMMENT: following 6 lines pencil JCR illegible comment ;
  NOT 1 1 2.5 300 960 0;
  NOT 1 1 2.4 250 1110 0;
@@ -58,6 +56,7 @@
 
  TER 7;
  COMMENT: CONVT 10;
+ 
      SUBROUTINE CONVT
      COMMON IP(10),P(100),G(1000)
      IF(P(1).NE.1.)GOTO100
