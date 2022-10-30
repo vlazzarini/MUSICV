@@ -38,6 +38,8 @@ C     Output can now be mono or stereo with any sampling rate.
 C     Sampling rate and stereo/mono parameters can now be set in score.
 C     A text file called "snd_params.txt" is written in pass3 containing
 C     the number of channels and sampling rate used
+C     VL October 22: OSC restored as per 1968/9 version (no support for
+C     negative frequencies). SR default restored to 10 KHz
 
       
 C     PASS3   PASS 3 MAIN PROGRAM
@@ -49,7 +51,7 @@ C     DATA SPECIFICATION
       COMMON I(15000),P(100)/PARM/IP(21)/FINOUT/PEAK,NRSOR
 C     C******** DATA IIIRD/Z5EECE66D/
 C     VL feb 22 setting IP(12) and IP(15) to 2**18 and 2**31 - 1
-      DATA IP/12,512,44100,14500,14400,512,13000,35,40,6657,2048,
+      DATA IP/12,512,10000,14500,14400,512,13000,35,40,6657,2048,
      *     262144,6657,512,2147483647,6*0/
 
       DATA IIIRD/976545367/
