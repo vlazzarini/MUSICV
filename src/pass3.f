@@ -475,22 +475,14 @@ c 285     SUM=SUM+FREQ
          GO TO 290
  286     J4=L2+J3-1
          SUM=SUM+FLOAT(I(J4))*SFI
-C     C 290 IF(SUM-XNFUN)288,287,287
- 290     IF(SUM.GE.XNFUN)GO TO 287
-C     C 287 SUM=SUM-XNFUN
-         IF(SUM.LT.0.0)GO TO 289
+C 290 IF(SUM-XNFUN)288,287,287
+ 290     IF((SUM-XNFUN).LE.0) GOTO 288 
+ 287     SUM=SUM-XNFUN
  288     J5=L3+J3-1
 c         IF(M1)291,291,292
          IF(M1.gt.0) go to 292
-c 291     I(J5)=IFIX(AMP*F*SFXX)
-          I(J5)=IFIX(AMP*F*SFXX)
+ 291     I(J5)=IFIX(AMP*F*SFXX)
          GO TO 293
-C************
- 287     SUM=SUM-XNFUN
-         GO TO 288
- 289     SUM=SUM+XNFUN
-         GO TO 288
-C**********ABOVE FOR FM (NEG. FREQ. TO OSCIL)
  292     J6=L1+J3-1
          I(J5)=IFIX(FLOAT(I(J6))*F*SFF)
  293  CONTINUE
