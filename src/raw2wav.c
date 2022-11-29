@@ -77,10 +77,10 @@ int raw2wav(const char *in, const char *out, int chns, int sr) {
   size_t r = 0, bytes =0;
   WAVEHEAD header;
   float buf[bufsize];
-  header.magic = (long)  (*(long*)RIFF_ID);			// 'RIFF' 
+  header.magic = (int)  (*(int*)RIFF_ID);			// 'RIFF' 
   header.len0 = 0;
-  header.magic1 = (long)  (*(long*)WAVE_ID);			// 'WAVE' 
-  header.magic2 = (long)  (*(long*)FMT_ID);;			// 'fmt ' 
+  header.magic1 = (int)  (*(int*)WAVE_ID);			// 'WAVE' 
+  header.magic2 = (int)  (*(int*)FMT_ID);;			// 'fmt ' 
   header.len = 16;
   byteswap(&header.len,4);			// length of header (16)
   header.format = 3;
@@ -95,7 +95,7 @@ int raw2wav(const char *in, const char *out, int chns, int sr) {
   byteswap(&header.nBlockAlign,2);		// (rate*nch +7)/8 
   header.size = 32;
   byteswap(&header.size,2);			// size of each sample (8,16,32) 
-  header.magic3 = (long)  (*(long*)DATA_ID);;
+  header.magic3 = (int)  (*(int*)DATA_ID);;
   header.datasize = 0;
 
   if((fpi = fopen(in, "r")) == NULL) {
