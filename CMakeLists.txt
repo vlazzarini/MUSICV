@@ -16,3 +16,7 @@ add_program(pass2)
 add_program(pass3)
 add_program(raw2wav c)
 add_program(music5 c)
+
+enable_testing()
+
+add_test(NAME ScoreCat513 COMMAND music5 ${CMAKE_CURRENT_SOURCE_DIR}/scores/cat513 cat513.wav)

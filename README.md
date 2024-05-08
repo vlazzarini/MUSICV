@@ -1,17 +1,16 @@
-MUSIC V
-=================
+# MUSIC V
+
+[![Actions Status](https://github.com/vlazzarini/MUSICV/workflows/ci/badge.svg)](https://github.com/vlazzarini/MUSICV/actions)
 
 This is Max Mathew's MUSIC V synthesis program, prepared by
 Bill Schottstaed for gfortran, with further
 additions and fixes by Victor Lazzarini.
 
-Building
-------
+## Building
 
-To build MUSIC V you will need to install a Fortran compiller. The
-gfortran compiler, which you can find at
-http://gcc.gnu.org/wiki/GFortran, has been tested and the sources
-are kept up to date with it. You willl also need CMake and a C
+To build MUSIC V you will need to install a Fortran compiller such
+as [GFortran](http://gcc.gnu.org/wiki/GFortran), has been tested and the sources
+are kept up to date with it. You will also need CMake and a C
 compiler installation.
 
 With these installed, build MUSIC V:
