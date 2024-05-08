@@ -26,61 +26,54 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
 #define BUFSIZE 1024
 
-int main(int argc, char *argv[]) {
-  if (argc > 2) {
-    FILE *fin,*fout;
-    int ret;
-    char buffer[BUFSIZE];
-    fin = fopen(argv[1],"r");
-    if(fin) {
-      fout = fopen("score","w");
-      if(fout) do {
-          ret = fread(buffer,1,BUFSIZE,fin);
-          fwrite(buffer,1,ret,fout);
-	} while(ret);
-      else {
-	fclose(fin);
-	printf("could not open score file for writing\n");
-        return -1;
-      }
-      fclose(fin);
-      fclose(fout);
-    } else {
-      printf("could not open %s for reading\n", argv[1]);
-        return -1;
-    } 
-    ret = system("pass1");
-    if(ret == 0) {
-      ret = system("pass2");
-      if(ret == 0) {
-	ret = system("pass3");
-	if(ret == 0) {
-	  int chn = 1;
-	  int sr = 44100;
-	  fin = fopen("snd_params.txt","r");
-	  fscanf(fin, "%d", &chn);
-	  fscanf(fin, "%d", &sr);
-	  fclose(fin);
-	  snprintf(buffer,BUFSIZE,"raw2wav %s %d %d", argv[2], chn, sr);
-	  printf(" PASS III completed successfully\n"
-		 "Created snd.raw (32-bit floas, sr = %d KHz, %s)\n", sr,
-		  chn > 1 ? "stereo" : "mono");
-	  ret = system(buffer);
-	  if(ret) {
-	    printf("Failed to convert snd.raw to %s\n", argv[2]);
-	    return -1;
-	  }
-	  return 0;
-	}
-	else printf("pass 3 failed\n");
-      } else printf("pass 2 failed\n");
-    } else printf("pass 1 failed\n");
-    return 1;
-  } else printf("usage: %s score output.wav \n", argv[0]);
-  return -1;
+
+int main(int argc, char *argv[])
+{
+
+  if (argc < 3) {
+    fprintf(stderr, "Usage: %s scorefile outputfile\n", argv[0]);
+    return EXIT_FAILURE;
+  }
+
+  char buf[BUFSIZE];
+  char cwd[BUFSIZE];
+  snprintf(buf, BUFSIZE, "%s/..", argv[0]);
+  if(!realpath(buf, cwd))
+    strcpy(cwd, ".");
+
+  /* copy score to working directory */
+  snprintf(buf, BUFSIZE, "cp %s %s/", argv[1], cwd);
+  if(system(buf))
+    return EXIT_FAILURE;
+
+  chdir(cwd);
+  if(system("./pass1") || system("./pass2") || system("./pass3"))
+    return EXIT_FAILURE;
+
+  int chn = 1;
+  int sr = 44100;
+  FILE* fin = fopen("./snd_params.txt", "r");
+  if(!fin){
+    fprintf(stderr, "could not open snd_params.txt for reading\n");
+    return EXIT_FAILURE;
+  }
+  fscanf(fin, "%d", &chn);
+  fscanf(fin, "%d", &sr);
+  fclose(fin);
+
+  printf(" PASS III completed successfully\n"
+    "Created snd.raw (32-bit float, sr = %d KHz, %s)\n", sr,
+    (chn > 1) ? "stereo" : "mono");
+
+  snprintf(buf,BUFSIZE, "./raw2wav %s %d %d", argv[2], chn, sr);
+
+  if(system(buf))
+    return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
 }
-
-
-				    

@@ -1,7 +1,6 @@
 # CMake project for MUSIC V
-cmake_minimum_required (VERSION 2.8.12 )
-project(Music5)
-enable_language(Fortran)
+cmake_minimum_required (VERSION 3.14 )
+project(Music5 LANGUAGES C Fortran)
 
 function(add_program NAME)
 if(${ARGC} GREATER 1)
