@@ -2,7 +2,7 @@ MUSIC V
 =================
 
 This is Max Mathew's MUSIC V synthesis program, prepared by
-Bill Schottstaed for gfortran, with further 
+Bill Schottstaed for gfortran, with further
 additions and fixes by Victor Lazzarini.
 
 Building
@@ -14,34 +14,29 @@ http://gcc.gnu.org/wiki/GFortran, has been tested and the sources
 are kept up to date with it. You willl also need CMake and a C
 compiler installation.
 
-With these installed,
+With these installed, build MUSIC V:
 
+```sh
+cmake -B build
+cmake --build build
 ```
-$ mkdir build
-$ cmake ..
-$ make
-```
 
-will build MUSIC V
-
-Installing
---------
+## Installing
 
 Installation is controlled by the CMake option
-`CMAKE_INSTALL_PREFIX`. This is set by default to `/usr/local`.
+`CMAKE_INSTALL_PREFIX`.
 
 The command
 
-```
-make install
+```sh
+cmake --install build
 ```
 
 will install the software to `${CMAKE_INSTALL_PREFIX}/bin`. Depending
 on the local admin permissions might be need to perform installation.
 
 
-Running
---------
+## Running
 
 MUSIC V is based on a 3-pass set of commands (which take no arguments):
 
@@ -55,7 +50,7 @@ RIFF-Wave format file.
 
 The `music5` command is also included. This is a driver program that
 calls the three passes and produces a RIFF Wave format
-soundfile. 
+soundfile.
 
 ```
 music5 <scorefile> <soundfile>
@@ -75,9 +70,7 @@ PATH=.:$PATH music5 <scorefile> <soundfile>
 Known Issues
 ------
 
-- The FLT unit generator is missing. 
+- The FLT unit generator is missing.
 - PLF routines cannot always be directly added to pass1.f because the read1
   routine has been disposed of. They may need to be integrated in the main
   program.
-
-
