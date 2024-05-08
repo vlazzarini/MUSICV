@@ -56,15 +56,8 @@ soundfile.
 music5 <scorefile> <soundfile>
 ```
 
-Since this program calls the other commands, it is
-important that these are all found in your system `PATH`. Normally,
-this is guaranteed by installation, but it is also possible to prepend this
-environment variable to the command if that is not the case. With
-all programs in the current directory we can di.
-
-```
-PATH=.:$PATH music5 <scorefile> <soundfile>
-```
+Since "music5" calls the other commands, it is
+important that these are all found in the same directory.
 
 
 Known Issues
