@@ -31,6 +31,7 @@
 #ifdef _WIN32
 #include <direct.h>
 #define realpath(N,R) _fullpath((R),(N),_MAX_PATH)
+#define chdir _chdir
 #else
 #include <unistd.h>
 #endif

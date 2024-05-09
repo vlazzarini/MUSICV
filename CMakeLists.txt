@@ -17,6 +17,10 @@ add_program(pass3)
 add_program(raw2wav c)
 add_program(music5 c)
 
+foreach(t IN ITEMS music5 raw2wav)
+target_compile_definitions(${t} PRIVATE $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>)
+endforeach()
+
 enable_testing()
 
 set(raw ${CMAKE_CURRENT_BINARY_DIR}/snd.raw)
