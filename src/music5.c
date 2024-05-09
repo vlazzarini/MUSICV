@@ -47,7 +47,8 @@ int main(int argc, char *argv[])
     strcpy(cwd, ".");
 
   /* copy score to working directory */
-  snprintf(buf, BUFSIZE, "cp %s %s/", argv[1], cwd);
+  snprintf(buf, BUFSIZE, "cp %s %s/score", argv[1], cwd);
+  printf("%s\n", buf);
   if(system(buf))
     return EXIT_FAILURE;
 

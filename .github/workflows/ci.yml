@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    paths:
+      - "**.f"
+      - "**.c"
+      - "**/CMakeLists.txt"
+      - ".github/workflows/ci.yml"
+
+jobs:
+
+  core:
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ubuntu-latest
+
+    env:
+      FC: gfortran-13
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - run: cmake -B build
+    - run: cmake --build build
+    - run: ctest --test-dir build
+    - run: cmake --install build
