@@ -19,4 +19,31 @@ add_program(music5 c)
 
 enable_testing()
 
-add_test(NAME ScoreCat513 COMMAND music5 ${CMAKE_CURRENT_SOURCE_DIR}/scores/cat513 cat513.wav)
+set(raw ${CMAKE_CURRENT_BINARY_DIR}/snd.raw)
+set(out ${CMAKE_CURRENT_BINARY_DIR}/cat513.wav)
+
+add_test(NAME ScoreCat513
+COMMAND music5 ${CMAKE_CURRENT_SOURCE_DIR}/scores/cat513 ${out}
+)
+set_tests_properties(ScoreCat513 PROPERTIES
+  FIXTURES_SETUP raw
+)
+
+add_test(NAME VerifyCat513
+COMMAND ${CMAKE_COMMAND} -E sha256sum ${raw}
+)
+set_tests_properties(VerifyCat513 PROPERTIES
+  FIXTURES_REQUIRED raw
+  FIXTURES_SETUP out
+  PASS_REGULAR_EXPRESSION "^8616d30732a65bebb821da9d2b8d710a55dd78d601279004817ef1680cf74e2d"
+)
+
+add_test(NAME VerifyWav513
+COMMAND ${CMAKE_COMMAND} -E sha256sum ${out}
+)
+set_tests_properties(VerifyWav513 PROPERTIES
+  FIXTURES_REQUIRED out
+  PASS_REGULAR_EXPRESSION "^c02f8d8a6cd27166a64f59c5c045a5239a07aea26493c9e7a9aa5dcd8e019c11"
+)
+
+file(GENERATE OUTPUT .gitignore CONTENT "*")
