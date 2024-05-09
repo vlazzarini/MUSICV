@@ -27,7 +27,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _WIN32
+#include <direct.h>
+#define realpath(N,R) _fullpath((R),(N),_MAX_PATH)
+#else
 #include <unistd.h>
+#endif
 
 #define BUFSIZE 1024
 
@@ -47,18 +53,33 @@ int main(int argc, char *argv[])
     strcpy(cwd, ".");
 
   /* copy score to working directory */
+#ifdef _WIN32
+  snprintf(buf, BUFSIZE, "pwsh -c cp %s %s/score", argv[1], cwd);
+#else
   snprintf(buf, BUFSIZE, "cp %s %s/score", argv[1], cwd);
+#endif
   printf("%s\n", buf);
   if(system(buf))
     return EXIT_FAILURE;
 
+  printf("chdir %s\n", cwd);
   chdir(cwd);
-  if(system("./pass1") || system("./pass2") || system("./pass3"))
-    return EXIT_FAILURE;
+
+  const char* pre =
+#ifdef _WIN32
+    "pwsh -c ";
+#else
+    "";
+#endif
+  for (int i = 1; i < 4; i++) {
+    snprintf(buf, BUFSIZE, "%s./pass%d", pre, i);
+    if(system(buf))
+      return EXIT_FAILURE;
+  }
 
   int chn = 1;
   int sr = 44100;
-  FILE* fin = fopen("./snd_params.txt", "r");
+  FILE* fin = fopen("snd_params.txt", "r");
   if(!fin){
     fprintf(stderr, "could not open snd_params.txt for reading\n");
     return EXIT_FAILURE;
@@ -71,8 +92,8 @@ int main(int argc, char *argv[])
     "Created snd.raw (32-bit float, sr = %d KHz, %s)\n", sr,
     (chn > 1) ? "stereo" : "mono");
 
-  snprintf(buf,BUFSIZE, "./raw2wav %s %d %d", argv[2], chn, sr);
-
+  snprintf(buf, BUFSIZE, "%s./raw2wav %s %d %d", pre, argv[2], chn, sr);
+  printf("%s\n", buf);
   if(system(buf))
     return EXIT_FAILURE;
 
