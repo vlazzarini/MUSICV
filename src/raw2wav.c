@@ -26,6 +26,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h> // int32_t
 
 static inline char le_test(){
     union _le {
@@ -55,19 +56,19 @@ const char     FMT_ID[4]  = {'f','m','t',' '};
 const char     DATA_ID[4] = {'d','a','t','a'};
 
 typedef struct wave_head{
-  int	magic;			// 'RIFF' 
-  int	len0;			// Chunk size = len + 8 + 16 + 12 
-  int	magic1;			// 'WAVE' 
-  int	magic2;			// 'fmt ' 
+  int	magic;			// 'RIFF'
+  int	len0;			// Chunk size = len + 8 + 16 + 12
+  int	magic1;			// 'WAVE'
+  int	magic2;			// 'fmt '
   int	len;			// length of header (16)
   short format;// 1 is PCM integer, 3 is float integer
-  short	nchns;			// Number of channels 
-  int	rate;			// sampling frequency 
-  int	aver;			// Average bytes/sec !! 
-  short	nBlockAlign;		// (rate*nch +7)/8 
-  short	size;			// size of each sample (8,16,32) 
-  int	magic3;			// 'data' 
-  int	datasize;		// data chunk size 
+  short	nchns;			// Number of channels
+  int	rate;			// sampling frequency
+  int	aver;			// Average bytes/sec !!
+  short	nBlockAlign;		// (rate*nch +7)/8
+  short	size;			// size of each sample (8,16,32)
+  int	magic3;			// 'data'
+  int	datasize;		// data chunk size
 } WAVEHEAD;
 
 #define bufsize 512
@@ -80,10 +81,10 @@ int main(int argc, const char *argv[]) {
   const char* fname = argc > 1 ? argv[1] : "snd.wav";
   int chns = argc > 2 ? atoi(argv[2]) : 1;
   int sr = argc > 3 ? atoi(argv[3]) : 44100;
-  header.magic = (long)  (*(long*)RIFF_ID);			// 'RIFF' 
+  header.magic = (long)  (*(long*)RIFF_ID);			// 'RIFF'
   header.len0 = 0;
-  header.magic1 = (long)  (*(long*)WAVE_ID);			// 'WAVE' 
-  header.magic2 = (long)  (*(long*)FMT_ID);;			// 'fmt ' 
+  header.magic1 = (long)  (*(long*)WAVE_ID);			// 'WAVE'
+  header.magic2 = (long)  (*(long*)FMT_ID);;			// 'fmt '
   header.len = 16;
   byteswap(&header.len,4);			// length of header (16)
   header.format = 3;
@@ -91,38 +92,47 @@ int main(int argc, const char *argv[]) {
   header.nchns = chns;			// Number of channels
   byteswap(&header.nchns,2);
   header.rate = sr;
-  byteswap(&header.rate,4);			// sampling frequency 
+  byteswap(&header.rate,4);			// sampling frequency
   header.aver = sr*chns*4;
   byteswap(&header.aver,4);
   header.nBlockAlign = 4*chns;
-  byteswap(&header.nBlockAlign,2);		// (rate*nch +7)/8 
+  byteswap(&header.nBlockAlign,2);		// (rate*nch +7)/8
   header.size = 32;
-  byteswap(&header.size,2);			// size of each sample (8,16,32) 
+  byteswap(&header.size,2);			// size of each sample (8,16,32)
   header.magic3= (long)  (*(long*)DATA_ID);;
   header.datasize = 0;
 
-  if((fpi = fopen("snd.raw", "r")) == NULL) {
-    printf("Could not open input snd.raw \n");
-    return -1;
-  }    
-  if((fp = fopen(fname, "w")) != NULL) {
-    fwrite(&header,sizeof(WAVEHEAD),1,fp);
-    do {
-      r = fread(buf,sizeof(float),bufsize,fpi);
-      for(int i = 0; i < r; i++)
-	byteswap(&buf[i],4);
+  if((fpi = fopen("snd.raw", "rb")) == NULL) {
+    fprintf(stderr, "Could not open input snd.raw\n");
+    return EXIT_FAILURE;
+  }
+  if((fp = fopen(fname, "wb")) == NULL) {
+    fprintf(stderr, "Could not open %s for output\n", fname);
+    return EXIT_FAILURE;
+  }
+
+  // write header
+  fwrite(&header,sizeof(WAVEHEAD),1,fp);
+
+  // write data
+  do {
+    r = fread(buf,sizeof(float),bufsize,fpi);
+    for(int i = 0; i < r; i++)
+	    byteswap(&buf[i],4);
       fwrite(buf,sizeof(float),r,fp);
       bytes += (4*r);
-    } while(r);
-    rewind(fp);
-    header.datasize = bytes;
-    byteswap(&header.datasize,4);
-    header.len0 = sizeof(WAVEHEAD) - 8 + bytes;
-    byteswap(&header.len0,4);
-    fwrite(&header,sizeof(WAVEHEAD),1,fp);
-    fclose(fp);
-    printf("Wrote %zu bytes of 32-bit float sample frames to %s (%s) \n", bytes, fname, chns > 1 ? "stereo" : "mono");
-  } else printf("Could not open %s for output\n", fname);
+  } while(r);
+
+  // update header
+  rewind(fp);
+  header.datasize = bytes;
+  byteswap(&header.datasize,4);
+  header.len0 = sizeof(WAVEHEAD) - 8 + bytes;
+  byteswap(&header.len0,4);
+  fwrite(&header,sizeof(WAVEHEAD),1,fp);
+  fclose(fp);
+  printf("Wrote %zu bytes of 32-bit float sample frames to %s (%s) \n", bytes, fname, chns > 1 ? "stereo" : "mono");
+
   fclose(fpi);
-  return 0;
+  return EXIT_SUCCESS;
 }
