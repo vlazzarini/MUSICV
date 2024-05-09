@@ -20,6 +20,12 @@ cmake -B build
 cmake --build build
 ```
 
+Optionally, step-by-step self-tests can be run to help ensure MUSIC V is running correctly on the specific compiler used.
+
+```sh
+ctest --test-dir build -V
+```
+
 ## Installing
 
 Installation is controlled by the CMake option
